@@ -8,7 +8,8 @@ MINUSCULAS = "abcdefghijklmnopqrstuvwxyzáàâãäåéèêëíìîïóòôõöú
 MAYUSCULAS = "ABCDEFGHIJKLMNOPQRSTUVWXYZÁÀÂÃÄÅÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÑÇ"
 
 
-def es_caracter_blanco(caracter):
+# Definición de función: esCaracterBlanco
+def esCaracterBlanco(caracter):
     """Verifica si un carácter es espacio, salto de línea o tabulación."""
     if caracter == " ":
         return True
@@ -21,63 +22,63 @@ def es_caracter_blanco(caracter):
     return False
 
 
-def buscar_indice_caracter(caracter, cadena_busqueda):
-    """
-    Busca la posición de un carácter dentro de una cadena de búsqueda
-    recorriendo los caracteres con un ciclo while. Retorna el índice o -1.
-    """
+# Definición de función: buscarIndiceCaracter
+def buscarIndiceCaracter(caracter, cadenaBusqueda):
+    """Busca la posición de un carácter dentro de una cadena. Retorna el índice o -1."""
     i = 0
-    longitud = len(cadena_busqueda)
+    longitud = len(cadenaBusqueda)
     while i < longitud:
-        if cadena_busqueda[i] == caracter:
+        if cadenaBusqueda[i] == caracter:
             return i
         i = i + 1
     return -1
 
 
-def a_mayuscula_caracter(caracter):
-    """Convierte un único carácter a mayúscula usando la cadena MINUSCULAS."""
-    idx = buscar_indice_caracter(caracter, MINUSCULAS)
+# Definición de función: aMayusculaCaracter
+def aMayusculaCaracter(caracter):
+    """Convierte un único carácter a mayúscula."""
+    idx = buscarIndiceCaracter(caracter, MINUSCULAS)
     if idx != -1:
         return MAYUSCULAS[idx]
     return caracter
 
 
-def a_minuscula_caracter(caracter):
-    """Convierte un único carácter a minúscula usando la cadena MAYUSCULAS."""
-    idx = buscar_indice_caracter(caracter, MAYUSCULAS)
+# Definición de función: aMinusculaCaracter
+def aMinusculaCaracter(caracter):
+    """Convierte un único carácter a minúscula."""
+    idx = buscarIndiceCaracter(caracter, MAYUSCULAS)
     if idx != -1:
         return MINUSCULAS[idx]
     return caracter
 
 
-def a_mayusculas(texto):
-    """Convierte un texto completo a mayúsculas carácter por carácter con un ciclo while."""
+# Definición de función: aMayusculas
+def aMayusculas(texto):
+    """Convierte un texto completo a mayúsculas carácter por carácter."""
     resultado = ""
     i = 0
     longitud = len(texto)
     while i < longitud:
-        resultado = resultado + a_mayuscula_caracter(texto[i])
+        resultado = resultado + aMayusculaCaracter(texto[i])
         i = i + 1
     return resultado
 
 
-def a_minusculas(texto):
-    """Convierte un texto completo a minúsculas carácter por carácter con un ciclo while."""
+# Definición de función: aMinusculas
+def aMinusculas(texto):
+    """Convierte un texto completo a minúsculas carácter por carácter."""
     resultado = ""
     i = 0
     longitud = len(texto)
     while i < longitud:
-        resultado = resultado + a_minuscula_caracter(texto[i])
+        resultado = resultado + aMinusculaCaracter(texto[i])
         i = i + 1
     return resultado
 
 
-def obtener_subcadena(texto, inicio, fin):
-    """
-    Extrae una subcadena desde la posición 'inicio' hasta 'fin' (exclusivo)
-    recorriendo carácter por carácter con un ciclo while.
-    """
+# Definición de función: obtenerSubcadena
+def obtenerSubcadena(texto, inicio, fin):
+    """Extrae una subcadena desde la posición inicio hasta fin exclusiva."""
     resultado = ""
     i = inicio
     longitud = len(texto)
@@ -87,21 +88,19 @@ def obtener_subcadena(texto, inicio, fin):
     return resultado
 
 
-def limpiar_espacios_extremos(texto):
-    """
-    Remueve espacios en blanco y saltos de línea al inicio y final del texto
-    recorriendo carácter por carácter con un ciclo while.
-    """
+# Definición de función: limpiarEspaciosExtremos
+def limpiarEspaciosExtremos(texto):
+    """Remueve espacios en blanco y saltos de línea al inicio y final del texto."""
     longitud = len(texto)
     if longitud == 0:
         return ""
 
     inicio = 0
-    while inicio < longitud and es_caracter_blanco(texto[inicio]):
+    while inicio < longitud and esCaracterBlanco(texto[inicio]):
         inicio = inicio + 1
 
     fin = longitud - 1
-    while fin >= inicio and es_caracter_blanco(texto[fin]):
+    while fin >= inicio and esCaracterBlanco(texto[fin]):
         fin = fin - 1
 
     resultado = ""
@@ -113,10 +112,9 @@ def limpiar_espacios_extremos(texto):
     return resultado
 
 
-def quitar_tildes_caracter(caracter):
-    """
-    Reemplaza vocales acentuadas, ñ y ç por su equivalente simple conservando la caja (mayúscula/minúscula).
-    """
+# Definición de función: quitarTildesCaracter
+def quitarTildesCaracter(caracter):
+    """Reemplaza vocales acentuadas, ñ y ç por su equivalente simple conservando mayúscula/minúscula."""
     if caracter == "Á" or caracter == "À" or caracter == "Â" or caracter == "Ã" or caracter == "Ä" or caracter == "Å":
         return "A"
     if caracter == "á" or caracter == "à" or caracter == "â" or caracter == "ã" or caracter == "ä" or caracter == "å":
@@ -155,20 +153,21 @@ def quitar_tildes_caracter(caracter):
     return caracter
 
 
-
-def quitar_tildes(texto):
+# Definición de función: quitarTildes
+def quitarTildes(texto):
     """Reemplaza caracteres especiales y acentuados por sus equivalentes simples."""
     resultado = ""
     i = 0
     longitud = len(texto)
     while i < longitud:
-        resultado = resultado + quitar_tildes_caracter(texto[i])
+        resultado = resultado + quitarTildesCaracter(texto[i])
         i = i + 1
     return resultado
 
 
-def quitar_caracteres_especiales(texto):
-    """Elimina por completo comillas simples ('), guiones (-) y acentos graves (`)."""
+# Definición de función: quitarCaracteresEspeciales
+def quitarCaracteresEspeciales(texto):
+    """Elimina comillas simples, guiones y acentos graves."""
     resultado = ""
     i = 0
     longitud = len(texto)
@@ -180,30 +179,32 @@ def quitar_caracteres_especiales(texto):
     return resultado
 
 
-def quitar_parentesis(texto):
-    """Elimina paréntesis '(' ')' y todo su contenido interno carácter por carácter."""
+# Definición de función: quitarParentesis
+def quitarParentesis(texto):
+    """Elimina paréntesis y todo su contenido interno carácter por carácter."""
     resultado = ""
     i = 0
     longitud = len(texto)
-    nivel_parentesis = 0
+    nivelParentesis = 0
 
     while i < longitud:
         caracter = texto[i]
         if caracter == "(":
-            nivel_parentesis = nivel_parentesis + 1
+            nivelParentesis = nivelParentesis + 1
         elif caracter == ")":
-            if nivel_parentesis > 0:
-                nivel_parentesis = nivel_parentesis - 1
+            if nivelParentesis > 0:
+                nivelParentesis = nivelParentesis - 1
         else:
-            if nivel_parentesis == 0:
+            if nivelParentesis == 0:
                 resultado = resultado + caracter
         i = i + 1
 
     return resultado
 
 
-def guiones_bajos_a_espacios(texto):
-    """Convierte cada guion bajo '_' en un espacio en blanco."""
+# Definición de función: guionesBajosAEspacios
+def guionesBajosAEspacios(texto):
+    """Convierte cada guion bajo en un espacio en blanco."""
     resultado = ""
     i = 0
     longitud = len(texto)
@@ -217,26 +218,24 @@ def guiones_bajos_a_espacios(texto):
     return resultado
 
 
-def capitalizar_palabras(texto):
-    """
-    Capitaliza la primera letra de cada palabra en mayúscula
-    y deja las demás en minúscula usando a_minusculas y a_mayuscula_caracter.
-    """
-    texto_min = a_minusculas(texto)
+# Definición de función: capitalizarPalabras
+def capitalizarPalabras(texto):
+    """Capitaliza la primera letra de cada palabra y deja el resto en minúscula."""
+    textoMin = aMinusculas(texto)
     resultado = ""
     i = 0
-    longitud = len(texto_min)
-    nueva_palabra = True
+    longitud = len(textoMin)
+    nuevaPalabra = True
 
     while i < longitud:
-        caracter = texto_min[i]
-        if es_caracter_blanco(caracter):
+        caracter = textoMin[i]
+        if esCaracterBlanco(caracter):
             resultado = resultado + caracter
-            nueva_palabra = True
+            nuevaPalabra = True
         else:
-            if nueva_palabra:
-                resultado = resultado + a_mayuscula_caracter(caracter)
-                nueva_palabra = False
+            if nuevaPalabra:
+                resultado = resultado + aMayusculaCaracter(caracter)
+                nuevaPalabra = False
             else:
                 resultado = resultado + caracter
         i = i + 1
@@ -244,163 +243,155 @@ def capitalizar_palabras(texto):
     return resultado
 
 
-def colapsar_espacios_multiples(texto):
-    """Elimina espacios extremos y reduce múltiples espacios seguidos a un único espacio."""
-    texto_limpio = limpiar_espacios_extremos(texto)
+# Definición de función: colapsarEspaciosMultiples
+def colapsarEspaciosMultiples(texto):
+    """Elimina espacios extremos y reduce múltiples espacios seguidos a uno solo."""
+    textoLimpio = limpiarEspaciosExtremos(texto)
     resultado = ""
     i = 0
-    longitud = len(texto_limpio)
-    en_espacio = False
+    longitud = len(textoLimpio)
+    enEspacio = False
 
     while i < longitud:
-        caracter = texto_limpio[i]
-        if es_caracter_blanco(caracter):
-            if not en_espacio:
+        caracter = textoLimpio[i]
+        if esCaracterBlanco(caracter):
+            if not enEspacio:
                 resultado = resultado + " "
-                en_espacio = True
+                enEspacio = True
         else:
             resultado = resultado + caracter
-            en_espacio = False
+            enEspacio = False
         i = i + 1
 
     return resultado
 
 
-def normalizar_nombre(nombre):
-    """
-    Aplica las 8 reglas de normalización a un nombre de país en orden:
-    1. Convertir a mayúsculas.
-    2. Eliminar espacios al inicio y al final.
-    3. Reemplazar caracteres especiales (tildes/acentos/ñ/ç).
-    4. Eliminar por completo: ' - `
-    5. Eliminar paréntesis y todo su contenido.
-    6. Convertir '_' a espacio.
-    7. Capitalizar palabras (Primera mayúscula, resto minúscula).
-    8. Limpiar espacios sobrantes (extremos y dobles).
-    """
-    p1 = a_mayusculas(nombre)
-    p2 = limpiar_espacios_extremos(p1)
-    p3 = quitar_tildes(p2)
-    p4 = quitar_caracteres_especiales(p3)
-    p5 = quitar_parentesis(p4)
-    p6 = guiones_bajos_a_espacios(p5)
-    p7 = capitalizar_palabras(p6)
-    p8 = colapsar_espacios_multiples(p7)
+# Definición de función: normalizarNombre
+def normalizarNombre(nombre):
+    """Aplica las 8 reglas de normalización a un nombre de país."""
+    p1 = aMayusculas(nombre)
+    p2 = limpiarEspaciosExtremos(p1)
+    p3 = quitarTildes(p2)
+    p4 = quitarCaracteresEspeciales(p3)
+    p5 = quitarParentesis(p4)
+    p6 = guionesBajosAEspacios(p5)
+    p7 = capitalizarPalabras(p6)
+    p8 = colapsarEspaciosMultiples(p7)
     return p8
 
 
-def es_letra_valida(caracter):
-    """Verifica si un único carácter es una letra alfabética (incluyendo tildes)."""
+# Definición de función: esLetraValida
+def esLetraValida(caracter):
+    """Verifica si un único carácter es una letra alfabética."""
     if len(caracter) != 1:
         return False
-    if buscar_indice_caracter(caracter, MINUSCULAS) != -1:
+    if buscarIndiceCaracter(caracter, MINUSCULAS) != -1:
         return True
-    if buscar_indice_caracter(caracter, MAYUSCULAS) != -1:
+    if buscarIndiceCaracter(caracter, MAYUSCULAS) != -1:
         return True
     return False
 
 
-def contiene_letra_normalizada(texto, letra_buscar):
-    """
-    Verifica si 'texto' contiene 'letra_buscar' (ambas normalizadas en mayúscula y sin tildes).
-    Retorna True o False.
-    """
-    letra_norm = quitar_tildes(a_mayusculas(letra_buscar))
-    texto_norm = quitar_tildes(a_mayusculas(texto))
+# Definición de función: contieneLetraNormalizada
+def contieneLetraNormalizada(texto, letraBuscar):
+    """Verifica si texto contiene letraBuscar en mayúsculas y sin tildes."""
+    letraNorm = quitarTildes(aMayusculas(letraBuscar))
+    textoNorm = quitarTildes(aMayusculas(texto))
 
     i = 0
-    longitud = len(texto_norm)
+    longitud = len(textoNorm)
     while i < longitud:
-        if texto_norm[i] == letra_norm:
+        if textoNorm[i] == letraNorm:
             return True
         i = i + 1
     return False
 
 
-def separar_cadena(cadena, delimitador):
+# Definición de función: separarCadena
+def separarCadena(cadena, delimitador):
     """Separa una cadena según un delimitador carácter por carácter."""
     partes = []
-    parte_actual = ""
+    parteActual = ""
     posicion = 0
     longitud = len(cadena)
 
     while posicion < longitud:
         caracter = cadena[posicion]
         if caracter == delimitador:
-            partes.append(parte_actual)
-            parte_actual = ""
+            partes.append(parteActual)
+            parteActual = ""
         else:
-            parte_actual = parte_actual + caracter
+            parteActual = parteActual + caracter
         posicion = posicion + 1
 
-    partes.append(parte_actual)
+    partes.append(parteActual)
     return partes
 
 
-def convertir_a_entero(texto):
+# Definición de función: convertirAEntero
+def convertirAEntero(texto):
     """Limpia el texto y lo convierte a entero."""
-    texto_limpio = limpiar_espacios_extremos(texto)
-    if len(texto_limpio) == 0:
+    textoLimpio = limpiarEspaciosExtremos(texto)
+    if len(textoLimpio) == 0:
         return 0
-    return int(texto_limpio)
+    return int(textoLimpio)
 
 
-def convertir_a_flotante(texto):
+# Definición de función: convertirAFlotante
+def convertirAFlotante(texto):
     """Limpia el texto y lo convierte a flotante."""
-    texto_limpio = limpiar_espacios_extremos(texto)
-    if len(texto_limpio) == 0:
+    textoLimpio = limpiarEspaciosExtremos(texto)
+    if len(textoLimpio) == 0:
         return 0.0
-    return float(texto_limpio)
+    return float(textoLimpio)
 
 
-def es_numero_entero_positivo(cadena):
-    """
-    Verifica si una cadena representa un número entero positivo (> 0)
-    recorriendo carácter por carácter con un ciclo while.
-    """
-    cadena_limpia = limpiar_espacios_extremos(cadena)
-    longitud = len(cadena_limpia)
+# Definición de función: esNumeroEnteroPositivo
+def esNumeroEnteroPositivo(cadena):
+    """Verifica si una cadena representa un número entero positivo mayor a 0."""
+    cadenaLimpia = limpiarEspaciosExtremos(cadena)
+    longitud = len(cadenaLimpia)
     if longitud == 0:
         return False
 
     i = 0
     while i < longitud:
-        caracter = cadena_limpia[i]
-        if buscar_indice_caracter(caracter, "0123456789") == -1:
+        caracter = cadenaLimpia[i]
+        if buscarIndiceCaracter(caracter, "0123456789") == -1:
             return False
         i = i + 1
 
-    valor = convertir_a_entero(cadena_limpia)
+    valor = convertirAEntero(cadenaLimpia)
     if valor <= 0:
         return False
 
     return True
 
 
-def contar_letras_sin_espacios(texto):
-    """Cuenta la cantidad de caracteres en un texto excluyendo los espacios en blanco."""
+# Definición de función: contarLetrasSinEspacios
+def contarLetrasSinEspacios(texto):
+    """Cuenta la cantidad de caracteres excluyendo espacios en blanco."""
     contador = 0
     i = 0
     longitud = len(texto)
     while i < longitud:
-        if not es_caracter_blanco(texto[i]):
+        if not esCaracterBlanco(texto[i]):
             contador = contador + 1
         i = i + 1
     return contador
 
 
-def formatear_moneda_codigo_nombre(codigo_moneda, nombre_moneda):
-    """Retorna la cadena en formato 'CODIGO - Nombre' manteniendo la capitalización original y eliminando solo tildes."""
-    nombre_norm = quitar_tildes(nombre_moneda)
-    return str(codigo_moneda) + " - " + str(nombre_norm)
+# Definición de función: formatearMonedaCodigoNombre
+def formatearMonedaCodigoNombre(codigoMoneda, nombreMoneda):
+    """Retorna la cadena en formato 'CODIGO - Nombre' eliminando solo tildes."""
+    nombreNorm = quitarTildes(nombreMoneda)
+    return str(codigoMoneda) + " - " + str(nombreNorm)
 
 
-def es_entero_valido(texto):
-    """
-    Verifica si una cadena representa un entero válido (opcionalmente con signo + o -)
-    recorriendo carácter por carácter con un ciclo while.
-    """
-    cadena = limpiar_espacios_extremos(texto)
+# Definición de función: esEnteroValido
+def esEnteroValido(texto):
+    """Verifica si una cadena representa un entero válido (opcionalmente con signo)."""
+    cadena = limpiarEspaciosExtremos(texto)
     longitud = len(cadena)
     if longitud == 0:
         return False
@@ -412,19 +403,17 @@ def es_entero_valido(texto):
         i = 1
 
     while i < longitud:
-        if buscar_indice_caracter(cadena[i], "0123456789") == -1:
+        if buscarIndiceCaracter(cadena[i], "0123456789") == -1:
             return False
         i = i + 1
 
     return True
 
 
-def es_flotante_valido(texto):
-    """
-    Verifica si una cadena representa un flotante válido
-    recorriendo carácter por carácter con un ciclo while (dígitos y máximo un punto).
-    """
-    cadena = limpiar_espacios_extremos(texto)
+# Definición de función: esFlotanteValido
+def esFlotanteValido(texto):
+    """Verifica si una cadena representa un flotante válido con máximo un punto."""
+    cadena = limpiarEspaciosExtremos(texto)
     longitud = len(cadena)
     if longitud == 0:
         return False
@@ -444,7 +433,7 @@ def es_flotante_valido(texto):
             puntos = puntos + 1
             if puntos > 1:
                 return False
-        elif buscar_indice_caracter(caracter, "0123456789") != -1:
+        elif buscarIndiceCaracter(caracter, "0123456789") != -1:
             digitos = digitos + 1
         else:
             return False
@@ -454,6 +443,3 @@ def es_flotante_valido(texto):
         return False
 
     return True
-
-
-

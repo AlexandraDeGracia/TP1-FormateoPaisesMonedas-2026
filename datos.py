@@ -7,102 +7,92 @@ utilizando listas, tuplas y validaciones carácter por carácter.
 import formateo_strings as fs
 
 
-def leer_csv_paises(ruta_archivo):
-    """
-    Lee el archivo CSV de países especificado.
-    Valida que cada línea contenga al menos 8 columnas y datos numéricos válidos (población > 0, área > 0).
-    Omite líneas inválidas imprimiendo un mensaje con el número de línea.
-    Retorna una lista de tuplas o None si el archivo no existe o no contiene datos válidos.
-    """
+# Definición de función: leerCsvPaises
+def leerCsvPaises(rutaArchivo):
+    """Lee el archivo CSV de países especificado. Omite líneas inválidas y retorna lista de tuplas."""
     try:
-        archivo = open(ruta_archivo, "r", encoding="utf-8")
+        archivo = open(rutaArchivo, "r", encoding="utf-8")
     except FileNotFoundError:
-        print("\n Error: El archivo '" + ruta_archivo + "' no existe.")
+        print("\n Error: El archivo '" + rutaArchivo + "' no existe.")
         print("Por favor, verifique la ruta del archivo e intente nuevamente.")
         return None
 
     lineas = archivo.readlines()
     archivo.close()
 
-    cantidad_lineas = len(lineas)
-    if cantidad_lineas <= 1:
+    cantidadLineas = len(lineas)
+    if cantidadLineas <= 1:
         print("\n El archivo CSV está vacío o solo contiene encabezados.")
         return None
 
-    lista_paises = []
-    lineas_omitidas = 0
-    indice = 1  # Iniciar en 1 para saltar la línea de encabezado (línea 0)
+    listaPaises = []
+    lineasOmitidas = 0
+    indice = 1
 
-    while indice < cantidad_lineas:
-        linea_raw = lineas[indice]
-        linea_num = indice + 1
-        linea_limpia = fs.limpiar_espacios_extremos(linea_raw)
+    while indice < cantidadLineas:
+        lineaRaw = lineas[indice]
+        lineaNum = indice + 1
+        lineaLimpia = fs.limpiarEspaciosExtremos(lineaRaw)
 
-        if len(linea_limpia) > 0:
-            columnas = fs.separar_cadena(linea_limpia, ";")
+        if len(lineaLimpia) > 0:
+            columnas = fs.separarCadena(lineaLimpia, ";")
 
             if len(columnas) < 8:
-                print("Advertencia: Línea " + str(linea_num) + " ignorada por tener menos de 8 columnas.")
-                lineas_omitidas = lineas_omitidas + 1
+                print("Advertencia: Línea " + str(lineaNum) + " ignorada por tener menos de 8 columnas.")
+                lineasOmitidas = lineasOmitidas + 1
             else:
-                pob_str = columnas[3]
-                area_str = columnas[4]
-                tasa_str = columnas[7]
+                pobStr = columnas[3]
+                areaStr = columnas[4]
+                tasaStr = columnas[7]
 
-                if not fs.es_entero_valido(pob_str) or not fs.es_entero_valido(area_str) or not fs.es_flotante_valido(tasa_str):
-                    print("Advertencia: Línea " + str(linea_num) + " ignorada por contener datos numéricos inválidos.")
-                    lineas_omitidas = lineas_omitidas + 1
+                if not fs.esEnteroValido(pobStr) or not fs.esEnteroValido(areaStr) or not fs.esFlotanteValido(tasaStr):
+                    print("Advertencia: Línea " + str(lineaNum) + " ignorada por contener datos numéricos inválidos.")
+                    lineasOmitidas = lineasOmitidas + 1
                 else:
-                    poblacion = fs.convertir_a_entero(pob_str)
-                    area = fs.convertir_a_entero(area_str)
-                    tasa_usd = fs.convertir_a_flotante(tasa_str)
+                    poblacion = fs.convertirAEntero(pobStr)
+                    area = fs.convertirAEntero(areaStr)
+                    tasaUsd = fs.convertirAFlotante(tasaStr)
 
                     if poblacion <= 0 or area <= 0:
-                        print("Advertencia: Línea " + str(linea_num) + " ignorada por tener población o área menor o igual a 0.")
-                        lineas_omitidas = lineas_omitidas + 1
+                        print("Advertencia: Línea " + str(lineaNum) + " ignorada por tener población o área menor o igual a 0.")
+                        lineasOmitidas = lineasOmitidas + 1
                     else:
-                        nombre = fs.limpiar_espacios_extremos(columnas[0])
-                        capital = fs.limpiar_espacios_extremos(columnas[1])
-                        codigo = fs.limpiar_espacios_extremos(columnas[2])
-                        moneda = fs.limpiar_espacios_extremos(columnas[5])
-                        codigo_moneda = fs.limpiar_espacios_extremos(columnas[6])
+                        nombre = fs.limpiarEspaciosExtremos(columnas[0])
+                        capital = fs.limpiarEspaciosExtremos(columnas[1])
+                        codigo = fs.limpiarEspaciosExtremos(columnas[2])
+                        moneda = fs.limpiarEspaciosExtremos(columnas[5])
+                        codigoMoneda = fs.limpiarEspaciosExtremos(columnas[6])
 
-                        pais_tuple = (nombre, capital, codigo, poblacion, area, moneda, codigo_moneda, tasa_usd)
-                        lista_paises.append(pais_tuple)
+                        paisTuple = (nombre, capital, codigo, poblacion, area, moneda, codigoMoneda, tasaUsd)
+                        listaPaises.append(paisTuple)
 
         indice = indice + 1
 
-    if lineas_omitidas > 0:
-        print("Se omitieron " + str(lineas_omitidas) + " líneas por contener datos inválidos.")
+    if lineasOmitidas > 0:
+        print("Se omitieron " + str(lineasOmitidas) + " líneas por contener datos inválidos.")
 
-    if len(lista_paises) == 0:
+    if len(listaPaises) == 0:
         print("Error: No se encontró ningún país válido en el archivo.")
         return None
 
-    return lista_paises
+    return listaPaises
 
 
-def guardar_datos_toon(lista_paises, ruta_salida_toon):
-    """
-    Guarda los datos de los países en un archivo con formato TOON.
-    Estructura TOON:
-    - 'paises:' en nivel 0 (0 espacios)
-    - '-' solo en su línea en nivel 1 (4 espacios)
-    - Todos los campos debajo en nivel 2 (8 espacios)
-    - Textos entre comillas dobles, números enteros y flotantes sin comillas.
-    """
+# Definición de función: guardarDatosToon
+def guardarDatosToon(listaPaises, rutaSalidaToon):
+    """Guarda los datos de los países en un archivo con formato TOON."""
     try:
-        archivo = open(ruta_salida_toon, "w", encoding="utf-8")
+        archivo = open(rutaSalidaToon, "w", encoding="utf-8")
     except OSError:
-        print("Error: No se pudo crear el archivo TOON en '" + ruta_salida_toon + "'.")
+        print("Error: No se pudo crear el archivo TOON en '" + rutaSalidaToon + "'.")
         return False
 
     archivo.write("paises:\n")
 
-    cantidad = len(lista_paises)
+    cantidad = len(listaPaises)
     i = 0
     while i < cantidad:
-        p = lista_paises[i]
+        p = listaPaises[i]
         archivo.write("    -\n")
         archivo.write('        nombre: "' + str(p[0]) + '"\n')
         archivo.write('        capital: "' + str(p[1]) + '"\n')
@@ -118,47 +108,43 @@ def guardar_datos_toon(lista_paises, ruta_salida_toon):
     return True
 
 
-def remover_comillas(texto):
+# Definición de función: removerComillas
+def removerComillas(texto):
     """Remueve comillas dobles al inicio y final de un texto usando un ciclo while."""
-    texto_limpio = fs.limpiar_espacios_extremos(texto)
-    longitud = len(texto_limpio)
-    if longitud >= 2 and texto_limpio[0] == '"' and texto_limpio[longitud - 1] == '"':
+    textoLimpio = fs.limpiarEspaciosExtremos(texto)
+    longitud = len(textoLimpio)
+    if longitud >= 2 and textoLimpio[0] == '"' and textoLimpio[longitud - 1] == '"':
         resultado = ""
         i = 1
         while i < longitud - 1:
-            resultado = resultado + texto_limpio[i]
+            resultado = resultado + textoLimpio[i]
             i = i + 1
         return resultado
-    return texto_limpio
+    return textoLimpio
 
 
-def obtener_valor_clave_toon(linea_limpia):
-    """
-    Dada una línea del TOON tipo 'nombre: "Argentina"',
-    separa por ':' y retorna (clave, valor_limpio).
-    """
-    partes = fs.separar_cadena(linea_limpia, ":")
+# Definición de función: obtenerValorClaveToon
+def obtenerValorClaveToon(lineaLimpia):
+    """Dada una línea del TOON tipo 'nombre: "Argentina"', retorna (clave, valorLimpio)."""
+    partes = fs.separarCadena(lineaLimpia, ":")
     if len(partes) >= 2:
-        clave = fs.limpiar_espacios_extremos(partes[0])
-        valor_raw = partes[1]
+        clave = fs.limpiarEspaciosExtremos(partes[0])
+        valorRaw = partes[1]
         k = 2
         while k < len(partes):
-            valor_raw = valor_raw + ":" + partes[k]
+            valorRaw = valorRaw + ":" + partes[k]
             k = k + 1
 
-        valor_limpio = remover_comillas(fs.limpiar_espacios_extremos(valor_raw))
-        return clave, valor_limpio
+        valorLimpio = removerComillas(fs.limpiarEspaciosExtremos(valorRaw))
+        return clave, valorLimpio
     return "", ""
 
 
-def leer_datos_toon(ruta_toon):
-    """
-    Lee los países desde el archivo paises_datos.toon.
-    Parsea y valida las líneas de forma manual sin diccionarios.
-    Retorna una lista de tuplas con los datos de cada país o None si el archivo no existe o no tiene países válidos.
-    """
+# Definición de función: leerDatosToon
+def leerDatosToon(rutaToon):
+    """Lee los países desde el archivo paises_datos.toon sin diccionarios."""
     try:
-        archivo = open(ruta_toon, "r", encoding="utf-8")
+        archivo = open(rutaToon, "r", encoding="utf-8")
     except FileNotFoundError:
         print("\n Primero ejecute la Opción 1")
         return None
@@ -166,8 +152,8 @@ def leer_datos_toon(ruta_toon):
     lineas = archivo.readlines()
     archivo.close()
 
-    lista_paises = []
-    cantidad_lineas = len(lineas)
+    listaPaises = []
+    cantidadLineas = len(lineas)
     i = 0
 
     nombre = ""
@@ -176,65 +162,65 @@ def leer_datos_toon(ruta_toon):
     poblacion = 0
     area = 0
     moneda = ""
-    codigo_moneda = ""
-    tasa_usd = 0.0
-    tiene_datos = False
+    codigoMoneda = ""
+    tasaUsd = 0.0
+    tieneDatos = False
 
-    while i < cantidad_lineas:
-        linea_raw = lineas[i]
-        linea_limpia = fs.limpiar_espacios_extremos(linea_raw)
+    while i < cantidadLineas:
+        lineaRaw = lineas[i]
+        lineaLimpia = fs.limpiarEspaciosExtremos(lineaRaw)
 
-        if linea_limpia == "-":
-            if tiene_datos:
+        if lineaLimpia == "-":
+            if tieneDatos:
                 if len(nombre) > 0 and poblacion > 0 and area > 0:
-                    pais_tuple = (nombre, capital, codigo, poblacion, area, moneda, codigo_moneda, tasa_usd)
-                    lista_paises.append(pais_tuple)
+                    paisTuple = (nombre, capital, codigo, poblacion, area, moneda, codigoMoneda, tasaUsd)
+                    listaPaises.append(paisTuple)
                 nombre = ""
                 capital = ""
                 codigo = ""
                 poblacion = 0
                 area = 0
                 moneda = ""
-                codigo_moneda = ""
-                tasa_usd = 0.0
-                tiene_datos = False
+                codigoMoneda = ""
+                tasaUsd = 0.0
+                tieneDatos = False
         else:
-            clave, valor = obtener_valor_clave_toon(linea_limpia)
+            clave, valor = obtenerValorClaveToon(lineaLimpia)
             if clave == "nombre":
                 nombre = valor
-                tiene_datos = True
+                tieneDatos = True
             elif clave == "capital":
                 capital = valor
             elif clave == "codigo":
                 codigo = valor
             elif clave == "poblacion":
-                if fs.es_entero_valido(valor):
-                    poblacion = fs.convertir_a_entero(valor)
+                if fs.esEnteroValido(valor):
+                    poblacion = fs.convertirAEntero(valor)
                 else:
                     poblacion = 0
             elif clave == "area":
-                if fs.es_entero_valido(valor):
-                    area = fs.convertir_a_entero(valor)
+                if fs.esEnteroValido(valor):
+                    area = fs.convertirAEntero(valor)
                 else:
                     area = 0
             elif clave == "moneda":
                 moneda = valor
             elif clave == "codigo_moneda":
-                codigo_moneda = valor
+                codigoMoneda = valor
             elif clave == "tasa_usd":
-                if fs.es_flotante_valido(valor):
-                    tasa_usd = fs.convertir_a_flotante(valor)
+                if fs.esFlotanteValido(valor):
+                    tasaUsd = fs.convertirAFlotante(valor)
                 else:
-                    tasa_usd = 0.0
+                    tasaUsd = 0.0
 
         i = i + 1
 
-    if tiene_datos and len(nombre) > 0 and poblacion > 0 and area > 0:
-        pais_tuple = (nombre, capital, codigo, poblacion, area, moneda, codigo_moneda, tasa_usd)
-        lista_paises.append(pais_tuple)
+    if tieneDatos and len(nombre) > 0 and poblacion > 0 and area > 0:
+        paisTuple = (nombre, capital, codigo, poblacion, area, moneda, codigoMoneda, tasaUsd)
+        listaPaises.append(paisTuple)
 
-    if len(lista_paises) == 0:
+    if len(listaPaises) == 0:
         print("\n No se encontraron datos válidos de países.")
         return None
 
-    return lista_paises
+    return listaPaises

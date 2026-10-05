@@ -7,11 +7,9 @@ manualmente utilizando únicamente listas, tuplas y ciclos while.
 import formateo_strings as fs
 
 
-def redondear_manual(numero, decimales):
-    """
-    Redondea un número a una cantidad especificada de decimales mediante
-    operaciones aritméticas simples y ciclos while, sin redondeo nativo.
-    """
+# Definición de función: redondearManual
+def redondearManual(numero, decimales):
+    """Redondea un número a una cantidad especificada de decimales mediante operaciones aritméticas simples."""
     if decimales < 0:
         return numero
 
@@ -30,511 +28,486 @@ def redondear_manual(numero, decimales):
     return entero / factor
 
 
-def copiar_lista(lista_original):
+# Definición de función: copiarLista
+def copiarLista(listaOriginal):
     """Crea y retorna una copia de una lista usando un ciclo while."""
     copia = []
     i = 0
-    cantidad = len(lista_original)
+    cantidad = len(listaOriginal)
     while i < cantidad:
-        copia.append(lista_original[i])
+        copia.append(listaOriginal[i])
         i = i + 1
     return copia
 
 
-def obtener_primeros_elementos(lista, cantidad):
-    """
-    Retorna los primeros 'cantidad' elementos de una lista
-    recorriendo con un ciclo while.
-    """
+# Definición de función: obtenerPrimerosElementos
+def obtenerPrimerosElementos(lista, cantidad):
+    """Retorna los primeros N elementos de una lista usando un ciclo while."""
     resultado = []
     i = 0
     total = len(lista)
-    while i < total and i < cantidad:
+    while i < cantidad and i < total:
         resultado.append(lista[i])
         i = i + 1
     return resultado
 
 
-def ordenar_paises_por_poblacion_descendente(lista_paises):
-    """
-    Ordena una lista de países por población (índice 3) de mayor a menor
-    utilizando el algoritmo de ordenamiento por burbuja con ciclos while.
-    """
-    paises = copiar_lista(lista_paises)
-    n = len(paises)
+# Definición de función: normalizarDatosPaises
+def normalizarDatosPaises(listaPaises):
+    """Normaliza los nombres, capitales y monedas de una lista de países."""
+    listaNormalizada = []
     i = 0
-
-    while i < n:
-        j = 0
-        while j < n - i - 1:
-            poblacion_actual = paises[j][3]
-            poblacion_siguiente = paises[j + 1][3]
-
-            if poblacion_actual < poblacion_siguiente:
-                aux = paises[j]
-                paises[j] = paises[j + 1]
-                paises[j + 1] = aux
-
-            j = j + 1
-        i = i + 1
-
-    return paises
-
-
-def ordenar_paises_por_area_ascendente(lista_paises):
-    """
-    Ordena una lista de países por área (índice 4) de menor a mayor
-    utilizando el algoritmo de ordenamiento por burbuja con ciclos while.
-    """
-    paises = copiar_lista(lista_paises)
-    n = len(paises)
-    i = 0
-
-    while i < n:
-        j = 0
-        while j < n - i - 1:
-            area_actual = paises[j][4]
-            area_siguiente = paises[j + 1][4]
-
-            if area_actual > area_siguiente:
-                aux = paises[j]
-                paises[j] = paises[j + 1]
-                paises[j + 1] = aux
-
-            j = j + 1
-        i = i + 1
-
-    return paises
-
-
-def existe_moneda_en_lista(codigo_moneda, lista_monedas):
-    """Verifica si un código de moneda ya existe en la lista de monedas procesadas."""
-    i = 0
-    total = len(lista_monedas)
-    while i < total:
-        if lista_monedas[i][0] == codigo_moneda:
-            return True
-        i = i + 1
-    return False
-
-
-def extraer_monedas_unicas(lista_paises):
-    """
-    Extrae las monedas únicas de la lista de países.
-    Retorna una lista de tuplas: (codigo_moneda, nombre_moneda, tasa_usd)
-    """
-    monedas_unicas = []
-    i = 0
-    total_paises = len(lista_paises)
-
-    while i < total_paises:
-        p = lista_paises[i]
-        moneda_nombre = p[5]
-        codigo_moneda = p[6]
-        tasa_usd = p[7]
-
-        if not existe_moneda_en_lista(codigo_moneda, monedas_unicas):
-            monedas_unicas.append((codigo_moneda, moneda_nombre, tasa_usd))
-
-        i = i + 1
-
-    return monedas_unicas
-
-
-def ordenar_monedas_por_tasa(lista_monedas, descendente=True):
-    """
-    Ordena la lista de monedas según su tasa de cambio frente al USD (índice 2).
-
-    CRITERIO DE TASA DE CAMBIO FRENTE AL USD:
-    - La tasa indica cuántas unidades de esa moneda equivalen a 1 USD.
-    - Tasa BAJA (ejemplo: CHF 0.85, EUR 0.91): La moneda vale MÁS frente al dólar (mayor valor).
-    - Tasa ALTA (ejemplo: COP 4150, KRW 1335): La moneda vale MENOS frente al dólar (menor valor).
-    """
-    monedas = copiar_lista(lista_monedas)
-    n = len(monedas)
-    i = 0
-
-    while i < n:
-        j = 0
-        while j < n - i - 1:
-            tasa_actual = monedas[j][2]
-            tasa_siguiente = monedas[j + 1][2]
-
-            intercambiar = False
-            if descendente:
-                if tasa_actual < tasa_siguiente:
-                    intercambiar = True
-            else:
-                if tasa_actual > tasa_siguiente:
-                    intercambiar = True
-
-            if intercambiar:
-                aux = monedas[j]
-                monedas[j] = monedas[j + 1]
-                monedas[j + 1] = aux
-
-            j = j + 1
-        i = i + 1
-
-    return monedas
-
-
-def calcular_longitud_promedio_nombres(lista_paises):
-    """
-    Calcula la longitud promedio de los nombres de los países como VALOR ENTERO
-    utilizando una suma acumulada con un ciclo while y división entera (//).
-    """
-    cantidad = len(lista_paises)
-    if cantidad == 0:
-        return 0
-
-    suma_longitudes = 0
-    i = 0
-    while i < cantidad:
-        nombre = lista_paises[i][0]
-        suma_longitudes = suma_longitudes + len(nombre)
-        i = i + 1
-
-    return suma_longitudes // cantidad
-
-
-def obtener_pais_nombre_mas_largo(lista_paises):
-    """
-    Encuentra el país con el nombre más largo.
-    Retorna la tupla (nombre, longitud). Si hay empate, retorna el primero encontrado.
-    """
-    cantidad = len(lista_paises)
-    if cantidad == 0:
-        return "", 0
-
-    nombre_largo = lista_paises[0][0]
-    max_len = len(nombre_largo)
-
-    i = 1
-    while i < cantidad:
-        nombre_actual = lista_paises[i][0]
-        len_actual = len(nombre_actual)
-        if len_actual > max_len:
-            nombre_largo = nombre_actual
-            max_len = len_actual
-        i = i + 1
-
-    return nombre_largo, max_len
-
-
-def obtener_pais_nombre_mas_corto(lista_paises):
-    """
-    Encuentra el país con el nombre más corto.
-    Retorna la tupla (nombre, longitud). Si hay empate, retorna el primero encontrado.
-    """
-    cantidad = len(lista_paises)
-    if cantidad == 0:
-        return "", 0
-
-    nombre_corto = lista_paises[0][0]
-    min_len = len(nombre_corto)
-
-    i = 1
-    while i < cantidad:
-        nombre_actual = lista_paises[i][0]
-        len_actual = len(nombre_actual)
-        if len_actual < min_len:
-            nombre_corto = nombre_actual
-            min_len = len_actual
-        i = i + 1
-
-    return nombre_corto, min_len
-
-
-def contar_paises_con_letra(lista_paises, letra):
-    """
-    Cuenta cuántos países contienen la letra especificada (normalizada e insensible a mayúsculas/tildes).
-    Cada país se cuenta a lo sumo UNA vez.
-    """
-    contador = 0
-    i = 0
-    cantidad = len(lista_paises)
+    cantidad = len(listaPaises)
 
     while i < cantidad:
-        nombre = lista_paises[i][0]
-        if fs.contiene_letra_normalizada(nombre, letra):
-            contador = contador + 1
+        p = listaPaises[i]
+        nombreNorm = fs.normalizarNombre(p[0])
+        capitalNorm = fs.normalizarNombre(p[1])
+        monedaSinTildes = fs.quitarTildes(p[5])
+
+        paisTuple = (nombreNorm, capitalNorm, p[2], p[3], p[4], monedaSinTildes, p[6], p[7])
+        listaNormalizada.append(paisTuple)
         i = i + 1
 
-    return contador
+    return listaNormalizada
 
 
-def normalizar_datos_paises(lista_paises):
-    """
-    Normaliza el nombre y capital con fs.normalizar_nombre, y la moneda quitando únicamente tildes
-    con fs.quitar_tildes (conservando la capitalización original del CSV) usando un ciclo while.
-    """
-    lista_normalizada = []
-    i = 0
-    cantidad = len(lista_paises)
-    while i < cantidad:
-        p = lista_paises[i]
-        nombre_norm = fs.normalizar_nombre(p[0])
-        capital_norm = fs.normalizar_nombre(p[1])
-        moneda_norm = fs.quitar_tildes(p[5])
-        pais_norm = (nombre_norm, capital_norm, p[2], p[3], p[4], moneda_norm, p[6], p[7])
-        lista_normalizada.append(pais_norm)
-        i = i + 1
-    return lista_normalizada
-
-
-
-def calcular_poblacion_total(lista_paises):
-    """Calcula la población total mundial sumando la población de cada país con un ciclo while."""
+# Definición de función: calcularPoblacionTotal
+def calcularPoblacionTotal(listaPaises):
+    """Suma manualmente la población de todos los países."""
     total = 0
     i = 0
-    cantidad = len(lista_paises)
+    cantidad = len(listaPaises)
     while i < cantidad:
-        total = total + lista_paises[i][3]
+        p = listaPaises[i]
+        total = total + p[3]
         i = i + 1
     return total
 
 
-def calcular_poblacion_promedio(lista_paises):
-    """Calcula la población promedio por país utilizando un ciclo while."""
-    cantidad = len(lista_paises)
+# Definición de función: calcularPoblacionPromedio
+def calcularPoblacionPromedio(listaPaises):
+    """Calcula la población promedio por país."""
+    cantidad = len(listaPaises)
     if cantidad == 0:
         return 0.0
-    total = calcular_poblacion_total(lista_paises)
+    total = calcularPoblacionTotal(listaPaises)
     return total / cantidad
 
 
-def calcular_mediana_poblacion(lista_paises):
-    """
-    Calcula la mediana de población mediante ordenamiento manual (burbuja).
-    Si la cantidad de países es impar, retorna el valor central.
-    Si es par, retorna el promedio de los dos valores centrales.
-    """
-    cantidad = len(lista_paises)
-    if cantidad == 0:
+# Definición de función: calcularMedianaPoblacion
+def calcularMedianaPoblacion(listaPaises):
+    """Calcula la mediana de población utilizando ordenamiento manual de burbuja."""
+    copiaPaises = copiarLista(listaPaises)
+    n = len(copiaPaises)
+    if n == 0:
         return 0.0
 
-    paises_ordenados = ordenar_paises_por_poblacion_descendente(lista_paises)
-
-    if cantidad % 2 == 1:
-        indice_central = cantidad // 2
-        return float(paises_ordenados[indice_central][3])
-    else:
-        idx1 = (cantidad // 2) - 1
-        idx2 = cantidad // 2
-        val1 = paises_ordenados[idx1][3]
-        val2 = paises_ordenados[idx2][3]
-        return (val1 + val2) / 2.0
-
-
-def clasificar_paises_por_poblacion(lista_paises):
-    """
-    Clasifica los países según su población en 4 categorías:
-    - Megaciudad: > 10,000,000
-    - Ciudad grande: 1,000,000 - 10,000,000
-    - Ciudad mediana: 100,000 - 999,999
-    - Ciudad pequeña: < 100,000
-    Retorna una tupla: (megaciudades, grandes, medianas, pequenas)
-    """
-    megaciudades = 0
-    grandes = 0
-    medianas = 0
-    pequenas = 0
-
     i = 0
-    cantidad = len(lista_paises)
-    while i < cantidad:
-        pob = lista_paises[i][3]
-        if pob > 10000000:
-            megaciudades = megaciudades + 1
-        elif pob >= 1000000:
-            grandes = grandes + 1
-        elif pob >= 100000:
-            medianas = medianas + 1
-        else:
-            pequenas = pequenas + 1
+    while i < n - 1:
+        j = 0
+        while j < n - 1 - i:
+            if copiaPaises[j][3] > copiaPaises[j + 1][3]:
+                temp = copiaPaises[j]
+                copiaPaises[j] = copiaPaises[j + 1]
+                copiaPaises[j + 1] = temp
+            j = j + 1
         i = i + 1
 
-    return megaciudades, grandes, medianas, pequenas
+    if n % 2 == 1:
+        mediana = float(copiaPaises[n // 2][3])
+    else:
+        m1 = copiaPaises[(n // 2) - 1][3]
+        m2 = copiaPaises[n // 2][3]
+        mediana = (m1 + m2) / 2.0
+
+    return mediana
 
 
-def calcular_area_total(lista_paises):
-    """Calcula el área total acumulada de todos los países con un ciclo while."""
+# Definición de función: clasificarPaisesPorPoblacion
+def clasificarPaisesPorPoblacion(listaPaises):
+    """Clasifica los países en 4 categorías según su tamaño poblacional."""
+    mega = 0
+    grande = 0
+    mediana = 0
+    pequena = 0
+
+    i = 0
+    cantidad = len(listaPaises)
+    while i < cantidad:
+        pob = listaPaises[i][3]
+        if pob > 10000000:
+            mega = mega + 1
+        elif pob >= 1000000:
+            grande = grande + 1
+        elif pob >= 100000:
+            mediana = mediana + 1
+        else:
+            pequena = pequena + 1
+        i = i + 1
+
+    return mega, grande, mediana, pequena
+
+
+# Definición de función: calcularAreaTotal
+def calcularAreaTotal(listaPaises):
+    """Suma manualmente el área geográfica total."""
     total = 0
     i = 0
-    cantidad = len(lista_paises)
+    cantidad = len(listaPaises)
     while i < cantidad:
-        total = total + lista_paises[i][4]
+        p = listaPaises[i]
+        total = total + p[4]
         i = i + 1
     return total
 
 
-def calcular_densidades_poblacionales(lista_paises):
-    """
-    Calcula la densidad poblacional (población / área) de cada país.
-    Protege contra división por cero (área = 0).
-    Retorna una lista de tuplas: (nombre, codigo, poblacion, area, densidad)
-    """
-    resultado = []
+# Definición de función: calcularDensidadesPoblacionales
+def calcularDensidadesPoblacionales(listaPaises):
+    """Calcula la densidad poblacional de cada país y retorna lista de tuplas."""
+    listaDensidades = []
     i = 0
-    cantidad = len(lista_paises)
+    cantidad = len(listaPaises)
     while i < cantidad:
-        p = lista_paises[i]
-        pob = p[3]
+        p = listaPaises[i]
+        nombre = p[0]
+        codigo = p[2]
+        poblacion = p[3]
         area = p[4]
+
         if area > 0:
-            densidad = pob / area
+            densidad = poblacion / area
         else:
             densidad = 0.0
-        resultado.append((p[0], p[2], pob, area, densidad))
+
+        item = (nombre, codigo, poblacion, area, densidad)
+        listaDensidades.append(item)
         i = i + 1
-    return resultado
+    return listaDensidades
 
 
-def ordenar_paises_por_densidad(lista_densidades, descendente=True):
-    """
-    Ordena una lista de tuplas de densidad por el valor de densidad (índice 4)
-    utilizando el algoritmo de ordenamiento por burbuja con ciclos while.
-    """
-    densidades = copiar_lista(lista_densidades)
-    n = len(densidades)
+# Definición de función: ordenarPaisesPorDensidad
+def ordenarPaisesPorDensidad(listaDensidades, descendente=True):
+    """Ordena la lista de densidades usando ordenamiento manual de burbuja."""
+    copia = copiarLista(listaDensidades)
+    n = len(copia)
+    if n <= 1:
+        return copia
+
     i = 0
-
-    while i < n:
+    while i < n - 1:
         j = 0
-        while j < n - i - 1:
-            d_actual = densidades[j][4]
-            d_siguiente = densidades[j + 1][4]
+        while j < n - 1 - i:
+            d1 = copia[j][4]
+            d2 = copia[j + 1][4]
 
             intercambiar = False
             if descendente:
-                if d_actual < d_siguiente:
+                if d1 < d2:
                     intercambiar = True
             else:
-                if d_actual > d_siguiente:
+                if d1 > d2:
                     intercambiar = True
 
             if intercambiar:
-                aux = densidades[j]
-                densidades[j] = densidades[j + 1]
-                densidades[j + 1] = aux
+                temp = copia[j]
+                copia[j] = copia[j + 1]
+                copia[j + 1] = temp
 
             j = j + 1
         i = i + 1
 
-    return densidades
+    return copia
 
 
-def calcular_tasa_promedio_monedas(lista_monedas):
-    """Calcula la tasa de cambio promedio de una lista de monedas únicas."""
-    cantidad = len(lista_monedas)
-    if cantidad == 0:
-        return 0.0
-
-    suma_tasas = 0.0
+# Definición de función: ordenarPaisesPorPoblacionDescendente
+def ordenarPaisesPorPoblacionDescendente(listaPaises):
+    """Ordena países por población de mayor a menor manualmente."""
+    copia = copiarLista(listaPaises)
+    n = len(copia)
     i = 0
-    while i < cantidad:
-        suma_tasas = suma_tasas + lista_monedas[i][2]
+    while i < n - 1:
+        j = 0
+        while j < n - 1 - i:
+            if copia[j][3] < copia[j + 1][3]:
+                temp = copia[j]
+                copia[j] = copia[j + 1]
+                copia[j + 1] = temp
+            j = j + 1
         i = i + 1
-
-    return suma_tasas / cantidad
-
-
-def obtener_moneda_mas_fuerte_opcion4(lista_monedas):
-    """
-    Obtiene la moneda con MAYOR tasa de cambio (moneda más fuerte según el criterio explícito de la Opción 4).
-    NOTA CRÍTICA: La consigna de la Opción 4 define 'moneda más fuerte = mayor tasa'.
-    Esto difiere del criterio de la Opción 1 donde una tasa menor significa mayor valor frente al USD.
-    Retorna la tupla (codigo_moneda, nombre_moneda, tasa_usd).
-    """
-    cantidad = len(lista_monedas)
-    if cantidad == 0:
-        return None
-
-    moneda_max = lista_monedas[0]
-    max_tasa = moneda_max[2]
-
-    i = 1
-    while i < cantidad:
-        m = lista_monedas[i]
-        if m[2] > max_tasa:
-            moneda_max = m
-            max_tasa = m[2]
-        i = i + 1
-
-    return moneda_max
+    return copia
 
 
-def obtener_moneda_mas_debil_opcion4(lista_monedas):
-    """
-    Obtiene la moneda con MENOR tasa de cambio (moneda más débil según el criterio explícito de la Opción 4).
-    NOTA CRÍTICA: La consigna de la Opción 4 define 'moneda más débil = menor tasa'.
-    Esto difiere del criterio de la Opción 1 donde una tasa mayor significa menor valor frente al USD.
-    Retorna la tupla (codigo_moneda, nombre_moneda, tasa_usd).
-    """
-    cantidad = len(lista_monedas)
-    if cantidad == 0:
-        return None
-
-    moneda_min = lista_monedas[0]
-    min_tasa = moneda_min[2]
-
-    i = 1
-    while i < cantidad:
-        m = lista_monedas[i]
-        if m[2] < min_tasa:
-            moneda_min = m
-            min_tasa = m[2]
-        i = i + 1
-
-    return moneda_min
-
-
-def clasificar_monedas_por_tasa(lista_monedas):
-    """
-    Clasifica las monedas según su tasa respecto a 1 USD:
-    - Mayores a 1 USD (> 1)
-    - Iguales a 1 USD (= 1)
-    - Menores a 1 USD (< 1)
-    Retorna una tupla: (mayores, iguales, menores)
-    """
-    mayores = 0
-    iguales = 0
-    menores = 0
-
+# Definición de función: ordenarPaisesPorAreaAscendente
+def ordenarPaisesPorAreaAscendente(listaPaises):
+    """Ordena países por área de menor a mayor manualmente."""
+    copia = copiarLista(listaPaises)
+    n = len(copia)
     i = 0
-    cantidad = len(lista_monedas)
-    while i < cantidad:
-        tasa = lista_monedas[i][2]
-        if tasa > 1.0:
-            mayores = mayores + 1
-        elif tasa == 1.0:
-            iguales = iguales + 1
-        else:
-            menores = menores + 1
+    while i < n - 1:
+        j = 0
+        while j < n - 1 - i:
+            if copia[j][4] > copia[j + 1][4]:
+                temp = copia[j]
+                copia[j] = copia[j + 1]
+                copia[j + 1] = temp
+            j = j + 1
+        i = i + 1
+    return copia
+
+
+# Definición de función: extraerMonedasUnicas
+def extraerMonedasUnicas(listaPaises):
+    """Extrae las monedas únicas retornando una lista de tuplas (codigo, nombre, tasaUsd)."""
+    monedasUnicas = []
+    i = 0
+    cantidadPaises = len(listaPaises)
+
+    while i < cantidadPaises:
+        p = listaPaises[i]
+        nombreMoneda = p[5]
+        codigoMoneda = p[6]
+        tasaUsd = p[7]
+
+        existe = False
+        j = 0
+        cantMonedas = len(monedasUnicas)
+
+        while j < cantMonedas:
+            m = monedasUnicas[j]
+            if m[0] == codigoMoneda:
+                existe = True
+            j = j + 1
+
+        if not existe:
+            tuplaMoneda = (codigoMoneda, nombreMoneda, tasaUsd)
+            monedasUnicas.append(tuplaMoneda)
+
         i = i + 1
 
-    return mayores, iguales, menores
+    return monedasUnicas
 
 
-def contar_monedas_con_n_letras(lista_monedas, n_letras):
-    """
-    Cuenta cuántas monedas tienen exactamente n_letras en su nombre (sin tildes)
-    (sin contar espacios en blanco).
-    """
+# Definición de función: contarMonedasConNLetras
+def contarMonedasConNLetras(listaMonedas, nLetras):
+    """Cuenta monedas cuyo nombre normalizado tenga exactamente N letras sin contar espacios."""
     contador = 0
     i = 0
-    cantidad = len(lista_monedas)
+    cantidad = len(listaMonedas)
 
     while i < cantidad:
-        nombre = lista_monedas[i][1]
-        nombre_norm = fs.quitar_tildes(nombre)
-        letras = fs.contar_letras_sin_espacios(nombre_norm)
-        if letras == n_letras:
+        m = listaMonedas[i]
+        nombreMoneda = m[1]
+        nombreNorm = fs.quitarTildes(nombreMoneda)
+        numLetras = fs.contarLetrasSinEspacios(nombreNorm)
+
+        if numLetras == nLetras:
             contador = contador + 1
         i = i + 1
 
     return contador
 
 
+# Definición de función: calcularTasaPromedioMonedas
+def calcularTasaPromedioMonedas(listaMonedas):
+    """Calcula la tasa de cambio promedio de las monedas."""
+    cantidad = len(listaMonedas)
+    if cantidad == 0:
+        return 0.0
 
+    sumaTasas = 0.0
+    i = 0
+    while i < cantidad:
+        m = listaMonedas[i]
+        sumaTasas = sumaTasas + m[2]
+        i = i + 1
+
+    return sumaTasas / cantidad
+
+
+# Definición de función: obtenerMonedaMasFuerteOpcion4
+def obtenerMonedaMasFuerteOpcion4(listaMonedas):
+    """Retorna la moneda con MAYOR tasa de cambio frente al USD (Criterio Opción 4 PDF)."""
+    cantidad = len(listaMonedas)
+    if cantidad == 0:
+        return None
+
+    monedaFuerte = listaMonedas[0]
+    maxTasa = monedaFuerte[2]
+
+    i = 1
+    while i < cantidad:
+        m = listaMonedas[i]
+        tasa = m[2]
+        if tasa > maxTasa:
+            maxTasa = tasa
+            monedaFuerte = m
+        i = i + 1
+
+    return monedaFuerte
+
+
+# Definición de función: obtenerMonedaMasDebilOpcion4
+def obtenerMonedaMasDebilOpcion4(listaMonedas):
+    """Retorna la moneda con MENOR tasa de cambio frente al USD (Criterio Opción 4 PDF)."""
+    cantidad = len(listaMonedas)
+    if cantidad == 0:
+        return None
+
+    monedaDebil = listaMonedas[0]
+    minTasa = monedaDebil[2]
+
+    i = 1
+    while i < cantidad:
+        m = listaMonedas[i]
+        tasa = m[2]
+        if tasa < minTasa:
+            minTasa = tasa
+            monedaDebil = m
+        i = i + 1
+
+    return monedaDebil
+
+
+# Definición de función: clasificarMonedasPorTasa
+def clasificarMonedasPorTasa(listaMonedas):
+    """Clasifica las monedas según su tasa frente a 1 USD (> 1, = 1, < 1)."""
+    mayores1 = 0
+    iguales1 = 0
+    menores1 = 0
+
+    i = 0
+    cantidad = len(listaMonedas)
+    while i < cantidad:
+        m = listaMonedas[i]
+        tasa = m[2]
+
+        if tasa > 1.0:
+            mayores1 = mayores1 + 1
+        elif tasa == 1.0:
+            iguales1 = iguales1 + 1
+        else:
+            menores1 = menores1 + 1
+
+        i = i + 1
+
+    return mayores1, iguales1, menores1
+
+
+# Definición de función: ordenarMonedasPorTasa
+def ordenarMonedasPorTasa(listaMonedas, descendente=False):
+    """Ordena las monedas por su tasa de cambio utilizando ordenamiento manual de burbuja."""
+    copia = copiarLista(listaMonedas)
+    n = len(copia)
+    if n <= 1:
+        return copia
+
+    i = 0
+    while i < n - 1:
+        j = 0
+        while j < n - 1 - i:
+            t1 = copia[j][2]
+            t2 = copia[j + 1][2]
+
+            intercambiar = False
+            if descendente:
+                if t1 < t2:
+                    intercambiar = True
+            else:
+                if t1 > t2:
+                    intercambiar = True
+
+            if intercambiar:
+                temp = copia[j]
+                copia[j] = copia[j + 1]
+                copia[j + 1] = temp
+
+            j = j + 1
+        i = i + 1
+
+    return copia
+
+
+# Definición de función: calcularLongitudPromedioNombres
+def calcularLongitudPromedioNombres(listaPaises):
+    """Calcula la longitud promedio de los nombres de países (retorna entero)."""
+    cantidad = len(listaPaises)
+    if cantidad == 0:
+        return 0
+
+    sumaLongitudes = 0
+    i = 0
+    while i < cantidad:
+        nombre = listaPaises[i][0]
+        sumaLongitudes = sumaLongitudes + len(nombre)
+        i = i + 1
+
+    return sumaLongitudes // cantidad
+
+
+# Definición de función: obtenerPaisNombreMasLargo
+def obtenerPaisNombreMasLargo(listaPaises):
+    """Retorna (nombre, longitud) del país con el nombre más largo."""
+    cantidad = len(listaPaises)
+    if cantidad == 0:
+        return "", 0
+
+    paisMax = listaPaises[0]
+    nombreMax = paisMax[0]
+    maxLen = len(nombreMax)
+
+    i = 1
+    while i < cantidad:
+        p = listaPaises[i]
+        nombreActual = p[0]
+        longitudActual = len(nombreActual)
+
+        if longitudActual > maxLen:
+            maxLen = longitudActual
+            nombreMax = nombreActual
+
+        i = i + 1
+
+    return nombreMax, maxLen
+
+
+# Definición de función: obtenerPaisNombreMasCorto
+def obtenerPaisNombreMasCorto(listaPaises):
+    """Retorna (nombre, longitud) del país con el nombre más corto."""
+    cantidad = len(listaPaises)
+    if cantidad == 0:
+        return "", 0
+
+    paisMin = listaPaises[0]
+    nombreMin = paisMin[0]
+    minLen = len(nombreMin)
+
+    i = 1
+    while i < cantidad:
+        p = listaPaises[i]
+        nombreActual = p[0]
+        longitudActual = len(nombreActual)
+
+        if longitudActual < minLen:
+            minLen = longitudActual
+            nombreMin = nombreActual
+
+        i = i + 1
+
+    return nombreMin, minLen
+
+
+# Definición de función: contarPaisesConLetra
+def contarPaisesConLetra(listaPaises, letraBuscar):
+    """Cuenta cuántos países contienen la letraBuscar en su nombre normalizado."""
+    contador = 0
+    i = 0
+    cantidad = len(listaPaises)
+
+    while i < cantidad:
+        nombre = listaPaises[i][0]
+        if fs.contieneLetraNormalizada(nombre, letraBuscar):
+            contador = contador + 1
+        i = i + 1
+
+    return contador
