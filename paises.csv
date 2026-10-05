@@ -1,0 +1,26 @@
+Nombre;Capital;Codigo;Poblacion;Area;Moneda;CodigoMoneda;TasaCambioUSD
+Argentina;Buenos Aires;AR;45808747;2780400;Peso Argentino;ARS;975.50
+Brasil;Brasilia;BR;214326223;8515767;Real;BRL;5.00
+Chile;Santiago;CL;19493184;756102;Peso Chileno;CLP;920.00
+Colombia;Bogotá;CO;51516562;1141748;Peso Colombiano;COP;4150.00
+España;Madrid;ES;47415750;505990;Euro;EUR;0.91
+Francia;París;FR;67750000;551695;Euro;EUR;0.91
+Japón;Tokio;JP;125507000;377975;Yen Japonés;JPY;148.20
+México;Ciudad de México;MX;126705138;1964375;Peso mexicano;MXN;20.50
+Panamá;Ciudad de Panamá;PA;4351267;75417;Balboa Panameño;PAB;1.00
+Perú;Lima;PE;33715471;1285216;Sol Peruano;PEN;3.76
+Estados Unidos;Washington D.C.;US;331893745;9833517;Dólar estadounidense;USD;1.00
+Uruguay;Montevideo;UY;3426260;176215;Peso Uruguayo;UYU;41.20
+Alemania;Berlín;DE;83200000;357022;Euro;EUR;0.91
+Italia;Roma;IT;58850000;301340;Euro;EUR;0.91
+Reino Unido;Londres;GB;67330000;243610;Libra Esterlina;GBP;0.76
+Canadá;Ottawa;CA;38250000;9984670;Dólar canadiense;CAD;1.35
+Australia;Canberra;AU;25690000;7692024;Dólar Australiano;AUD;1.48
+Costa Rica;San José;CR;5150000;51100;Colón costarricense;CRC;500.00
+Ecuador;Quito;EC;17800000;256370;Dólar estadounidense;USD;1.00
+China;Pekín;CN;1411778000;9596960;Yuan Chino;CNY;7.10
+India;Nueva Delhi;IN;1408044253;3287263;Rupia India;INR;83.90
+Corea del Sur;Seúl;KR;51740000;100210;Won Surcoreano;KRW;1335.00
+Suiza;Berna;CH;8700000;41285;Franco Suizo;CHF;0.85
+Egipto;El Cairo;EG;104000000;1002450;Libra Egipcia;EGP;48.50
+Sudáfrica;Pretoria;ZA;59300000;1221037;Rand Sudafricano;ZAR;17.80

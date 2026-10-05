@@ -1,55 +1,109 @@
 """
-Módulo de Datos (Estructura Base).
-Almacenamiento de países y monedas mediante tuplas y listas (sin diccionarios).
+Módulo de Datos.
+Estilo de código: Estudiante de primer año de programación.
+
+RESTRICCIONES STRICTAS:
+- Sin diccionarios. Uso exclusivo de listas y tuplas.
+- Carga de datos desde archivo CSV local y generación de archivo .toon.
 """
 
-# Tupla de países: (código_iso, nombre_país, continente, población, superficie_km2, código_moneda)
-PAISES = (
-    ("ARG", "Argentina", "América del Sur", 45808747, 2780400, "ARS"),
-    ("BRA", "Brasil", "América del Sur", 214326223, 8515767, "BRL"),
-    ("CHL", "Chile", "América del Sur", 19493184, 756102, "CLP"),
-    ("COL", "Colombia", "América del Sur", 51516562, 1141748, "COP"),
-    ("ESP", "España", "Europa", 47415750, 505990, "EUR"),
-    ("FRA", "Francia", "Europa", 67750000, 551695, "EUR"),
-    ("JPN", "Japón", "Asia", 125507000, 377975, "JPY"),
-    ("MEX", "México", "América del Norte", 126705138, 1964375, "MXN"),
-    ("PAN", "Panamá", "América Central", 4351267, 75417, "PAB"),
-    ("PER", "Perú", "América del Sur", 33715471, 1285216, "PEN"),
-    ("USA", "Estados Unidos", "América del Norte", 331893745, 9833517, "USD"),
-    ("URY", "Uruguay", "América del Sur", 3426260, 176215, "UYU"),
-)
+import formateo_strings as fs
 
-# Tupla de monedas: (código_moneda, nombre_moneda, símbolo, tasa_cambio_usd)
-MONEDAS = (
-    ("ARS", "Peso Argentino", "$", 975.50),
-    ("BRL", "Real Brasileño", "R$", 5.45),
-    ("CLP", "Peso Chileno", "$", 920.00),
-    ("COP", "Peso Colombiano", "$", 4150.00),
-    ("EUR", "Euro", "€", 0.91),
-    ("JPY", "Yen Japonés", "¥", 148.20),
-    ("MXN", "Peso Mexicano", "$", 19.30),
-    ("PAB", "Balboa Panameño", "B/.", 1.00),
-    ("PEN", "Sol Peruano", "S/.", 3.76),
-    ("USD", "Dólar Estadounidense", "$", 1.00),
-    ("UYU", "Peso Uruguayo", "$", 41.20),
-)
+# Variable global para almacenar los países cargados en memoria
+PAISES_CARGADOS = []
 
 
 def obtener_paises():
-    """Retorna la tupla de países."""
-    return PAISES
+    """Retorna la lista de países cargados en memoria."""
+    return PAISES_CARGADOS
 
 
-def obtener_monedas():
-    """Retorna la tupla de monedas."""
-    return MONEDAS
+def leer_csv_paises(ruta_archivo):
+    """
+    Lee el archivo CSV de países especificado.
+    Recorre las líneas una por una, las separa por ';' usando separar_cadena
+    y almacena cada país como una tupla con código ISO de 2 letras, población y área como enteros:
+    (nombre, capital, codigo, poblacion, area, moneda, codigo_moneda, tasa_usd)
+    """
+    global PAISES_CARGADOS
+
+    try:
+        archivo = open(ruta_archivo, "r", encoding="utf-8")
+    except FileNotFoundError:
+        print("\n Error: El archivo '" + ruta_archivo + "' no existe.")
+        print("Por favor, verifique la ruta del archivo e intente nuevamente.")
+        return None
+
+    lineas = archivo.readlines()
+    archivo.close()
+
+    cantidad_lineas = len(lineas)
+    if cantidad_lineas <= 1:
+        print("\n El archivo CSV está vacío o solo contiene encabezados.")
+        return None
+
+    lista_paises = []
+    indice = 1  # Iniciar en 1 para saltar la línea de encabezado (línea 0)
+
+    while indice < cantidad_lineas:
+        linea_raw = lineas[indice]
+        linea_limpia = fs.limpiar_espacios_extremos(linea_raw)
+
+        if len(linea_limpia) > 0:
+            columnas = fs.separar_cadena(linea_limpia, ";")
+
+            # Verificar que la línea tenga al menos 8 campos (Nombre a TasaCambioUSD)
+            if len(columnas) >= 8:
+                nombre = fs.limpiar_espacios_extremos(columnas[0])
+                capital = fs.limpiar_espacios_extremos(columnas[1])
+                codigo = fs.limpiar_espacios_extremos(columnas[2])
+                poblacion = fs.convertir_a_entero(columnas[3])
+                area = fs.convertir_a_entero(columnas[4])  # Área como entero
+                moneda = fs.limpiar_espacios_extremos(columnas[5])
+                codigo_moneda = fs.limpiar_espacios_extremos(columnas[6])
+                tasa_usd = fs.convertir_a_flotante(columnas[7])
+
+                pais_tuple = (nombre, capital, codigo, poblacion, area, moneda, codigo_moneda, tasa_usd)
+                lista_paises.append(pais_tuple)
+
+        indice = indice + 1
+
+    PAISES_CARGADOS = lista_paises
+    return lista_paises
 
 
-def buscar_moneda(codigo_moneda):
-    """Firma base para buscar una moneda por su código."""
-    pass
+def guardar_datos_toon(lista_paises, ruta_salida_toon):
+    """
+    Guarda los datos crudos de los países en un archivo con formato TOON.
+    Estructura TOON:
+    - 'paises:' en nivel 0 (0 espacios)
+    - '-' solo en su línea en nivel 1 (4 espacios)
+    - Todos los campos debajo en nivel 2 (8 espacios)
+    - Textos entre comillas dobles, números enteros y flotantes sin comillas.
+    """
+    try:
+        archivo = open(ruta_salida_toon, "w", encoding="utf-8")
+    except OSError:
+        print("Error: No se pudo crear el archivo TOON en '" + ruta_salida_toon + "'.")
+        return False
 
+    archivo.write("paises:\n")
 
-def buscar_pais(codigo_iso):
-    """Firma base para buscar un país por su código ISO."""
-    pass
+    cantidad = len(lista_paises)
+    i = 0
+    while i < cantidad:
+        p = lista_paises[i]
+        # p es la tupla: (nombre, capital, codigo, poblacion, area, moneda, codigo_moneda, tasa_usd)
+        archivo.write("    -\n")
+        archivo.write('        nombre: "' + str(p[0]) + '"\n')
+        archivo.write('        capital: "' + str(p[1]) + '"\n')
+        archivo.write('        codigo: "' + str(p[2]) + '"\n')
+        archivo.write('        poblacion: ' + str(p[3]) + '\n')
+        archivo.write('        area: ' + str(p[4]) + '\n')
+        archivo.write('        moneda: "' + str(p[5]) + '"\n')
+        archivo.write('        codigo_moneda: "' + str(p[6]) + '"\n')
+        archivo.write('        tasa_usd: ' + str(p[7]) + '\n')
+        i = i + 1
+
+    archivo.close()
+    return True

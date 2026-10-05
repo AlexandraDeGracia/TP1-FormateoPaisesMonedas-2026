@@ -1,0 +1,226 @@
+paises:
+    -
+        nombre: "Argentina"
+        capital: "Buenos Aires"
+        codigo: "AR"
+        poblacion: 45808747
+        area: 2780400
+        moneda: "Peso Argentino"
+        codigo_moneda: "ARS"
+        tasa_usd: 975.5
+    -
+        nombre: "Brasil"
+        capital: "Brasilia"
+        codigo: "BR"
+        poblacion: 214326223
+        area: 8515767
+        moneda: "Real"
+        codigo_moneda: "BRL"
+        tasa_usd: 5.0
+    -
+        nombre: "Chile"
+        capital: "Santiago"
+        codigo: "CL"
+        poblacion: 19493184
+        area: 756102
+        moneda: "Peso Chileno"
+        codigo_moneda: "CLP"
+        tasa_usd: 920.0
+    -
+        nombre: "Colombia"
+        capital: "Bogotá"
+        codigo: "CO"
+        poblacion: 51516562
+        area: 1141748
+        moneda: "Peso Colombiano"
+        codigo_moneda: "COP"
+        tasa_usd: 4150.0
+    -
+        nombre: "España"
+        capital: "Madrid"
+        codigo: "ES"
+        poblacion: 47415750
+        area: 505990
+        moneda: "Euro"
+        codigo_moneda: "EUR"
+        tasa_usd: 0.91
+    -
+        nombre: "Francia"
+        capital: "París"
+        codigo: "FR"
+        poblacion: 67750000
+        area: 551695
+        moneda: "Euro"
+        codigo_moneda: "EUR"
+        tasa_usd: 0.91
+    -
+        nombre: "Japón"
+        capital: "Tokio"
+        codigo: "JP"
+        poblacion: 125507000
+        area: 377975
+        moneda: "Yen Japonés"
+        codigo_moneda: "JPY"
+        tasa_usd: 148.2
+    -
+        nombre: "México"
+        capital: "Ciudad de México"
+        codigo: "MX"
+        poblacion: 126705138
+        area: 1964375
+        moneda: "Peso mexicano"
+        codigo_moneda: "MXN"
+        tasa_usd: 20.5
+    -
+        nombre: "Panamá"
+        capital: "Ciudad de Panamá"
+        codigo: "PA"
+        poblacion: 4351267
+        area: 75417
+        moneda: "Balboa Panameño"
+        codigo_moneda: "PAB"
+        tasa_usd: 1.0
+    -
+        nombre: "Perú"
+        capital: "Lima"
+        codigo: "PE"
+        poblacion: 33715471
+        area: 1285216
+        moneda: "Sol Peruano"
+        codigo_moneda: "PEN"
+        tasa_usd: 3.76
+    -
+        nombre: "Estados Unidos"
+        capital: "Washington D.C."
+        codigo: "US"
+        poblacion: 331893745
+        area: 9833517
+        moneda: "Dólar estadounidense"
+        codigo_moneda: "USD"
+        tasa_usd: 1.0
+    -
+        nombre: "Uruguay"
+        capital: "Montevideo"
+        codigo: "UY"
+        poblacion: 3426260
+        area: 176215
+        moneda: "Peso Uruguayo"
+        codigo_moneda: "UYU"
+        tasa_usd: 41.2
+    -
+        nombre: "Alemania"
+        capital: "Berlín"
+        codigo: "DE"
+        poblacion: 83200000
+        area: 357022
+        moneda: "Euro"
+        codigo_moneda: "EUR"
+        tasa_usd: 0.91
+    -
+        nombre: "Italia"
+        capital: "Roma"
+        codigo: "IT"
+        poblacion: 58850000
+        area: 301340
+        moneda: "Euro"
+        codigo_moneda: "EUR"
+        tasa_usd: 0.91
+    -
+        nombre: "Reino Unido"
+        capital: "Londres"
+        codigo: "GB"
+        poblacion: 67330000
+        area: 243610
+        moneda: "Libra Esterlina"
+        codigo_moneda: "GBP"
+        tasa_usd: 0.76
+    -
+        nombre: "Canadá"
+        capital: "Ottawa"
+        codigo: "CA"
+        poblacion: 38250000
+        area: 9984670
+        moneda: "Dólar canadiense"
+        codigo_moneda: "CAD"
+        tasa_usd: 1.35
+    -
+        nombre: "Australia"
+        capital: "Canberra"
+        codigo: "AU"
+        poblacion: 25690000
+        area: 7692024
+        moneda: "Dólar Australiano"
+        codigo_moneda: "AUD"
+        tasa_usd: 1.48
+    -
+        nombre: "Costa Rica"
+        capital: "San José"
+        codigo: "CR"
+        poblacion: 5150000
+        area: 51100
+        moneda: "Colón costarricense"
+        codigo_moneda: "CRC"
+        tasa_usd: 500.0
+    -
+        nombre: "Ecuador"
+        capital: "Quito"
+        codigo: "EC"
+        poblacion: 17800000
+        area: 256370
+        moneda: "Dólar estadounidense"
+        codigo_moneda: "USD"
+        tasa_usd: 1.0
+    -
+        nombre: "China"
+        capital: "Pekín"
+        codigo: "CN"
+        poblacion: 1411778000
+        area: 9596960
+        moneda: "Yuan Chino"
+        codigo_moneda: "CNY"
+        tasa_usd: 7.1
+    -
+        nombre: "India"
+        capital: "Nueva Delhi"
+        codigo: "IN"
+        poblacion: 1408044253
+        area: 3287263
+        moneda: "Rupia India"
+        codigo_moneda: "INR"
+        tasa_usd: 83.9
+    -
+        nombre: "Corea del Sur"
+        capital: "Seúl"
+        codigo: "KR"
+        poblacion: 51740000
+        area: 100210
+        moneda: "Won Surcoreano"
+        codigo_moneda: "KRW"
+        tasa_usd: 1335.0
+    -
+        nombre: "Suiza"
+        capital: "Berna"
+        codigo: "CH"
+        poblacion: 8700000
+        area: 41285
+        moneda: "Franco Suizo"
+        codigo_moneda: "CHF"
+        tasa_usd: 0.85
+    -
+        nombre: "Egipto"
+        capital: "El Cairo"
+        codigo: "EG"
+        poblacion: 104000000
+        area: 1002450
+        moneda: "Libra Egipcia"
+        codigo_moneda: "EGP"
+        tasa_usd: 48.5
+    -
+        nombre: "Sudáfrica"
+        capital: "Pretoria"
+        codigo: "ZA"
+        poblacion: 59300000
+        area: 1221037
+        moneda: "Rand Sudafricano"
+        codigo_moneda: "ZAR"
+        tasa_usd: 17.8
