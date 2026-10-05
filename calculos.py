@@ -243,3 +243,164 @@ def contar_paises_con_letra(lista_paises, letra):
         i = i + 1
 
     return contador
+
+
+def normalizar_datos_paises(lista_paises):
+    """
+    Normaliza el nombre, capital y moneda de cada país en la lista
+    utilizando fs.normalizar_nombre y un ciclo while.
+    """
+    lista_normalizada = []
+    i = 0
+    cantidad = len(lista_paises)
+    while i < cantidad:
+        p = lista_paises[i]
+        nombre_norm = fs.normalizar_nombre(p[0])
+        capital_norm = fs.normalizar_nombre(p[1])
+        moneda_norm = fs.normalizar_nombre(p[5])
+        pais_norm = (nombre_norm, capital_norm, p[2], p[3], p[4], moneda_norm, p[6], p[7])
+        lista_normalizada.append(pais_norm)
+        i = i + 1
+    return lista_normalizada
+
+
+def calcular_poblacion_total(lista_paises):
+    """Calcula la población total mundial sumando la población de cada país con un ciclo while."""
+    total = 0
+    i = 0
+    cantidad = len(lista_paises)
+    while i < cantidad:
+        total = total + lista_paises[i][3]
+        i = i + 1
+    return total
+
+
+def calcular_poblacion_promedio(lista_paises):
+    """Calcula la población promedio por país utilizando un ciclo while."""
+    cantidad = len(lista_paises)
+    if cantidad == 0:
+        return 0.0
+    total = calcular_poblacion_total(lista_paises)
+    return total / cantidad
+
+
+def calcular_mediana_poblacion(lista_paises):
+    """
+    Calcula la mediana de población mediante ordenamiento manual (burbuja).
+    Si la cantidad de países es impar, retorna el valor central.
+    Si es par, retorna el promedio de los dos valores centrales.
+    """
+    cantidad = len(lista_paises)
+    if cantidad == 0:
+        return 0.0
+
+    paises_ordenados = ordenar_paises_por_poblacion_descendente(lista_paises)
+
+    if cantidad % 2 == 1:
+        indice_central = cantidad // 2
+        return float(paises_ordenados[indice_central][3])
+    else:
+        idx1 = (cantidad // 2) - 1
+        idx2 = cantidad // 2
+        val1 = paises_ordenados[idx1][3]
+        val2 = paises_ordenados[idx2][3]
+        return (val1 + val2) / 2.0
+
+
+def clasificar_paises_por_poblacion(lista_paises):
+    """
+    Clasifica los países según su población en 4 categorías:
+    - Megaciudad: > 10,000,000
+    - Ciudad grande: 1,000,000 - 10,000,000
+    - Ciudad mediana: 100,000 - 999,999
+    - Ciudad pequeña: < 100,000
+    Retorna una tupla: (megaciudades, grandes, medianas, pequenas)
+    """
+    megaciudades = 0
+    grandes = 0
+    medianas = 0
+    pequenas = 0
+
+    i = 0
+    cantidad = len(lista_paises)
+    while i < cantidad:
+        pob = lista_paises[i][3]
+        if pob > 10000000:
+            megaciudades = megaciudades + 1
+        elif pob >= 1000000:
+            grandes = grandes + 1
+        elif pob >= 100000:
+            medianas = medianas + 1
+        else:
+            pequenas = pequenas + 1
+        i = i + 1
+
+    return megaciudades, grandes, medianas, pequenas
+
+
+def calcular_area_total(lista_paises):
+    """Calcula el área total acumulada de todos los países con un ciclo while."""
+    total = 0
+    i = 0
+    cantidad = len(lista_paises)
+    while i < cantidad:
+        total = total + lista_paises[i][4]
+        i = i + 1
+    return total
+
+
+def calcular_densidades_poblacionales(lista_paises):
+    """
+    Calcula la densidad poblacional (población / área) de cada país.
+    Protege contra división por cero (área = 0).
+    Retorna una lista de tuplas: (nombre, codigo, poblacion, area, densidad)
+    """
+    resultado = []
+    i = 0
+    cantidad = len(lista_paises)
+    while i < cantidad:
+        p = lista_paises[i]
+        pob = p[3]
+        area = p[4]
+        if area > 0:
+            densidad = pob / area
+        else:
+            densidad = 0.0
+        resultado.append((p[0], p[2], pob, area, densidad))
+        i = i + 1
+    return resultado
+
+
+def ordenar_paises_por_densidad(lista_densidades, descendente=True):
+    """
+    Ordena una lista de tuplas de densidad por el valor de densidad (índice 4)
+    utilizando el algoritmo de ordenamiento por burbuja con ciclos while.
+    """
+    densidades = copiar_lista(lista_densidades)
+    n = len(densidades)
+    i = 0
+
+    while i < n:
+        j = 0
+        while j < n - i - 1:
+            d_actual = densidades[j][4]
+            d_siguiente = densidades[j + 1][4]
+
+            intercambiar = False
+            if descendente:
+                if d_actual < d_siguiente:
+                    intercambiar = True
+            else:
+                if d_actual > d_siguiente:
+                    intercambiar = True
+
+            if intercambiar:
+                aux = densidades[j]
+                densidades[j] = densidades[j + 1]
+                densidades[j + 1] = aux
+
+            j = j + 1
+        i = i + 1
+
+    return densidades
+

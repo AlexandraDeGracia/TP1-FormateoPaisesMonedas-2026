@@ -28,7 +28,7 @@ paises:
         tasa_usd: 920.0
     -
         nombre: "Colombia"
-        capital: "Bogotá"
+        capital: "Bogota"
         codigo: "CO"
         poblacion: 51516562
         area: 1141748
@@ -46,7 +46,7 @@ paises:
         tasa_usd: 0.91
     -
         nombre: "Francia"
-        capital: "París"
+        capital: "Paris"
         codigo: "FR"
         poblacion: 67750000
         area: 551695
@@ -59,25 +59,25 @@ paises:
         codigo: "JP"
         poblacion: 125507000
         area: 377975
-        moneda: "Yen Japonés"
+        moneda: "Yen Japones"
         codigo_moneda: "JPY"
         tasa_usd: 148.2
     -
         nombre: "Mexico"
-        capital: "Ciudad de México"
+        capital: "Ciudad De Mexico"
         codigo: "MX"
         poblacion: 126705138
         area: 1964375
-        moneda: "Peso mexicano"
+        moneda: "Peso Mexicano"
         codigo_moneda: "MXN"
         tasa_usd: 20.5
     -
         nombre: "Panama"
-        capital: "Ciudad de Panamá"
+        capital: "Ciudad De Panama"
         codigo: "PA"
         poblacion: 4351267
         area: 75417
-        moneda: "Balboa Panameño"
+        moneda: "Balboa Panameno"
         codigo_moneda: "PAB"
         tasa_usd: 1.0
     -
@@ -91,11 +91,11 @@ paises:
         tasa_usd: 3.76
     -
         nombre: "Estados Unidos"
-        capital: "Washington D.C."
+        capital: "Washington D.c."
         codigo: "US"
         poblacion: 331893745
         area: 9833517
-        moneda: "Dólar estadounidense"
+        moneda: "Dolar Estadounidense"
         codigo_moneda: "USD"
         tasa_usd: 1.0
     -
@@ -109,7 +109,7 @@ paises:
         tasa_usd: 41.2
     -
         nombre: "Alemania"
-        capital: "Berlín"
+        capital: "Berlin"
         codigo: "DE"
         poblacion: 83200000
         area: 357022
@@ -140,7 +140,7 @@ paises:
         codigo: "CA"
         poblacion: 38250000
         area: 9984670
-        moneda: "Dólar canadiense"
+        moneda: "Dolar Canadiense"
         codigo_moneda: "CAD"
         tasa_usd: 1.35
     -
@@ -149,16 +149,16 @@ paises:
         codigo: "AU"
         poblacion: 25690000
         area: 7692024
-        moneda: "Dólar Australiano"
+        moneda: "Dolar Australiano"
         codigo_moneda: "AUD"
         tasa_usd: 1.48
     -
         nombre: "Costa Rica"
-        capital: "San José"
+        capital: "San Jose"
         codigo: "CR"
         poblacion: 5150000
         area: 51100
-        moneda: "Colón costarricense"
+        moneda: "Colon Costarricense"
         codigo_moneda: "CRC"
         tasa_usd: 500.0
     -
@@ -167,12 +167,12 @@ paises:
         codigo: "EC"
         poblacion: 17800000
         area: 256370
-        moneda: "Dólar estadounidense"
+        moneda: "Dolar Estadounidense"
         codigo_moneda: "USD"
         tasa_usd: 1.0
     -
         nombre: "China"
-        capital: "Pekín"
+        capital: "Pekin"
         codigo: "CN"
         poblacion: 1411778000
         area: 9596960
@@ -190,7 +190,7 @@ paises:
         tasa_usd: 83.9
     -
         nombre: "Corea Del Sur"
-        capital: "Seúl"
+        capital: "Seul"
         codigo: "KR"
         poblacion: 51740000
         area: 100210

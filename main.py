@@ -192,6 +192,84 @@ def ejecutar_opcion_2():
     print("==================================================")
 
 
+def ejecutar_opcion_3():
+    """
+    Opción 3: Procesar datos poblacionales y geográficos.
+    Carga los países desde paises_datos.toon (si no existe, indica "Primero ejecute la Opción 1").
+    Normaliza nombre, capital y moneda de cada país si es necesario.
+    Calcula e imprime por consola:
+    - Población total, promedio y mediana.
+    - Clasificación y conteos por categoría de población.
+    - Área total y densidad poblacional por país.
+    - Top 10 países con mayor densidad y Top 10 con menor densidad.
+    Guarda los datos normalizados de vuelta en paises_datos.toon.
+    """
+    print("\n--- OPCIÓN 3: PROCESAR DATOS POBLACIONALES Y GEOGRÁFICOS ---")
+    lista_paises = datos.leer_datos_toon("paises_datos.toon")
+
+    if lista_paises is None or len(lista_paises) == 0:
+        return
+
+    # Normalizar datos (nombre, capital y moneda)
+    lista_normalizados = calc.normalizar_datos_paises(lista_paises)
+
+    # Guardar de vuelta en paises_datos.toon
+    datos.guardar_datos_toon(lista_normalizados, "paises_datos.toon")
+
+    # 1. CÁLCULOS POBLACIONALES
+    pob_total = calc.calcular_poblacion_total(lista_normalizados)
+    pob_promedio = calc.calcular_poblacion_promedio(lista_normalizados)
+    pob_mediana = calc.calcular_mediana_poblacion(lista_normalizados)
+    mega, grande, mediana, pequena = calc.clasificar_paises_por_poblacion(lista_normalizados)
+    suma_categorias = mega + grande + mediana + pequena
+
+    # 2. CÁLCULOS GEOGRÁFICOS Y DENSIDAD
+    area_total = calc.calcular_area_total(lista_normalizados)
+    lista_densidades = calc.calcular_densidades_poblacionales(lista_normalizados)
+
+    densidades_mayor = calc.ordenar_paises_por_densidad(lista_densidades, descendente=True)
+    top_10_mayor_densidad = calc.obtener_primeros_elementos(densidades_mayor, 10)
+
+    densidades_menor = calc.ordenar_paises_por_densidad(lista_densidades, descendente=False)
+    top_10_menor_densidad = calc.obtener_primeros_elementos(densidades_menor, 10)
+
+    # 3. MOSTRAR RESULTADOS EN CONSOLA
+    print("\n==================================================")
+    print("          RESULTADOS DE LA OPCIÓN 3")
+    print("==================================================")
+
+    print("\n--- DATOS POBLACIONALES ---")
+    print("• Población total mundial: " + str(pob_total) + " habitantes")
+    print("• Población promedio por país: " + str(round(pob_promedio, 2)) + " habitantes")
+    print("• Mediana de población: " + str(round(pob_mediana, 2)) + " habitantes")
+
+    print("\n• Clasificación de países por tamaño poblacional:")
+    print("  - Megaciudad (> 10,000,000): " + str(mega) + " países")
+    print("  - Ciudad grande (1,000,000 - 10,000,000): " + str(grande) + " países")
+    print("  - Ciudad mediana (100,000 - 999,999): " + str(mediana) + " países")
+    print("  - Ciudad pequeña (< 100,000): " + str(pequena) + " países")
+    print("  - Total países clasificados: " + str(suma_categorias))
+
+    print("\n--- DATOS GEOGRÁFICOS Y DENSIDAD ---")
+    print("• Área total mundial: " + str(area_total) + " km²")
+
+    print("\n• Top 10 países con MAYOR densidad poblacional:")
+    i = 0
+    while i < len(top_10_mayor_densidad):
+        d = top_10_mayor_densidad[i]
+        print("  " + str(i + 1) + ". " + str(d[0]) + " (" + str(d[1]) + ") - Densidad: " + str(round(d[4], 2)) + " hab/km² (Pob: " + str(d[2]) + ", Área: " + str(d[3]) + " km²)")
+        i = i + 1
+
+    print("\n• Top 10 países con MENOR densidad poblacional:")
+    i = 0
+    while i < len(top_10_menor_densidad):
+        d = top_10_menor_densidad[i]
+        print("  " + str(i + 1) + ". " + str(d[0]) + " (" + str(d[1]) + ") - Densidad: " + str(round(d[4], 2)) + " hab/km² (Pob: " + str(d[2]) + ", Área: " + str(d[3]) + " km²)")
+        i = i + 1
+
+    print("==================================================")
+
+
 def main():
     """Función principal para controlar el menú."""
     opcion = ""
@@ -206,7 +284,7 @@ def main():
         elif opcion == "2":
             ejecutar_opcion_2()
         elif opcion == "3":
-            print("\n[Opción 3] - Procesar datos poblacionales y geográficos (En desarrollo...)")
+            ejecutar_opcion_3()
         elif opcion == "4":
             print("\n[Opción 4] - Procesar datos de monedas (En desarrollo...)")
         elif opcion == "5":
