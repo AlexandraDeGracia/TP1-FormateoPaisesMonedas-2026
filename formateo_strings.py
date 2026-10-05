@@ -1,11 +1,7 @@
 """
 Módulo de Formateo y Normalización de Cadenas de Texto.
-Estilo de código: Estudiante de primer año de programación.
-
-RESTRICCIONES STRICTAS:
-- Prohibido el uso de .replace(), .upper(), .lower(), .strip(), .title(), .capitalize(), .split(), etc.
-- Procesamiento carácter por carácter con ciclos while e índices.
-- Sin diccionarios, sin expresiones complejas.
+Proporciona funciones para manipular y normalizar textos carácter por carácter
+utilizando únicamente estructuras básicas como ciclos while e índices.
 """
 
 MINUSCULAS = "abcdefghijklmnopqrstuvwxyzáàâãäåéèêëíìîïóòôõöúùûüñç"
@@ -77,6 +73,20 @@ def a_minusculas(texto):
     return resultado
 
 
+def obtener_subcadena(texto, inicio, fin):
+    """
+    Extrae una subcadena desde la posición 'inicio' hasta 'fin' (exclusivo)
+    recorriendo carácter por carácter con un ciclo while.
+    """
+    resultado = ""
+    i = inicio
+    longitud = len(texto)
+    while i < fin and i < longitud:
+        resultado = resultado + texto[i]
+        i = i + 1
+    return resultado
+
+
 def limpiar_espacios_extremos(texto):
     """
     Remueve espacios en blanco y saltos de línea al inicio y final del texto
@@ -105,24 +115,45 @@ def limpiar_espacios_extremos(texto):
 
 def quitar_tildes_caracter(caracter):
     """
-    Reemplaza vocales acentuadas, ñ y ç por su equivalente simple (A, E, I, O, U, N, C).
-    Funciona tanto con minúsculas como con mayúsculas.
+    Reemplaza vocales acentuadas, ñ y ç por su equivalente simple conservando la caja (mayúscula/minúscula).
     """
-    if caracter == "Á" or caracter == "À" or caracter == "Â" or caracter == "Ã" or caracter == "Ä" or caracter == "Å" or caracter == "á" or caracter == "à" or caracter == "â" or caracter == "ã" or caracter == "ä" or caracter == "å":
+    if caracter == "Á" or caracter == "À" or caracter == "Â" or caracter == "Ã" or caracter == "Ä" or caracter == "Å":
         return "A"
-    if caracter == "É" or caracter == "È" or caracter == "Ê" or caracter == "Ë" or caracter == "é" or caracter == "è" or caracter == "ê" or caracter == "ë":
+    if caracter == "á" or caracter == "à" or caracter == "â" or caracter == "ã" or caracter == "ä" or caracter == "å":
+        return "a"
+
+    if caracter == "É" or caracter == "È" or caracter == "Ê" or caracter == "Ë":
         return "E"
-    if caracter == "Í" or caracter == "Ì" or caracter == "Î" or caracter == "Ï" or caracter == "í" or caracter == "ì" or caracter == "î" or caracter == "ï":
+    if caracter == "é" or caracter == "è" or caracter == "ê" or caracter == "ë":
+        return "e"
+
+    if caracter == "Í" or caracter == "Ì" or caracter == "Î" or caracter == "Ï":
         return "I"
-    if caracter == "Ó" or caracter == "Ò" or caracter == "Ô" or caracter == "Õ" or caracter == "Ö" or caracter == "ó" or caracter == "ò" or caracter == "ô" or caracter == "õ" or caracter == "ö":
+    if caracter == "í" or caracter == "ì" or caracter == "î" or caracter == "ï":
+        return "i"
+
+    if caracter == "Ó" or caracter == "Ò" or caracter == "Ô" or caracter == "Õ" or caracter == "Ö":
         return "O"
-    if caracter == "Ú" or caracter == "Ù" or caracter == "Û" or caracter == "Ü" or caracter == "ú" or caracter == "ù" or caracter == "û" or caracter == "ü":
+    if caracter == "ó" or caracter == "ò" or caracter == "ô" or caracter == "õ" or caracter == "ö":
+        return "o"
+
+    if caracter == "Ú" or caracter == "Ù" or caracter == "Û" or caracter == "Ü":
         return "U"
-    if caracter == "Ñ" or caracter == "ñ":
+    if caracter == "ú" or caracter == "ù" or caracter == "û" or caracter == "ü":
+        return "u"
+
+    if caracter == "Ñ":
         return "N"
-    if caracter == "Ç" or caracter == "ç":
+    if caracter == "ñ":
+        return "n"
+
+    if caracter == "Ç":
         return "C"
+    if caracter == "ç":
+        return "c"
+
     return caracter
+
 
 
 def quitar_tildes(texto):
@@ -189,15 +220,16 @@ def guiones_bajos_a_espacios(texto):
 def capitalizar_palabras(texto):
     """
     Capitaliza la primera letra de cada palabra en mayúscula
-    y deja las demás en minúscula carácter por carácter.
+    y deja las demás en minúscula usando a_minusculas y a_mayuscula_caracter.
     """
+    texto_min = a_minusculas(texto)
     resultado = ""
     i = 0
-    longitud = len(texto)
+    longitud = len(texto_min)
     nueva_palabra = True
 
     while i < longitud:
-        caracter = texto[i]
+        caracter = texto_min[i]
         if es_caracter_blanco(caracter):
             resultado = resultado + caracter
             nueva_palabra = True
@@ -206,7 +238,7 @@ def capitalizar_palabras(texto):
                 resultado = resultado + a_mayuscula_caracter(caracter)
                 nueva_palabra = False
             else:
-                resultado = resultado + a_minuscula_caracter(caracter)
+                resultado = resultado + caracter
         i = i + 1
 
     return resultado
@@ -358,7 +390,70 @@ def contar_letras_sin_espacios(texto):
 
 
 def formatear_moneda_codigo_nombre(codigo_moneda, nombre_moneda):
-    """Retorna la cadena en formato 'CODIGO - Nombre'."""
-    nombre_norm = normalizar_nombre(nombre_moneda)
+    """Retorna la cadena en formato 'CODIGO - Nombre' manteniendo la capitalización original y eliminando solo tildes."""
+    nombre_norm = quitar_tildes(nombre_moneda)
     return str(codigo_moneda) + " - " + str(nombre_norm)
+
+
+def es_entero_valido(texto):
+    """
+    Verifica si una cadena representa un entero válido (opcionalmente con signo + o -)
+    recorriendo carácter por carácter con un ciclo while.
+    """
+    cadena = limpiar_espacios_extremos(texto)
+    longitud = len(cadena)
+    if longitud == 0:
+        return False
+
+    i = 0
+    if cadena[0] == "+" or cadena[0] == "-":
+        if longitud == 1:
+            return False
+        i = 1
+
+    while i < longitud:
+        if buscar_indice_caracter(cadena[i], "0123456789") == -1:
+            return False
+        i = i + 1
+
+    return True
+
+
+def es_flotante_valido(texto):
+    """
+    Verifica si una cadena representa un flotante válido
+    recorriendo carácter por carácter con un ciclo while (dígitos y máximo un punto).
+    """
+    cadena = limpiar_espacios_extremos(texto)
+    longitud = len(cadena)
+    if longitud == 0:
+        return False
+
+    i = 0
+    if cadena[0] == "+" or cadena[0] == "-":
+        if longitud == 1:
+            return False
+        i = 1
+
+    puntos = 0
+    digitos = 0
+
+    while i < longitud:
+        caracter = cadena[i]
+        if caracter == ".":
+            puntos = puntos + 1
+            if puntos > 1:
+                return False
+        elif buscar_indice_caracter(caracter, "0123456789") != -1:
+            digitos = digitos + 1
+        else:
+            return False
+        i = i + 1
+
+    if digitos == 0:
+        return False
+
+    return True
+
+
 

@@ -1,32 +1,19 @@
 """
-Módulo de Datos.
-Estilo de código: Estudiante de primer año de programación.
-
-RESTRICCIONES STRICTAS:
-- Sin diccionarios. Uso exclusivo de listas y tuplas.
-- Carga y actualización de datos desde/hacia archivos CSV y TOON.
+Módulo de Gestión y Persistencia de Datos.
+Carga, valida y almacena datos de países y monedas desde y hacia archivos CSV y TOON
+utilizando listas, tuplas y validaciones carácter por carácter.
 """
 
 import formateo_strings as fs
-
-# Variable global para almacenar los países cargados en memoria
-PAISES_CARGADOS = []
-
-
-def obtener_paises():
-    """Retorna la lista de países cargados en memoria."""
-    return PAISES_CARGADOS
 
 
 def leer_csv_paises(ruta_archivo):
     """
     Lee el archivo CSV de países especificado.
-    Recorre las líneas una por una, las separa por ';' usando separar_cadena
-    y almacena cada país como una tupla con código ISO de 2 letras, población y área como enteros:
-    (nombre, capital, codigo, poblacion, area, moneda, codigo_moneda, tasa_usd)
+    Valida que cada línea contenga al menos 8 columnas y datos numéricos válidos (población > 0, área > 0).
+    Omite líneas inválidas imprimiendo un mensaje con el número de línea.
+    Retorna una lista de tuplas o None si el archivo no existe o no contiene datos válidos.
     """
-    global PAISES_CARGADOS
-
     try:
         archivo = open(ruta_archivo, "r", encoding="utf-8")
     except FileNotFoundError:
@@ -43,31 +30,55 @@ def leer_csv_paises(ruta_archivo):
         return None
 
     lista_paises = []
+    lineas_omitidas = 0
     indice = 1  # Iniciar en 1 para saltar la línea de encabezado (línea 0)
 
     while indice < cantidad_lineas:
         linea_raw = lineas[indice]
+        linea_num = indice + 1
         linea_limpia = fs.limpiar_espacios_extremos(linea_raw)
 
         if len(linea_limpia) > 0:
             columnas = fs.separar_cadena(linea_limpia, ";")
 
-            if len(columnas) >= 8:
-                nombre = fs.limpiar_espacios_extremos(columnas[0])
-                capital = fs.limpiar_espacios_extremos(columnas[1])
-                codigo = fs.limpiar_espacios_extremos(columnas[2])
-                poblacion = fs.convertir_a_entero(columnas[3])
-                area = fs.convertir_a_entero(columnas[4])
-                moneda = fs.limpiar_espacios_extremos(columnas[5])
-                codigo_moneda = fs.limpiar_espacios_extremos(columnas[6])
-                tasa_usd = fs.convertir_a_flotante(columnas[7])
+            if len(columnas) < 8:
+                print("Advertencia: Línea " + str(linea_num) + " ignorada por tener menos de 8 columnas.")
+                lineas_omitidas = lineas_omitidas + 1
+            else:
+                pob_str = columnas[3]
+                area_str = columnas[4]
+                tasa_str = columnas[7]
 
-                pais_tuple = (nombre, capital, codigo, poblacion, area, moneda, codigo_moneda, tasa_usd)
-                lista_paises.append(pais_tuple)
+                if not fs.es_entero_valido(pob_str) or not fs.es_entero_valido(area_str) or not fs.es_flotante_valido(tasa_str):
+                    print("Advertencia: Línea " + str(linea_num) + " ignorada por contener datos numéricos inválidos.")
+                    lineas_omitidas = lineas_omitidas + 1
+                else:
+                    poblacion = fs.convertir_a_entero(pob_str)
+                    area = fs.convertir_a_entero(area_str)
+                    tasa_usd = fs.convertir_a_flotante(tasa_str)
+
+                    if poblacion <= 0 or area <= 0:
+                        print("Advertencia: Línea " + str(linea_num) + " ignorada por tener población o área menor o igual a 0.")
+                        lineas_omitidas = lineas_omitidas + 1
+                    else:
+                        nombre = fs.limpiar_espacios_extremos(columnas[0])
+                        capital = fs.limpiar_espacios_extremos(columnas[1])
+                        codigo = fs.limpiar_espacios_extremos(columnas[2])
+                        moneda = fs.limpiar_espacios_extremos(columnas[5])
+                        codigo_moneda = fs.limpiar_espacios_extremos(columnas[6])
+
+                        pais_tuple = (nombre, capital, codigo, poblacion, area, moneda, codigo_moneda, tasa_usd)
+                        lista_paises.append(pais_tuple)
 
         indice = indice + 1
 
-    PAISES_CARGADOS = lista_paises
+    if lineas_omitidas > 0:
+        print("Se omitieron " + str(lineas_omitidas) + " líneas por contener datos inválidos.")
+
+    if len(lista_paises) == 0:
+        print("Error: No se encontró ningún país válido en el archivo.")
+        return None
+
     return lista_paises
 
 
@@ -92,7 +103,6 @@ def guardar_datos_toon(lista_paises, ruta_salida_toon):
     i = 0
     while i < cantidad:
         p = lista_paises[i]
-        # p es la tupla: (nombre, capital, codigo, poblacion, area, moneda, codigo_moneda, tasa_usd)
         archivo.write("    -\n")
         archivo.write('        nombre: "' + str(p[0]) + '"\n')
         archivo.write('        capital: "' + str(p[1]) + '"\n')
@@ -130,7 +140,6 @@ def obtener_valor_clave_toon(linea_limpia):
     partes = fs.separar_cadena(linea_limpia, ":")
     if len(partes) >= 2:
         clave = fs.limpiar_espacios_extremos(partes[0])
-        # Reconstruir valor si contiene dos puntos
         valor_raw = partes[1]
         k = 2
         while k < len(partes):
@@ -145,11 +154,9 @@ def obtener_valor_clave_toon(linea_limpia):
 def leer_datos_toon(ruta_toon):
     """
     Lee los países desde el archivo paises_datos.toon.
-    Parsea el archivo línea por línea de forma manual sin diccionarios.
-    Retorna una lista de tuplas con los datos de cada país o None si el archivo no existe.
+    Parsea y valida las líneas de forma manual sin diccionarios.
+    Retorna una lista de tuplas con los datos de cada país o None si el archivo no existe o no tiene países válidos.
     """
-    global PAISES_CARGADOS
-
     try:
         archivo = open(ruta_toon, "r", encoding="utf-8")
     except FileNotFoundError:
@@ -163,7 +170,6 @@ def leer_datos_toon(ruta_toon):
     cantidad_lineas = len(lineas)
     i = 0
 
-    # Variables temporales para acumular los campos del país actual
     nombre = ""
     capital = ""
     codigo = ""
@@ -180,8 +186,9 @@ def leer_datos_toon(ruta_toon):
 
         if linea_limpia == "-":
             if tiene_datos:
-                pais_tuple = (nombre, capital, codigo, poblacion, area, moneda, codigo_moneda, tasa_usd)
-                lista_paises.append(pais_tuple)
+                if len(nombre) > 0 and poblacion > 0 and area > 0:
+                    pais_tuple = (nombre, capital, codigo, poblacion, area, moneda, codigo_moneda, tasa_usd)
+                    lista_paises.append(pais_tuple)
                 nombre = ""
                 capital = ""
                 codigo = ""
@@ -201,22 +208,33 @@ def leer_datos_toon(ruta_toon):
             elif clave == "codigo":
                 codigo = valor
             elif clave == "poblacion":
-                poblacion = fs.convertir_a_entero(valor)
+                if fs.es_entero_valido(valor):
+                    poblacion = fs.convertir_a_entero(valor)
+                else:
+                    poblacion = 0
             elif clave == "area":
-                area = fs.convertir_a_entero(valor)
+                if fs.es_entero_valido(valor):
+                    area = fs.convertir_a_entero(valor)
+                else:
+                    area = 0
             elif clave == "moneda":
                 moneda = valor
             elif clave == "codigo_moneda":
                 codigo_moneda = valor
             elif clave == "tasa_usd":
-                tasa_usd = fs.convertir_a_flotante(valor)
+                if fs.es_flotante_valido(valor):
+                    tasa_usd = fs.convertir_a_flotante(valor)
+                else:
+                    tasa_usd = 0.0
 
         i = i + 1
 
-    # Guardar el último país procesado si existe
-    if tiene_datos and len(nombre) > 0:
+    if tiene_datos and len(nombre) > 0 and poblacion > 0 and area > 0:
         pais_tuple = (nombre, capital, codigo, poblacion, area, moneda, codigo_moneda, tasa_usd)
         lista_paises.append(pais_tuple)
 
-    PAISES_CARGADOS = lista_paises
+    if len(lista_paises) == 0:
+        print("\n No se encontraron datos válidos de países.")
+        return None
+
     return lista_paises

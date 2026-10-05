@@ -1,0 +1,133 @@
+El país Argentina tiene como capital Buenos Aires, su código ISO es AR,
+tiene 45808747 habitantes, un área de 2780400km2, su moneda es Peso Argentino,
+código ARS, y hay 975.50 por cada dólar.
+Densidad poblacional: 16.48 hab/km2. Categoría: Megaciudad.
+
+El país Brasil tiene como capital Brasilia, su código ISO es BR,
+tiene 214326223 habitantes, un área de 8515767km2, su moneda es Real,
+código BRL, y hay 5.00 por cada dólar.
+Densidad poblacional: 25.17 hab/km2. Categoría: Megaciudad.
+
+El país Chile tiene como capital Santiago, su código ISO es CL,
+tiene 19493184 habitantes, un área de 756102km2, su moneda es Peso Chileno,
+código CLP, y hay 920.00 por cada dólar.
+Densidad poblacional: 25.78 hab/km2. Categoría: Megaciudad.
+
+El país Colombia tiene como capital Bogota, su código ISO es CO,
+tiene 51516562 habitantes, un área de 1141748km2, su moneda es Peso Colombiano,
+código COP, y hay 4150.00 por cada dólar.
+Densidad poblacional: 45.12 hab/km2. Categoría: Megaciudad.
+
+El país Espana tiene como capital Madrid, su código ISO es ES,
+tiene 47415750 habitantes, un área de 505990km2, su moneda es Euro,
+código EUR, y hay 0.91 por cada dólar.
+Densidad poblacional: 93.71 hab/km2. Categoría: Megaciudad.
+
+El país Francia tiene como capital Paris, su código ISO es FR,
+tiene 67750000 habitantes, un área de 551695km2, su moneda es Euro,
+código EUR, y hay 0.91 por cada dólar.
+Densidad poblacional: 122.80 hab/km2. Categoría: Megaciudad.
+
+El país Japon tiene como capital Tokio, su código ISO es JP,
+tiene 125507000 habitantes, un área de 377975km2, su moneda es Yen Japones,
+código JPY, y hay 148.20 por cada dólar.
+Densidad poblacional: 332.05 hab/km2. Categoría: Megaciudad.
+
+El país Mexico tiene como capital Ciudad De Mexico, su código ISO es MX,
+tiene 126705138 habitantes, un área de 1964375km2, su moneda es Peso mexicano,
+código MXN, y hay 20.50 por cada dólar.
+Densidad poblacional: 64.50 hab/km2. Categoría: Megaciudad.
+
+El país Panama tiene como capital Ciudad De Panama, su código ISO es PA,
+tiene 4351267 habitantes, un área de 75417km2, su moneda es Balboa Panameno,
+código PAB, y hay 1.00 por cada dólar.
+Densidad poblacional: 57.70 hab/km2. Categoría: Ciudad grande.
+
+El país Peru tiene como capital Lima, su código ISO es PE,
+tiene 33715471 habitantes, un área de 1285216km2, su moneda es Sol Peruano,
+código PEN, y hay 3.76 por cada dólar.
+Densidad poblacional: 26.23 hab/km2. Categoría: Megaciudad.
+
+El país Estados Unidos tiene como capital Washington D.c., su código ISO es US,
+tiene 331893745 habitantes, un área de 9833517km2, su moneda es Dolar estadounidense,
+código USD, y hay 1.00 por cada dólar.
+Densidad poblacional: 33.75 hab/km2. Categoría: Megaciudad.
+
+El país Uruguay tiene como capital Montevideo, su código ISO es UY,
+tiene 3426260 habitantes, un área de 176215km2, su moneda es Peso Uruguayo,
+código UYU, y hay 41.20 por cada dólar.
+Densidad poblacional: 19.44 hab/km2. Categoría: Ciudad grande.
+
+El país Alemania tiene como capital Berlin, su código ISO es DE,
+tiene 83200000 habitantes, un área de 357022km2, su moneda es Euro,
+código EUR, y hay 0.91 por cada dólar.
+Densidad poblacional: 233.04 hab/km2. Categoría: Megaciudad.
+
+El país Italia tiene como capital Roma, su código ISO es IT,
+tiene 58850000 habitantes, un área de 301340km2, su moneda es Euro,
+código EUR, y hay 0.91 por cada dólar.
+Densidad poblacional: 195.29 hab/km2. Categoría: Megaciudad.
+
+El país Reino Unido tiene como capital Londres, su código ISO es GB,
+tiene 67330000 habitantes, un área de 243610km2, su moneda es Libra Esterlina,
+código GBP, y hay 0.76 por cada dólar.
+Densidad poblacional: 276.38 hab/km2. Categoría: Megaciudad.
+
+El país Canada tiene como capital Ottawa, su código ISO es CA,
+tiene 38250000 habitantes, un área de 9984670km2, su moneda es Dolar canadiense,
+código CAD, y hay 1.35 por cada dólar.
+Densidad poblacional: 3.83 hab/km2. Categoría: Megaciudad.
+
+El país Australia tiene como capital Canberra, su código ISO es AU,
+tiene 25690000 habitantes, un área de 7692024km2, su moneda es Dolar Australiano,
+código AUD, y hay 1.48 por cada dólar.
+Densidad poblacional: 3.34 hab/km2. Categoría: Megaciudad.
+
+El país Costa Rica tiene como capital San Jose, su código ISO es CR,
+tiene 5150000 habitantes, un área de 51100km2, su moneda es Colon costarricense,
+código CRC, y hay 500.00 por cada dólar.
+Densidad poblacional: 100.78 hab/km2. Categoría: Ciudad grande.
+
+El país Ecuador tiene como capital Quito, su código ISO es EC,
+tiene 17800000 habitantes, un área de 256370km2, su moneda es Dolar estadounidense,
+código USD, y hay 1.00 por cada dólar.
+Densidad poblacional: 69.43 hab/km2. Categoría: Megaciudad.
+
+El país China tiene como capital Pekin, su código ISO es CN,
+tiene 1411778000 habitantes, un área de 9596960km2, su moneda es Yuan Chino,
+código CNY, y hay 7.10 por cada dólar.
+Densidad poblacional: 147.11 hab/km2. Categoría: Megaciudad.
+
+El país India tiene como capital Nueva Delhi, su código ISO es IN,
+tiene 1408044253 habitantes, un área de 3287263km2, su moneda es Rupia India,
+código INR, y hay 83.90 por cada dólar.
+Densidad poblacional: 428.33 hab/km2. Categoría: Megaciudad.
+
+El país Corea Del Sur tiene como capital Seul, su código ISO es KR,
+tiene 51740000 habitantes, un área de 100210km2, su moneda es Won Surcoreano,
+código KRW, y hay 1335.00 por cada dólar.
+Densidad poblacional: 516.32 hab/km2. Categoría: Megaciudad.
+
+El país Suiza tiene como capital Berna, su código ISO es CH,
+tiene 8700000 habitantes, un área de 41285km2, su moneda es Franco Suizo,
+código CHF, y hay 0.85 por cada dólar.
+Densidad poblacional: 210.73 hab/km2. Categoría: Ciudad grande.
+
+El país Egipto tiene como capital El Cairo, su código ISO es EG,
+tiene 104000000 habitantes, un área de 1002450km2, su moneda es Libra Egipcia,
+código EGP, y hay 48.50 por cada dólar.
+Densidad poblacional: 103.75 hab/km2. Categoría: Megaciudad.
+
+El país Sudafrica tiene como capital Pretoria, su código ISO es ZA,
+tiene 59300000 habitantes, un área de 1221037km2, su moneda es Rand Sudafricano,
+código ZAR, y hay 17.80 por cada dólar.
+Densidad poblacional: 48.57 hab/km2. Categoría: Megaciudad.
+
+==================================================
+RESUMEN GENERAL:
+Total de países: 25
+Población total: 4411741600
+Área total: 62099758 km2
+Promedio de población: 176469664 habitantes
+Promedio de área: 2483990.32 km2
+==================================================

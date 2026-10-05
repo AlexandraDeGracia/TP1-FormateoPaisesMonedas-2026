@@ -1,14 +1,33 @@
 """
 Módulo de Cálculos y Ordenamientos Manuales.
-Estilo de código: Estudiante de primer año de programación.
-
-RESTRICCIONES STRICTAS:
-- Prohibido utilizar sorted(), min(), max(), sum() o .sort().
-- Todo ordenamiento y cálculo numérico se realiza manualmente con ciclos while.
-- Sin diccionarios.
+Contiene funciones numéricas, de ordenamiento y agregación desarrolladas
+manualmente utilizando únicamente listas, tuplas y ciclos while.
 """
 
 import formateo_strings as fs
+
+
+def redondear_manual(numero, decimales):
+    """
+    Redondea un número a una cantidad especificada de decimales mediante
+    operaciones aritméticas simples y ciclos while, sin redondeo nativo.
+    """
+    if decimales < 0:
+        return numero
+
+    factor = 1.0
+    i = 0
+    while i < decimales:
+        factor = factor * 10.0
+        i = i + 1
+
+    scaled = numero * factor
+    if scaled >= 0.0:
+        entero = int(scaled + 0.5)
+    else:
+        entero = int(scaled - 0.5)
+
+    return entero / factor
 
 
 def copiar_lista(lista_original):
@@ -247,8 +266,8 @@ def contar_paises_con_letra(lista_paises, letra):
 
 def normalizar_datos_paises(lista_paises):
     """
-    Normaliza el nombre, capital y moneda de cada país en la lista
-    utilizando fs.normalizar_nombre y un ciclo while.
+    Normaliza el nombre y capital con fs.normalizar_nombre, y la moneda quitando únicamente tildes
+    con fs.quitar_tildes (conservando la capitalización original del CSV) usando un ciclo while.
     """
     lista_normalizada = []
     i = 0
@@ -257,11 +276,12 @@ def normalizar_datos_paises(lista_paises):
         p = lista_paises[i]
         nombre_norm = fs.normalizar_nombre(p[0])
         capital_norm = fs.normalizar_nombre(p[1])
-        moneda_norm = fs.normalizar_nombre(p[5])
+        moneda_norm = fs.quitar_tildes(p[5])
         pais_norm = (nombre_norm, capital_norm, p[2], p[3], p[4], moneda_norm, p[6], p[7])
         lista_normalizada.append(pais_norm)
         i = i + 1
     return lista_normalizada
+
 
 
 def calcular_poblacion_total(lista_paises):
@@ -499,7 +519,7 @@ def clasificar_monedas_por_tasa(lista_monedas):
 
 def contar_monedas_con_n_letras(lista_monedas, n_letras):
     """
-    Cuenta cuántas monedas tienen exactamente n_letras en su nombre normalizado
+    Cuenta cuántas monedas tienen exactamente n_letras en su nombre (sin tildes)
     (sin contar espacios en blanco).
     """
     contador = 0
@@ -508,12 +528,13 @@ def contar_monedas_con_n_letras(lista_monedas, n_letras):
 
     while i < cantidad:
         nombre = lista_monedas[i][1]
-        nombre_norm = fs.normalizar_nombre(nombre)
+        nombre_norm = fs.quitar_tildes(nombre)
         letras = fs.contar_letras_sin_espacios(nombre_norm)
         if letras == n_letras:
             contador = contador + 1
         i = i + 1
 
     return contador
+
 
 
