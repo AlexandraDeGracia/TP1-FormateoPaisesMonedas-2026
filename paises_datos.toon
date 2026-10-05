@@ -36,7 +36,7 @@ paises:
         codigo_moneda: "COP"
         tasa_usd: 4150.0
     -
-        nombre: "España"
+        nombre: "Espana"
         capital: "Madrid"
         codigo: "ES"
         poblacion: 47415750
@@ -54,7 +54,7 @@ paises:
         codigo_moneda: "EUR"
         tasa_usd: 0.91
     -
-        nombre: "Japón"
+        nombre: "Japon"
         capital: "Tokio"
         codigo: "JP"
         poblacion: 125507000
@@ -63,7 +63,7 @@ paises:
         codigo_moneda: "JPY"
         tasa_usd: 148.2
     -
-        nombre: "México"
+        nombre: "Mexico"
         capital: "Ciudad de México"
         codigo: "MX"
         poblacion: 126705138
@@ -72,7 +72,7 @@ paises:
         codigo_moneda: "MXN"
         tasa_usd: 20.5
     -
-        nombre: "Panamá"
+        nombre: "Panama"
         capital: "Ciudad de Panamá"
         codigo: "PA"
         poblacion: 4351267
@@ -81,7 +81,7 @@ paises:
         codigo_moneda: "PAB"
         tasa_usd: 1.0
     -
-        nombre: "Perú"
+        nombre: "Peru"
         capital: "Lima"
         codigo: "PE"
         poblacion: 33715471
@@ -135,7 +135,7 @@ paises:
         codigo_moneda: "GBP"
         tasa_usd: 0.76
     -
-        nombre: "Canadá"
+        nombre: "Canada"
         capital: "Ottawa"
         codigo: "CA"
         poblacion: 38250000
@@ -189,7 +189,7 @@ paises:
         codigo_moneda: "INR"
         tasa_usd: 83.9
     -
-        nombre: "Corea del Sur"
+        nombre: "Corea Del Sur"
         capital: "Seúl"
         codigo: "KR"
         poblacion: 51740000
@@ -216,7 +216,7 @@ paises:
         codigo_moneda: "EGP"
         tasa_usd: 48.5
     -
-        nombre: "Sudáfrica"
+        nombre: "Sudafrica"
         capital: "Pretoria"
         codigo: "ZA"
         poblacion: 59300000

@@ -130,6 +130,68 @@ def ejecutar_opcion_1():
     print("\n==================================================")
 
 
+def ejecutar_opcion_2():
+    """
+    Opción 2: Lee los países desde paises_datos.toon, aplica las 8 reglas de normalización
+    a los nombres de países, guarda los nombres normalizados de vuelta en paises_datos.toon
+    y muestra las métricas requeridas por consola.
+    """
+    print("\n--- OPCIÓN 2: PROCESAR Y NORMALIZAR NOMBRES DE PAÍSES ---")
+    lista_paises = datos.leer_datos_toon("paises_datos.toon")
+
+    if lista_paises is None or len(lista_paises) == 0:
+        print("No se encontraron datos. Primero ejecute la Opción 1.")
+        return
+
+    # Normalización de los nombres de los países
+    lista_normalizados = []
+    i = 0
+    cantidad = len(lista_paises)
+
+    while i < cantidad:
+        p = lista_paises[i]
+        nombre_original = p[0]
+        nombre_normalizado = fs.normalizar_nombre(nombre_original)
+        pais_norm = (nombre_normalizado, p[1], p[2], p[3], p[4], p[5], p[6], p[7])
+        lista_normalizados.append(pais_norm)
+        i = i + 1
+
+    # Guardar de vuelta en paises_datos.toon
+    datos.guardar_datos_toon(lista_normalizados, "paises_datos.toon")
+    print("Nombres normalizados guardados correctamente en 'paises_datos.toon'.")
+
+    # Pedir letra al usuario y validar que sea exactamente 1 letra alfabética
+    letra_valida = False
+    letra_ingresada = ""
+
+    while not letra_valida:
+        letra_input = input("\nIngrese una letra para buscar en los nombres de países: ")
+        letra_limpia = fs.limpiar_espacios_extremos(letra_input)
+
+        if len(letra_limpia) == 1 and fs.es_letra_valida(letra_limpia):
+            letra_valida = True
+            letra_ingresada = letra_limpia
+        else:
+            print(" Error: Debe ingresar exactamente UNA letra alfabética válida.")
+
+    # Cálculos y estadísticas
+    promedio_len = calc.calcular_longitud_promedio_nombres(lista_normalizados)
+    nombre_largo, max_len = calc.obtener_pais_nombre_mas_largo(lista_normalizados)
+    nombre_corto, min_len = calc.obtener_pais_nombre_mas_corto(lista_normalizados)
+    cantidad_con_letra = calc.contar_paises_con_letra(lista_normalizados, letra_ingresada)
+
+    letra_normalizada = fs.quitar_tildes(fs.a_mayusculas(letra_ingresada))
+
+    print("\n==================================================")
+    print("          RESULTADOS DE LA OPCIÓN 2")
+    print("==================================================")
+    print("• Longitud promedio de los nombres (entero): " + str(promedio_len) + " caracteres")
+    print("• País con nombre más largo: " + str(nombre_largo) + " (" + str(max_len) + " caracteres)")
+    print("• País con nombre más corto: " + str(nombre_corto) + " (" + str(min_len) + " caracteres)")
+    print("• Países que contienen la letra '" + letra_normalizada + "': " + str(cantidad_con_letra) + " países")
+    print("==================================================")
+
+
 def main():
     """Función principal para controlar el menú."""
     opcion = ""
@@ -142,7 +204,7 @@ def main():
         if opcion == "1":
             ejecutar_opcion_1()
         elif opcion == "2":
-            print("\n[Opción 2] - Procesar y normalizar nombres de países (En desarrollo...)")
+            ejecutar_opcion_2()
         elif opcion == "3":
             print("\n[Opción 3] - Procesar datos poblacionales y geográficos (En desarrollo...)")
         elif opcion == "4":
