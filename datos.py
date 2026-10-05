@@ -1,3 +1,6 @@
+#Elaborado por: Alexandra De Gracia
+#Fecha de Creación: 2026-10-05
+#Fecha de última Modificación: 2026-10-05
 """
 Módulo de Gestión y Persistencia de Datos.
 Carga, valida y almacena datos de países y monedas desde y hacia archivos CSV y TOON
@@ -5,6 +8,7 @@ utilizando listas, tuplas y validaciones carácter por carácter.
 """
 
 import formateo_strings as fs
+import bitacora
 
 
 # Definición de función: leerCsvPaises
@@ -15,6 +19,7 @@ def leerCsvPaises(rutaArchivo):
     except FileNotFoundError:
         print("\n Error: El archivo '" + rutaArchivo + "' no existe.")
         print("Por favor, verifique la ruta del archivo e intente nuevamente.")
+        bitacora.registrarEventoBitacora("Error: El archivo '" + rutaArchivo + "' no existe.")
         return None
 
     lineas = archivo.readlines()
@@ -23,6 +28,7 @@ def leerCsvPaises(rutaArchivo):
     cantidadLineas = len(lineas)
     if cantidadLineas <= 1:
         print("\n El archivo CSV está vacío o solo contiene encabezados.")
+        bitacora.registrarEventoBitacora("Error: El archivo '" + rutaArchivo + "' está vacío o solo contiene encabezados.")
         return None
 
     listaPaises = []
@@ -70,9 +76,11 @@ def leerCsvPaises(rutaArchivo):
 
     if lineasOmitidas > 0:
         print("Se omitieron " + str(lineasOmitidas) + " líneas por contener datos inválidos.")
+        bitacora.registrarEventoBitacora("Advertencia: Se omitieron " + str(lineasOmitidas) + " líneas por datos inválidos en '" + rutaArchivo + "'.")
 
     if len(listaPaises) == 0:
         print("Error: No se encontró ningún país válido en el archivo.")
+        bitacora.registrarEventoBitacora("Error: No se encontró ningún país válido en '" + rutaArchivo + "'.")
         return None
 
     return listaPaises
@@ -85,6 +93,7 @@ def guardarDatosToon(listaPaises, rutaSalidaToon):
         archivo = open(rutaSalidaToon, "w", encoding="utf-8")
     except OSError:
         print("Error: No se pudo crear el archivo TOON en '" + rutaSalidaToon + "'.")
+        bitacora.registrarEventoBitacora("Error: No se pudo crear el archivo TOON '" + rutaSalidaToon + "'.")
         return False
 
     archivo.write("paises:\n")
@@ -147,6 +156,7 @@ def leerDatosToon(rutaToon):
         archivo = open(rutaToon, "r", encoding="utf-8")
     except FileNotFoundError:
         print("\n Primero ejecute la Opción 1")
+        bitacora.registrarEventoBitacora("Error: El archivo '" + rutaToon + "' no existe. Primero ejecute la Opción 1.")
         return None
 
     lineas = archivo.readlines()
@@ -221,6 +231,7 @@ def leerDatosToon(rutaToon):
 
     if len(listaPaises) == 0:
         print("\n No se encontraron datos válidos de países.")
+        bitacora.registrarEventoBitacora("Error: No se encontraron datos válidos de países en '" + rutaToon + "'.")
         return None
 
     return listaPaises

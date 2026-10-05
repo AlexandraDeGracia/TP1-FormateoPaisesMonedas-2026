@@ -1,0 +1,10 @@
+2026-10-05 17:19:41|Opción 1: Descargar datos de países. Archivo: paises.csv, Datos procesados: 25, Tiempo de respuesta: 0.0051 s
+2026-10-05 17:19:41|Opción 2: Procesar y normalizar nombres de países. Búsqueda con letra 'A', Países encontrados: 20
+2026-10-05 17:19:41|Opción 4: Procesar datos de monedas. Monedas únicas: 21, Monedas con 3 letras: 0
+2026-10-05 17:19:41|Opción 8: El usuario ingresó al submenú de bitácora.
+2026-10-05 17:19:41|Submenú Bitácora: Mostrar todos los registros (Total: 4)
+2026-10-05 17:19:41|Submenú Bitácora: Exportar bitácora a CSV ('bitacora.csv'). Total exportados: 5
+2026-10-05 17:19:41|Submenú Bitácora: Búsqueda por fecha '2026', Coincidencias: 6
+2026-10-05 17:19:41|Submenú Bitácora: Búsqueda por palabra clave 'países', Coincidencias: 2
+2026-10-05 17:19:41|Submenú Bitácora: El usuario regresó al menú principal.
+2026-10-05 17:19:41|Opción 9: El usuario salió del sistema.

@@ -1,3 +1,6 @@
+#Elaborado por: Alexandra De Gracia
+#Fecha de Creación: 2026-10-05
+#Fecha de última Modificación: 2026-10-05
 """
 Módulo de Cálculos y Ordenamientos Manuales.
 Contiene funciones numéricas, de ordenamiento y agregación desarrolladas

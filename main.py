@@ -1,3 +1,6 @@
+#Elaborado por: Alexandra De Gracia
+#Fecha de Creación: 2026-10-05
+#Fecha de última Modificación: 2026-10-05
 """
 Módulo Principal - TP1.
 Sistema de Formateo y Análisis de Datos de Países y Monedas.
@@ -5,10 +8,12 @@ Proporciona la interfaz de consola, menú de navegación y flujo de ejecución p
 """
 
 import datetime
+import time
 import datos
 import formateo_strings as fs
 import calculos as calc
 import reportes
+import bitacora
 
 
 # Definición de función: mostrarMenu
@@ -88,6 +93,7 @@ def imprimirResultadosOpcion1(totalPaises, top5Poblacion, top5Area, fechaHoy, to
 def ejecutarOpcion1():
     """Opción 1: Carga los datos del archivo CSV, los guarda en .toon y muestra estadísticas."""
     print("\n--- OPCIÓN 1: DESCARGAR DATOS DE PAÍSES (CSV) ---")
+    tiempoInicio = time.time()
     rutaCsv = solicitarRutaCsv()
 
     print("Cargando datos desde: " + rutaCsv + " ...")
@@ -121,6 +127,12 @@ def ejecutarOpcion1():
     top5MenorValor = calc.obtenerPrimerosElementos(monedasMenorValor, 5)
 
     imprimirResultadosOpcion1(totalPaises, top5Poblacion, top5Area, fechaHoy, totalMonedas, top5MayorValor, top5MenorValor)
+
+    tiempoFin = time.time()
+    duracion = tiempoFin - tiempoInicio
+    duracionRed = calc.redondearManual(duracion, 4)
+
+    bitacora.registrarEventoBitacora("Opción 1: Descargar datos de países. Archivo: " + rutaCsv + ", Datos procesados: " + str(totalPaises) + ", Tiempo de respuesta: " + str(duracionRed) + " s")
 
 
 # Definición de función: solicitarLetraBusqueda
@@ -182,6 +194,8 @@ def ejecutarOpcion2():
     print("• País con nombre más corto: " + str(nombreCorto) + " (" + str(minLen) + " caracteres)")
     print("• Países que contienen la letra '" + letraNormalizada + "': " + str(cantidadConLetra) + " países")
     print("==================================================")
+
+    bitacora.registrarEventoBitacora("Opción 2: Procesar y normalizar nombres de países. Búsqueda con letra '" + letraNormalizada + "', Países encontrados: " + str(cantidadConLetra))
 
 
 # Definición de función: imprimirResultadosOpcion3
@@ -256,6 +270,7 @@ def ejecutarOpcion3():
     top10Menor = calc.obtenerPrimerosElementos(densidadesMenor, 10)
 
     imprimirResultadosOpcion3(pobTotal, pobPromedio, pobMediana, mega, grande, mediana, pequena, sumaCat, areaTotal, top10Mayor, top10Menor)
+    bitacora.registrarEventoBitacora("Opción 3: Procesar datos poblacionales y geográficos. Población total: " + str(pobTotal) + ", Área total: " + str(areaTotal))
 
 
 # Definición de función: solicitarNLetrasMoneda
@@ -352,6 +367,7 @@ def ejecutarOpcion4():
     monedasDesc = calc.ordenarMonedasPorTasa(monedasUnicas, descendente=True)
 
     imprimirResultadosOpcion4(monedasUnicas, nLetras, monedasConN, promedioTasa, monedaFuerte, monedaDebil, mayores1, iguales1, menores1, sumaConteos, monedasAsc, monedasDesc)
+    bitacora.registrarEventoBitacora("Opción 4: Procesar datos de monedas. Monedas únicas: " + str(len(monedasUnicas)) + ", Monedas con " + str(nLetras) + " letras: " + str(monedasConN))
 
 
 # Definición de función: ejecutarOpcion5
@@ -369,6 +385,7 @@ def ejecutarOpcion5():
     exito = reportes.generarReportePaisesTxt(listaNormalizados, "reporte_paises.txt")
     if exito:
         print(" Reporte TXT generado exitosamente en 'reporte_paises.txt'.")
+        bitacora.registrarEventoBitacora("Opción 5: Generar reporte de países en TXT. Archivo creado: reporte_paises.txt")
 
 
 # Definición de función: ejecutarOpcion6
@@ -386,6 +403,7 @@ def ejecutarOpcion6():
     exito = reportes.generarReporteMonedasHtml(listaNormalizados, "reporte_monedas.html")
     if exito:
         print(" Reporte HTML de monedas generado exitosamente en 'reporte_monedas.html'.")
+        bitacora.registrarEventoBitacora("Opción 6: Generar reporte de monedas en HTML. Archivo creado: reporte_monedas.html")
 
 
 # Definición de función: ejecutarOpcion7
@@ -403,6 +421,7 @@ def ejecutarOpcion7():
     exito = reportes.generarReporteDensidadHtml(listaNormalizados, "reporte_densidad.html")
     if exito:
         print(" Reporte HTML de densidad generado exitosamente en 'reporte_densidad.html'.")
+        bitacora.registrarEventoBitacora("Opción 7: Generar reporte de densidad poblacional en HTML. Archivo creado: reporte_densidad.html")
 
 
 # Definición de función: main
@@ -430,11 +449,13 @@ def main():
         elif opcion == "7":
             ejecutarOpcion7()
         elif opcion == "8":
-            print("\n[Opción 8] - Submenú de bitácora (En desarrollo...)")
+            bitacora.ejecutarSubmenuBitacora()
         elif opcion == "9":
             print("\n¡Gracias por utilizar el sistema!")
+            bitacora.registrarEventoBitacora("Opción 9: El usuario salió del sistema.")
         else:
             print("\nOpción no válida. Por favor, ingrese un número del 1 al 9.")
+            bitacora.registrarEventoBitacora("Error: Opción de menú no válida: '" + opcion + "'")
 
 
 if __name__ == "__main__":

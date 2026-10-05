@@ -1,3 +1,6 @@
+#Elaborado por: Alexandra De Gracia
+#Fecha de Creación: 2026-10-05
+#Fecha de última Modificación: 2026-10-05
 """
 Módulo de Formateo y Normalización de Cadenas de Texto.
 Proporciona funciones para manipular y normalizar textos carácter por carácter
@@ -304,6 +307,38 @@ def contieneLetraNormalizada(texto, letraBuscar):
         if textoNorm[i] == letraNorm:
             return True
         i = i + 1
+    return False
+
+
+# Definición de función: contieneSubcadena
+def contieneSubcadena(texto, subcadena):
+    """Verifica si subcadena está contenida en texto ignorando mayúsculas y tildes."""
+    textoNorm = quitarTildes(aMayusculas(texto))
+    subNorm = quitarTildes(aMayusculas(subcadena))
+
+    lenTexto = len(textoNorm)
+    lenSub = len(subNorm)
+
+    if lenSub == 0:
+        return True
+    if lenSub > lenTexto:
+        return False
+
+    i = 0
+    while i <= lenTexto - lenSub:
+        j = 0
+        coincide = True
+        while j < lenSub:
+            if textoNorm[i + j] != subNorm[j]:
+                coincide = False
+                j = lenSub
+            else:
+                j = j + 1
+
+        if coincide:
+            return True
+        i = i + 1
+
     return False
 
 

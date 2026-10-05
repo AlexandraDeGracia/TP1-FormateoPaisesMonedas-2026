@@ -1,3 +1,6 @@
+#Elaborado por: Alexandra De Gracia
+#Fecha de Creación: 2026-10-05
+#Fecha de última Modificación: 2026-10-05
 """
 Módulo de Generación de Reportes (TXT y HTML).
 Genera reportes detallados en formato de texto plano (TXT) y páginas web (HTML)
@@ -234,6 +237,7 @@ def construirCardEstadisticasMonedas(totalMonedas, promedioTasa, monedaFuerte, m
 def construirTablaDetalladaMonedas(monedasUnicas, stTable, stThL, stThC, stFuerte, stDebil, stIgual):
     """Construye el HTML para la tabla detallada de 21 monedas."""
     totalMonedas = len(monedasUnicas)
+    html = "自由" # placeholder replaced below
     html = "<h2>Tabla Detallada de Monedas</h2>\n"
     html = html + "<table " + stTable + ">\n<thead>\n<tr>\n"
     html = html + "<th " + stThC + ">Código</th>\n"
