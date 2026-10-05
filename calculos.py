@@ -404,3 +404,116 @@ def ordenar_paises_por_densidad(lista_densidades, descendente=True):
 
     return densidades
 
+
+def calcular_tasa_promedio_monedas(lista_monedas):
+    """Calcula la tasa de cambio promedio de una lista de monedas únicas."""
+    cantidad = len(lista_monedas)
+    if cantidad == 0:
+        return 0.0
+
+    suma_tasas = 0.0
+    i = 0
+    while i < cantidad:
+        suma_tasas = suma_tasas + lista_monedas[i][2]
+        i = i + 1
+
+    return suma_tasas / cantidad
+
+
+def obtener_moneda_mas_fuerte_opcion4(lista_monedas):
+    """
+    Obtiene la moneda con MAYOR tasa de cambio (moneda más fuerte según el criterio explícito de la Opción 4).
+    NOTA CRÍTICA: La consigna de la Opción 4 define 'moneda más fuerte = mayor tasa'.
+    Esto difiere del criterio de la Opción 1 donde una tasa menor significa mayor valor frente al USD.
+    Retorna la tupla (codigo_moneda, nombre_moneda, tasa_usd).
+    """
+    cantidad = len(lista_monedas)
+    if cantidad == 0:
+        return None
+
+    moneda_max = lista_monedas[0]
+    max_tasa = moneda_max[2]
+
+    i = 1
+    while i < cantidad:
+        m = lista_monedas[i]
+        if m[2] > max_tasa:
+            moneda_max = m
+            max_tasa = m[2]
+        i = i + 1
+
+    return moneda_max
+
+
+def obtener_moneda_mas_debil_opcion4(lista_monedas):
+    """
+    Obtiene la moneda con MENOR tasa de cambio (moneda más débil según el criterio explícito de la Opción 4).
+    NOTA CRÍTICA: La consigna de la Opción 4 define 'moneda más débil = menor tasa'.
+    Esto difiere del criterio de la Opción 1 donde una tasa mayor significa menor valor frente al USD.
+    Retorna la tupla (codigo_moneda, nombre_moneda, tasa_usd).
+    """
+    cantidad = len(lista_monedas)
+    if cantidad == 0:
+        return None
+
+    moneda_min = lista_monedas[0]
+    min_tasa = moneda_min[2]
+
+    i = 1
+    while i < cantidad:
+        m = lista_monedas[i]
+        if m[2] < min_tasa:
+            moneda_min = m
+            min_tasa = m[2]
+        i = i + 1
+
+    return moneda_min
+
+
+def clasificar_monedas_por_tasa(lista_monedas):
+    """
+    Clasifica las monedas según su tasa respecto a 1 USD:
+    - Mayores a 1 USD (> 1)
+    - Iguales a 1 USD (= 1)
+    - Menores a 1 USD (< 1)
+    Retorna una tupla: (mayores, iguales, menores)
+    """
+    mayores = 0
+    iguales = 0
+    menores = 0
+
+    i = 0
+    cantidad = len(lista_monedas)
+    while i < cantidad:
+        tasa = lista_monedas[i][2]
+        if tasa > 1.0:
+            mayores = mayores + 1
+        elif tasa == 1.0:
+            iguales = iguales + 1
+        else:
+            menores = menores + 1
+        i = i + 1
+
+    return mayores, iguales, menores
+
+
+def contar_monedas_con_n_letras(lista_monedas, n_letras):
+    """
+    Cuenta cuántas monedas tienen exactamente n_letras en su nombre normalizado
+    (sin contar espacios en blanco).
+    """
+    contador = 0
+    i = 0
+    cantidad = len(lista_monedas)
+
+    while i < cantidad:
+        nombre = lista_monedas[i][1]
+        nombre_norm = fs.normalizar_nombre(nombre)
+        letras = fs.contar_letras_sin_espacios(nombre_norm)
+        if letras == n_letras:
+            contador = contador + 1
+        i = i + 1
+
+    return contador
+
+

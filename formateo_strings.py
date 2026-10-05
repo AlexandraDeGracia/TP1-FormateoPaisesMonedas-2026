@@ -319,3 +319,46 @@ def convertir_a_flotante(texto):
     if len(texto_limpio) == 0:
         return 0.0
     return float(texto_limpio)
+
+
+def es_numero_entero_positivo(cadena):
+    """
+    Verifica si una cadena representa un número entero positivo (> 0)
+    recorriendo carácter por carácter con un ciclo while.
+    """
+    cadena_limpia = limpiar_espacios_extremos(cadena)
+    longitud = len(cadena_limpia)
+    if longitud == 0:
+        return False
+
+    i = 0
+    while i < longitud:
+        caracter = cadena_limpia[i]
+        if buscar_indice_caracter(caracter, "0123456789") == -1:
+            return False
+        i = i + 1
+
+    valor = convertir_a_entero(cadena_limpia)
+    if valor <= 0:
+        return False
+
+    return True
+
+
+def contar_letras_sin_espacios(texto):
+    """Cuenta la cantidad de caracteres en un texto excluyendo los espacios en blanco."""
+    contador = 0
+    i = 0
+    longitud = len(texto)
+    while i < longitud:
+        if not es_caracter_blanco(texto[i]):
+            contador = contador + 1
+        i = i + 1
+    return contador
+
+
+def formatear_moneda_codigo_nombre(codigo_moneda, nombre_moneda):
+    """Retorna la cadena en formato 'CODIGO - Nombre'."""
+    nombre_norm = normalizar_nombre(nombre_moneda)
+    return str(codigo_moneda) + " - " + str(nombre_norm)
+

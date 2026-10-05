@@ -270,6 +270,118 @@ def ejecutar_opcion_3():
     print("==================================================")
 
 
+def ejecutar_opcion_4():
+    """
+    Opción 4: Procesar datos de monedas.
+    Carga los datos desde paises_datos.toon (si no existe, indica "Primero ejecute la Opción 1").
+    Procesa las MONEDAS ÚNICAS (21 monedas).
+
+    CRITERIO DE VALOR DE MONEDAS EN OPCIÓN 4 (Páginas 17-18 del PDF):
+    - Moneda más fuerte = La de MAYOR tasa de cambio frente al USD.
+    - Moneda más débil = La de MENOR tasa de cambio frente al USD.
+    NOTA CRÍTICA: Este criterio es el especificado literalmente en el enunciado para la Opción 4
+    y difiere de la Opción 1 (donde una tasa menor significa mayor valor frente al USD).
+    No se modifica la Opción 1.
+
+    Solicita al usuario N (entero positivo mayor a 0) y cuenta monedas cuyo nombre normalizado
+    tenga exactamente N letras (sin contar espacios).
+
+    Calcula e imprime por consola:
+    - Formato "CODIGO - Nombre" de cada moneda única.
+    - Conteo de monedas con N letras.
+    - Tasa de cambio promedio.
+    - Moneda más fuerte y más débil (con sus tasas).
+    - Cantidad de monedas con tasa > 1 USD, = 1 USD y < 1 USD.
+    - Lista de tasas ordenadas de forma ascendente y descendente.
+
+    Guarda los datos normalizados de vuelta en paises_datos.toon.
+    """
+    print("\n--- OPCIÓN 4: PROCESAR DATOS DE MONEDAS ---")
+    lista_paises = datos.leer_datos_toon("paises_datos.toon")
+
+    if lista_paises is None or len(lista_paises) == 0:
+        return
+
+    # Normalizar datos (nombre, capital y moneda) de los países
+    lista_normalizados = calc.normalizar_datos_paises(lista_paises)
+
+    # Guardar de vuelta en paises_datos.toon
+    datos.guardar_datos_toon(lista_normalizados, "paises_datos.toon")
+
+    # Extraer monedas únicas (21 monedas)
+    monedas_unicas = calc.extraer_monedas_unicas(lista_normalizados)
+    total_monedas = len(monedas_unicas)
+
+    # Solicitar N al usuario y validar que sea un entero positivo mayor a 0
+    valido = False
+    n_letras = 0
+
+    while not valido:
+        n_input = input("\nIngrese la cantidad de letras N a buscar en los nombres de monedas: ")
+        if fs.es_numero_entero_positivo(n_input):
+            n_letras = fs.convertir_a_entero(n_input)
+            valido = True
+        else:
+            print(" Error: Debe ingresar un número entero positivo mayor a 0.")
+
+    # 1. STRINGS Y FORMATO "CODIGO - Nombre"
+    print("\n==================================================")
+    print("          RESULTADOS DE LA OPCIÓN 4")
+    print("==================================================")
+
+    print("\n--- LISTA DE MONEDAS ÚNICAS (" + str(total_monedas) + ") ---")
+    i = 0
+    while i < total_monedas:
+        m = monedas_unicas[i]
+        formato_moneda = fs.formatear_moneda_codigo_nombre(m[0], m[1])
+        print("  " + str(i + 1) + ". " + formato_moneda + " (Tasa: " + str(m[2]) + ")")
+        i = i + 1
+
+    monedas_con_n = calc.contar_monedas_con_n_letras(monedas_unicas, n_letras)
+    print("\n• Cantidad de monedas con exactamente " + str(n_letras) + " letras en su nombre: " + str(monedas_con_n) + " monedas")
+
+    # 2. OPERACIONES NUMÉRICAS Y CRITERIOS EN OPCIÓN 4
+    promedio_tasa = calc.calcular_tasa_promedio_monedas(monedas_unicas)
+    moneda_fuerte = calc.obtener_moneda_mas_fuerte_opcion4(monedas_unicas)
+    moneda_debil = calc.obtener_moneda_mas_debil_opcion4(monedas_unicas)
+    mayores_1, iguales_1, menores_1 = calc.clasificar_monedas_por_tasa(monedas_unicas)
+    suma_conteos = mayores_1 + iguales_1 + menores_1
+
+    print("\n--- ESTADÍSTICAS Y OPERACIONES NUMÉRICAS ---")
+    print("• Tasa de cambio promedio: " + str(round(promedio_tasa, 4)))
+
+    if moneda_fuerte is not None:
+        print("• Moneda más fuerte (Mayor tasa): " + str(moneda_fuerte[1]) + " (" + str(moneda_fuerte[0]) + ") con tasa " + str(moneda_fuerte[2]))
+    if moneda_debil is not None:
+        print("• Moneda más débil (Menor tasa): " + str(moneda_debil[1]) + " (" + str(moneda_debil[0]) + ") con tasa " + str(moneda_debil[2]))
+
+    print("\n• Clasificación según la tasa frente a 1 USD:")
+    print("  - Monedas con tasa > 1 USD: " + str(mayores_1))
+    print("  - Monedas con tasa = 1 USD: " + str(iguales_1))
+    print("  - Monedas con tasa < 1 USD: " + str(menores_1))
+    print("  - Total monedas clasificadas: " + str(suma_conteos))
+
+    # 3. LISTAS DE TASAS ORDENADAS
+    monedas_asc = calc.ordenar_monedas_por_tasa(monedas_unicas, descendente=False)
+    monedas_desc = calc.ordenar_monedas_por_tasa(monedas_unicas, descendente=True)
+
+    print("\n--- MONEDAS ORDENADAS POR TASA (ASCENDENTE - De menor a mayor) ---")
+    i = 0
+    while i < total_monedas:
+        m = monedas_asc[i]
+        print("  " + str(i + 1) + ". " + str(m[0]) + " - " + str(m[1]) + ": " + str(m[2]))
+        i = i + 1
+
+    print("\n--- MONEDAS ORDENADAS POR TASA (DESCENDENTE - De mayor a menor) ---")
+    i = 0
+    while i < total_monedas:
+        m = monedas_desc[i]
+        print("  " + str(i + 1) + ". " + str(m[0]) + " - " + str(m[1]) + ": " + str(m[2]))
+        i = i + 1
+
+    print("==================================================")
+
+
 def main():
     """Función principal para controlar el menú."""
     opcion = ""
@@ -286,9 +398,10 @@ def main():
         elif opcion == "3":
             ejecutar_opcion_3()
         elif opcion == "4":
-            print("\n[Opción 4] - Procesar datos de monedas (En desarrollo...)")
+            ejecutar_opcion_4()
         elif opcion == "5":
             print("\n[Opción 5] - Generar reporte de países en TXT (En desarrollo...)")
+
         elif opcion == "6":
             print("\n[Opción 6] - Generar reporte de monedas en HTML (En desarrollo...)")
         elif opcion == "7":
