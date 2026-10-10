@@ -16,6 +16,7 @@ La Opción 3 procesa población, área y densidad. La Opción 4 procesa las mone
 | 7 | `feat: implementar bitacora del sistema` | Hecho y verificado |
 | 8 | `refactor: estructurar codigo en camelCase, mejorar documentacion y reportes` | Hecho y verificado |
 | 9 | `fix: limpiar residuo confirmado en generador html` | Hecho y verificado |
+| 10 | `docs: documentar verificacion de reportes txt, html y bitacora en avance 2` | Hecho y verificado |
 
 
 Confirmar con `git log --oneline` y `git status` que los commits estén registrados correctamente.
@@ -384,6 +385,34 @@ También se verificaron:
 
 El TOON corrupto muestra `"No se encontraron datos válidos"` sin provocar que el programa se caiga.
 
+
+### Verificación de reportes TXT, HTML y bitácora (Tarea 6)
+
+Se realizó una auditoría completa de los módulos `reportes.py`, `bitacora.py` y `main.py` mediante una suite de pruebas aislada en entorno controlado:
+
+- **Reporte TXT (`reporte_paises.txt`):**
+  - Generación de 133 líneas exactas (25 bloques de 4 líneas + separadores + resumen general).
+  - Presencia obligatoria de los 7 campos por país: nombre normalizado, capital, código ISO, población, área, densidad calculada y categoría.
+  - Bloque final de resumen general verificado: 25 países, 4 411 741 600 habitantes totales, 62 099 758 km² de área total, promedio de población de 176 469 664 hab y promedio de área de 2 483 990.32 km².
+  - Manejo de error verificado con retorno `False` ante rutas no disponibles.
+- **Reporte HTML de Monedas (`reporte_monedas.html`):**
+  - Estructura HTML5 válida con `<!DOCTYPE html>`, `<html lang="es">` y `<meta charset="utf-8">`.
+  - Tarjeta de estadísticas generales: 21 monedas analizadas, tasa promedio `393.5148`, moneda más fuerte COP (`4150.0000`) y moneda más débil GBP (`0.7600`).
+  - Tabla detallada de 21 monedas con colores alternados y formato a 4 decimales.
+  - Tabla de clasificación: 16 monedas fuertes, 2 iguales y 3 débiles con sus códigos asociados.
+  - Ausencia confirmada de residuos y caracteres extraños.
+- **Reporte HTML de Densidad Poblacional (`reporte_densidad.html`):**
+  - Estructura HTML5 válida con `<!DOCTYPE html>`, `<html lang="es">` y `<meta charset="utf-8">`.
+  - Estadísticas de densidad mundial: promedio aritmético global `127.99 hab/km²`, máxima Corea Del Sur (`516.32 hab/km²`), mínima Australia (`3.34 hab/km²`) y distribución porcentual exacta.
+  - Tablas Top 10 mayor y Top 10 menor densidad ordenadas correctamente.
+  - Gráfico de barras ASCII vertical renderizado en bloque `<pre>` con marcas de escala numéricas hasta 25 y conteos por columna.
+- **Bitácora del Sistema (`bitacora.py` / `bitacora.bin`):**
+  - Persistencia binaria en modo append (`"ab"`) con codificación UTF-8 y timestamp exacto de 19 caracteres (`AAAA-MM-DD HH:MM:SS`).
+  - Formato por registro: `Fecha_Hora|Descripcion` con soporte para caracteres especiales y separadores múltiples.
+  - Manejo de archivo inexistente verificado (retorna lista vacía `[]` sin excepción).
+  - Búsqueda por subcadena de fecha y búsqueda por palabra clave verificadas con y sin coincidencias.
+  - Exportación a CSV con cabecera `Fecha_Hora;Descripcion` y delimitador `;`.
+  - Preservación íntegra de la bitácora real del repositorio (`bitacora.bin`), que se mantuvo intacta con sus 10 registros originales durante todas las pruebas.
 
 ### Estilo
 
