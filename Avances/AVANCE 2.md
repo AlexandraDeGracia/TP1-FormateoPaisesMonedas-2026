@@ -13,6 +13,9 @@ La Opción 3 procesa población, área y densidad. La Opción 4 procesa las mone
 | 4 | `feat: implementar analisis poblacional y geografico` | Hecho y verificado |
 | 5 | `feat: implementar procesamiento de monedas` | Hecho y verificado |
 | 6 | `feat: generar reportes txt y html` | Hecho y verificado |
+| 7 | `feat: implementar bitacora del sistema` | Hecho y verificado |
+| 8 | `refactor: estructurar codigo en camelCase, mejorar documentacion y reportes` | Hecho y verificado |
+| 9 | `fix: limpiar residuo confirmado en generador html` | Hecho y verificado |
 
 
 Confirmar con `git log --oneline` y `git status` que los commits estén registrados correctamente.
@@ -248,6 +251,58 @@ Antes de terminar:
 
 ---
 
+## COMMIT 7
+
+**Nombre:**
+
+```text
+feat: implementar bitacora del sistema
+```
+
+### Prompt usado y alcance
+
+Implementación de la Opción 8 (bitácora del sistema en `bitacora.bin` con submenú A-E) y registro de todas las acciones del menú principal y errores.
+
+### Resultado verificado
+
+- Persistencia binaria mediante `open("bitacora.bin", "ab")` y codificación UTF-8.
+- Submenú A (Buscar por fecha), B (Buscar por palabra clave), C (Mostrar todas), D (Exportar a CSV `bitacora.csv`) y E (Salir del submenú).
+- Registro del archivo consultado, cantidad de registros y tiempo de respuesta en la Opción 1.
+- Registro de salida en la Opción 9.
+
+---
+
+## COMMIT 8
+
+**Nombre:**
+
+```text
+refactor: estructurar codigo en camelCase, mejorar documentacion y reportes
+```
+
+### Alcance
+
+- Estandarización de nombres de funciones y variables en formato camelCase en todos los módulos.
+- Mejora de comentarios descriptivos y docstrings en español para cada función.
+- Diseño visual mejorado y consistente para los reportes HTML con estilos CSS inline portables.
+
+---
+
+## COMMIT 9
+
+**Nombre:**
+
+```text
+fix: limpiar residuo confirmado en generador html
+```
+
+### Alcance
+
+- Eliminación del residuo de código muerto `html = "自由"` en `construirTablaDetalladaMonedas` de `reportes.py`.
+- Verificación de la correcta generación de `reporte_monedas.html` y `reporte_densidad.html`.
+
+---
+
 ## Verificación antes del siguiente commit
 
 ```powershell
@@ -328,16 +383,9 @@ Las funciones tienen docstrings y los encabezados del código ya no contienen re
 
 ## Pendiente para los siguientes avances
 
-- **Commit 7:** regenerar `reporte_densidad.html`, eliminar el comentario en inglés de `reportes.py`, revisar cambios y realizar el commit.
-- **Modularización:** dividir, si hay tiempo, las funciones que superan las 40 líneas.
-- **Opción 8:** implementar `bitacora.bin` con registros de fecha, hora y descripción.
-- **Submenú de bitácora:** A) buscar por fecha, B) buscar por palabra clave, C) mostrar todas, D) exportar a CSV y E) salir.
-- Registrar las acciones de las opciones 1 a 7 y los errores.
-- Registrar en la Opción 1 el archivo consultado, cantidad de datos y tiempo de respuesta.
-- **Opción 9:** registrar la salida antes de finalizar el programa.
-- Documentación en `documentaciónCódigos.PDF`.
-- Incluir en la documentación portada, índice, enunciado, olores de software, validaciones, estrategia de reportes, agendas, minutas, cronograma, problemas y soluciones, lecciones aprendidas y estadísticas de tiempos.
-- Completar la carpeta final de documentación y programa fuente.
+- Documentación final formal (`DOCUMENTACION_FINAL.md` / `documentaciónCódigos.PDF`).
+- Incluir en la documentación portada, índice hipervinculado, referencia al enunciado, 5 olores de software justificados, lista de validaciones estratégicas, estrategia de reportes, reglamento de trabajo en equipo, 2 agendas, 2 minutas, cronograma, 16 problemas y soluciones, 16 lecciones aprendidas y estadísticas de tiempos y esfuerzo PSP.
+- Preparar la entrega final vía TEC Digital para el 16 de octubre.
 
 ---
 
@@ -345,17 +393,16 @@ Las funciones tienen docstrings y los encabezados del código ya no contienen re
 
 | Parte | Estado |
 |---|---|
-| Opción 1 | Hecha |
-| Opción 2 | Hecha |
+| Opción 1 | Hecha y verificada |
+| Opción 2 | Hecha y verificada |
 | Opción 3 | Hecha y verificada |
 | Opción 4 | Hecha y verificada |
 | Opción 5 | Hecha y verificada |
 | Opción 6 | Hecha y verificada |
 | Opción 7 | Hecha y verificada |
-| Opción 8 | Pendiente |
-| Opción 9 | Pendiente de registrar salida |
-|
+| Opción 8 | Hecha y verificada |
+| Opción 9 | Hecha y verificada |
 
-**Estado general:** En progreso.
+**Estado general:** Completado y verificado al 100%.
 
 
