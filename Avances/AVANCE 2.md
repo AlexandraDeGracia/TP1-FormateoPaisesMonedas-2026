@@ -17,6 +17,7 @@ La Opción 3 procesa población, área y densidad. La Opción 4 procesa las mone
 | 8 | `refactor: estructurar codigo en camelCase, mejorar documentacion y reportes` | Hecho y verificado |
 | 9 | `fix: limpiar residuo confirmado en generador html` | Hecho y verificado |
 | 10 | `docs: documentar verificacion de reportes txt, html y bitacora en avance 2` | Hecho y verificado |
+| 11 | `docs: documentar auditoria de integracion general y menu principal en avance 2` | Hecho y verificado |
 
 
 Confirmar con `git log --oneline` y `git status` que los commits estén registrados correctamente.
@@ -413,6 +414,27 @@ Se realizó una auditoría completa de los módulos `reportes.py`, `bitacora.py`
   - Búsqueda por subcadena de fecha y búsqueda por palabra clave verificadas con y sin coincidencias.
   - Exportación a CSV con cabecera `Fecha_Hora;Descripcion` y delimitador `;`.
   - Preservación íntegra de la bitácora real del repositorio (`bitacora.bin`), que se mantuvo intacta con sus 10 registros originales durante todas las pruebas.
+
+### Auditoría de integración general y menú principal (Tarea 7)
+
+Se evaluó la integración modular del sistema completo y la robustez del menú principal mediante pruebas automatizadas con subprocesos e inyección de entradas en `stdin`:
+
+- **Conformidad del menú con la consigna:**
+  - Presencia exacta de las 9 opciones exigidas por la Sección 5 del enunciado oficial.
+  - Cada opción invoca limpiamente la función correspondiente sin lógica huérfana.
+  - La Opción 9 finaliza la ejecución con mensaje de despedida y registra la salida en la bitácora.
+- **Resiliencia en arranque en frío (independencia de opciones):**
+  - Ejecución directa de las opciones 2 a 7 cuando aún no existe el archivo `paises_datos.toon`.
+  - El sistema captura de forma segura `FileNotFoundError`, muestra el mensaje amigable `"Primero ejecute la Opción 1"` y regresa al menú sin caerse ni generar excepciones no controladas.
+- **Manejo de entradas inválidas:**
+  - Menú principal: entradas alfabéticas (`"x"`, `"abc"`), fuera de rango (`"0"`, `"15"`, `"-1"`) y vacías son interceptadas en la cláusula `else`, emitiendo el mensaje `"Opción no válida. Por favor, ingrese un número del 1 al 9."` y registrando el error en la bitácora sin cerrar la sesión.
+  - Validaciones internas: validación estricta de una sola letra alfabética en Opción 2 y de números enteros positivos mayores a cero en Opción 4.
+  - Submenú de bitácora: captura de opciones fuera del rango A-E y retorno seguro al menú principal con la opción `"E"`.
+- **Sesión completa integrada:**
+  - Flujo continuo `1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9` ejecutado de extremo a extremo sin errores de memoria ni de tipado.
+  - Generación de los archivos de salida (`paises_datos.toon`, `reporte_paises.txt`, `reporte_monedas.html`, `reporte_densidad.html`, `bitacora.bin` y `bitacora.csv`).
+- **Inmutabilidad del repositorio real:**
+  - Confirmación de que las pruebas en aislamiento no alteraron ni los reportes ni la bitácora original del repositorio, la cual se mantuvo con sus 10 registros históricos originales.
 
 ### Estilo
 
