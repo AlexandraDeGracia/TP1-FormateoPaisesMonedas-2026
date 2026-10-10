@@ -237,7 +237,6 @@ def construirCardEstadisticasMonedas(totalMonedas, promedioTasa, monedaFuerte, m
 def construirTablaDetalladaMonedas(monedasUnicas, stTable, stThL, stThC, stFuerte, stDebil, stIgual):
     """Construye el HTML para la tabla detallada de 21 monedas."""
     totalMonedas = len(monedasUnicas)
-    html = "自由" # placeholder replaced below
     html = "<h2>Tabla Detallada de Monedas</h2>\n"
     html = html + "<table " + stTable + ">\n<thead>\n<tr>\n"
     html = html + "<th " + stThC + ">Código</th>\n"
