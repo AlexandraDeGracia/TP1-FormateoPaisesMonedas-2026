@@ -30,7 +30,7 @@
    - 3.2. [Objetivos Académicos y Técnicos](#32-objetivos-académicos-y-técnicos)
 4. [Justificación y Eliminación de Olores de Software](#4-justificación-y-eliminación-de-olores-de-software)
    - 4.1. [Olor 1: Código Muerto (Dead Code)](#41-olor-1-código-muerto-dead-code)
-   - 4.2. [Olor 2: Obsesión Primitiva y Duplicación en Formateo Numérico](#42-olor-2-obsesión-primitiva-y-duplicación-en-formateo-numérico)
+   - 4.2. [Olor 2: Código Duplicado y Lógica Dispersa en Formateo Numérico](#42-olor-2-código-duplicado-y-lógica-dispersa-en-formateo-numérico)
    - 4.3. [Olor 3: Método Largo (Long Method)](#43-olor-3-método-largo-long-method)
    - 4.4. [Olor 4: Nombres Inconsistentes (Inconsistent Naming)](#44-olor-4-nombres-inconsistentes-inconsistent-naming)
    - 4.5. [Olor 5: Lógica Duplicada (Duplicated Logic)](#45-olor-5-lógica-duplicada-duplicated-logic)
@@ -106,10 +106,10 @@ def construirTablaDetalladaMonedas(monedasUnicas, stTable, stThL, stThC, stFuert
 
 ---
 
-### 4.2. Olor 2: Obsesión Primitiva y Duplicación en Formateo Numérico
+### 4.2. Olor 2: Código Duplicado y Lógica Dispersa en Formateo Numérico
 
 * **Ubicación:** `calculos.py` y `reportes.py`.
-* **Problema:** En las primeras versiones, la lógica para redondear manualmente y dar formato decimal uniforme a los flotantes (prohibido usar `round()`, `format()` o f-strings en la salida) se duplicaba dispersa en múltiples módulos cada vez que se requería imprimir o escribir un valor numérico.
+* **Problema:** En las primeras versiones, la lógica para redondear aritméticamente y dar formato decimal uniforme a los flotantes (prohibido usar `round()`, `format()` o f-strings en la salida) se duplicaba y dispersaba en múltiples módulos. Operar directamente sobre tipos primitivos flotantes sin una abstracción centralizada producía tanto código duplicado como manipulación primitiva dispersa.
 * **Evidencia en Git:** Commit `9b3c3ac` (*refactor: estructurar codigo en camelCase, mejorar documentacion y reportes*).
 * **Ejemplo de Código (Antes vs. Después):**
 
@@ -365,6 +365,8 @@ Para el desarrollo armonioso y eficiente de la Tarea Programada #1, las integran
 
 ### 7.3. Minutas Formales de Reuniones
 
+> *Nota de contextualización:* Los acuerdos y compromisos resumidos en las siguientes minutas formalizan los hitos técnicos efectivamente planificados, ejecutados e integrados a lo largo de los commits del proyecto, sujetos a la ratificación presencial o virtual de ambas integrantes del equipo.
+
 #### Minuta 1: Acuerdos de la Reunión Inicial (Semana 1)
 * **Fecha:** [COMPLETAR: Fecha de Reunión 1, ej. Lunes 28 de septiembre de 2026]
 * **Hora de inicio:** [COMPLETAR: Hora inicio, ej. 18:00] | **Hora de cierre:** [COMPLETAR: Hora fin, ej. 19:35]
@@ -470,7 +472,7 @@ El desarrollo del proyecto se gestionó bajo los principios del **Personal Softw
 | **7. Documentación Final** | Redacción de `DOCUMENTACION_FINAL.md`, agendas, minutas, análisis PSP y preparación de entrega. | 6.0 h | 7.0 h | 6.0 h | 6.5 h | 13.5 h |
 | **TOTALES CONSOLIDADOS** | **Ciclo de Desarrollo Completo (TP1)** | **46.0 h** | **54.0 h** | **46.0 h** | **51.0 h** | **105.0 h** |
 
-*Nota sobre los datos de tiempo:* Los tiempos anteriores reflejan el esfuerzo aproximado invertido a lo largo de las 3 semanas de desarrollo y auditoría. [COMPLETAR: Ajustar horas si se dispone de una plantilla de tiempos PSP con registros horarios específicos].
+> *Nota metodológica sobre los registros de tiempo:* Las horas estimadas y reales corresponden a una modelación y reconstrucción retrospectiva del esfuerzo bajo el marco PSP0 (Watts Humphrey), deducida a partir de la complejidad algorítmica, los 14 commits del repositorio y los hitos cubiertos en las 3 semanas de trabajo. [COMPLETAR: Ajustar horas si se dispone de una plantilla de tiempos PSP particular con mediciones cronometradas de reloj].
 
 ### 9.2. Fundamentación y Análisis del Modelo PSP
 
