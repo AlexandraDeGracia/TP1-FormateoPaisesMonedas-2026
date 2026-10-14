@@ -1,6 +1,6 @@
 #Elaborado por: Alexandra De Gracia
 #Fecha de Creación: 2026-10-05
-#Fecha de última Modificación: 2026-10-05
+#Fecha de última Modificación: 2026-10-14
 """
 Módulo de Generación de Reportes (TXT y HTML).
 Genera reportes detallados en formato de texto plano (TXT) y páginas web (HTML)
@@ -8,57 +8,44 @@ utilizando listas, tuplas, concatenación de cadenas y funciones modulares.
 """
 
 import datetime
-import datos
 import formateo_strings as fs
 import calculos as calc
+import formatos as fmt
 
 
-# Definición de función: formatear4Decimales
+# Definición de funciones de formateo delegadas a formatos.py
 def formatear4Decimales(numero):
-    """Formatea un número flotante con exactamente 4 decimales manualmente."""
-    val = calc.redondearManual(numero, 4)
-    texto = str(val)
-    partes = fs.separarCadena(texto, ".")
-    if len(partes) == 1:
-        return partes[0] + ".0000"
-    entero = partes[0]
-    dec = partes[1]
-    while len(dec) < 4:
-        dec = dec + "0"
-    if len(dec) > 4:
-        dec = fs.obtenerSubcadena(dec, 0, 4)
-    return entero + "." + dec
+    """Delegado a formatos.formatear4Decimales."""
+    return fmt.formatear4Decimales(numero)
 
 
-# Definición de función: formatear2Decimales
 def formatear2Decimales(numero):
-    """Formatea un número flotante con exactamente 2 decimales manualmente."""
-    val = calc.redondearManual(numero, 2)
-    texto = str(val)
-    partes = fs.separarCadena(texto, ".")
-    if len(partes) == 1:
-        return partes[0] + ".00"
-    entero = partes[0]
-    dec = partes[1]
-    while len(dec) < 2:
-        dec = dec + "0"
-    if len(dec) > 2:
-        dec = fs.obtenerSubcadena(dec, 0, 2)
-    return entero + "." + dec
+    """Delegado a formatos.formatear2Decimales."""
+    return fmt.formatear2Decimales(numero)
 
 
-# Definición de función: formatearNumeroLimpio
 def formatearNumeroLimpio(numero):
-    """Formatea un número removiendo el '.0' si es entero o redondeando a 2 decimales."""
-    if numero == int(numero):
-        return str(int(numero))
-    return formatear2Decimales(numero)
+    """Delegado a formatos.formatearNumeroLimpio."""
+    return fmt.formatearNumeroLimpio(numero)
 
 
 # Definición de función: generarGraficoAsciiVertical
 def generarGraficoAsciiVertical(mega, grande, mediana, pequena):
-    """Genera un gráfico de barras ASCII vertical para las 4 categorías poblacionales en <pre>."""
-    maxVal = 25
+    """Genera una representación gráfica vertical en arte ASCII de las 4 categorías poblacionales."""
+    maxCat = mega
+    if grande > maxCat:
+        maxCat = grande
+    if mediana > maxCat:
+        maxCat = mediana
+    if pequena > maxCat:
+        maxCat = pequena
+
+    maxVal = maxCat
+    if maxVal < 10:
+        maxVal = 10
+    elif maxVal % 5 != 0:
+        maxVal = maxVal + (5 - (maxVal % 5))
+
     lineas = []
     lineas.append("DISTRIBUCIÓN DE CATEGORÍAS POBLACIONALES (GRÁFICO ASCII VERTICAL)")
     lineas.append("")
@@ -66,10 +53,7 @@ def generarGraficoAsciiVertical(mega, grande, mediana, pequena):
     nivel = maxVal
     while nivel >= 1:
         if nivel % 5 == 0 or nivel == maxVal or nivel == 1:
-            if nivel < 10:
-                eje = " " + str(nivel) + " |"
-            else:
-                eje = str(nivel) + " |"
+            eje = (" " + str(nivel) + " |") if nivel < 10 else (str(nivel) + " |")
         else:
             eje = "   |"
 
@@ -97,19 +81,16 @@ def generarGraficoAsciiVertical(mega, grande, mediana, pequena):
 # Definición de función: construirBloquePaisTxt
 def construirBloquePaisTxt(p):
     """Construye el bloque de texto de 4 líneas para un país individual."""
-    nombreNorm = fs.normalizarNombre(p[0])
-    capitalNorm = fs.normalizarNombre(p[1])
+    nombre = p[0]
+    capital = p[1]
     codigo = p[2]
     poblacion = p[3]
     area = p[4]
     monedaSinTildes = fs.quitarTildes(p[5])
     codigoMoneda = p[6]
-    tasaUsdStr = formatear2Decimales(p[7])
+    tasaUsdStr = fmt.formatear2Decimales(p[7])
 
-    if area > 0:
-        densidad = poblacion / area
-    else:
-        densidad = 0.0
+    densidad = (poblacion / area) if area > 0 else 0.0
 
     if poblacion > 10000000:
         categoria = "Megaciudad"
@@ -120,9 +101,9 @@ def construirBloquePaisTxt(p):
     else:
         categoria = "Ciudad pequeña"
 
-    densidadStr = formatear2Decimales(densidad)
+    densidadStr = fmt.formatear2Decimales(densidad)
 
-    linea1 = "El país " + nombreNorm + " tiene como capital " + capitalNorm + ", su código ISO es " + codigo + ",\n"
+    linea1 = "El país " + nombre + " tiene como capital " + capital + ", su código ISO es " + codigo + ",\n"
     linea2 = "tiene " + str(poblacion) + " habitantes, un área de " + str(area) + "km2, su moneda es " + monedaSinTildes + ",\n"
     linea3 = "código " + codigoMoneda + ", y hay " + tasaUsdStr + " por cada dólar.\n"
     linea4 = "Densidad poblacional: " + densidadStr + " hab/km2. Categoría: " + categoria + ".\n\n"
@@ -133,8 +114,8 @@ def construirBloquePaisTxt(p):
 # Definición de función: construirResumenPaisesTxt
 def construirResumenPaisesTxt(cantidad, pobTotal, areaTotal, promPob, promArea):
     """Construye la sección final de resumen general para el reporte TXT."""
-    promPobStr = formatearNumeroLimpio(promPob)
-    promAreaStr = formatearNumeroLimpio(promArea)
+    promPobStr = fmt.formatearNumeroLimpio(promPob)
+    promAreaStr = fmt.formatearNumeroLimpio(promArea)
 
     resumen = "==================================================\n"
     resumen = resumen + "RESUMEN GENERAL:\n"
@@ -178,7 +159,6 @@ def generarReportePaisesTxt(listaPaises, rutaSalida="reporte_paises.txt"):
 
     resumenFinal = construirResumenPaisesTxt(cantidad, poblacionTotal, areaTotal, promedioPoblacion, promedioArea)
     archivo.write(resumenFinal)
-
     archivo.close()
     return True
 
@@ -218,24 +198,25 @@ def obtenerCodigosPorClasificacion(listaMonedas, condicion):
 
 # Definición de función: construirCardEstadisticasMonedas
 def construirCardEstadisticasMonedas(totalMonedas, promedioTasa, monedaFuerte, monedaDebil, stCard, stP):
-    """Construye el HTML para la tarjeta de estadísticas generales de monedas."""
+    """Construye el HTML para la tarjeta de estadísticas generales de monedas con etiquetas exactas."""
     html = "<div " + stCard + ">\n"
     html = html + "<h2>Estadísticas Generales</h2>\n"
     html = html + "<p " + stP + "><strong>Cantidad total de monedas analizadas:</strong> " + str(totalMonedas) + "</p>\n"
-    html = html + "<p " + stP + "><strong>Tasa de cambio promedio:</strong> " + formatear4Decimales(promedioTasa) + "</p>\n"
+    html = html + "<p " + stP + "><strong>Tasa de cambio promedio:</strong> " + fmt.formatear4Decimales(promedioTasa) + "</p>\n"
 
     if monedaFuerte is not None:
-        html = html + "<p " + stP + "><strong>Moneda más fuerte (Mayor tasa según criterio PDF):</strong> " + str(monedaFuerte[1]) + " (" + str(monedaFuerte[0]) + ") con tasa " + formatear4Decimales(monedaFuerte[2]) + "</p>\n"
+        html = html + "<p " + stP + "><strong>Moneda más fuerte (mayor tasa):</strong> " + str(monedaFuerte[1]) + " (" + str(monedaFuerte[0]) + ") con tasa " + fmt.formatear4Decimales(monedaFuerte[2]) + "</p>\n"
     if monedaDebil is not None:
-        html = html + "<p " + stP + "><strong>Moneda más débil (Menor tasa según criterio PDF):</strong> " + str(monedaDebil[1]) + " (" + str(monedaDebil[0]) + ") con tasa " + formatear4Decimales(monedaDebil[2]) + "</p>\n"
+        html = html + "<p " + stP + "><strong>Moneda más débil (menor tasa):</strong> " + str(monedaDebil[1]) + " (" + str(monedaDebil[0]) + ") con tasa " + fmt.formatear4Decimales(monedaDebil[2]) + "</p>\n"
 
+    html = html + "<p " + stP + ' style="color: #7f8c8d; font-size: 0.9em; font-style: italic;"><strong>Nota metodológica (Criterio económico):</strong> En economía financiera, una menor cotización nominal por dólar denota mayor apreciación unitaria (ej. GBP/CHF vs USD). Por instrucción de la consigna oficial, la clasificación principal se basa directamente en la magnitud nominal de la tasa.</p>\n'
     html = html + "</div>\n"
     return html
 
 
 # Definición de función: construirTablaDetalladaMonedas
 def construirTablaDetalladaMonedas(monedasUnicas, stTable, stThL, stThC, stFuerte, stDebil, stIgual):
-    """Construye el HTML para la tabla detallada de 21 monedas."""
+    """Construye el HTML para la tabla detallada de monedas únicas."""
     totalMonedas = len(monedasUnicas)
     html = "<h2>Tabla Detallada de Monedas</h2>\n"
     html = html + "<table " + stTable + ">\n<thead>\n<tr>\n"
@@ -251,7 +232,7 @@ def construirTablaDetalladaMonedas(monedasUnicas, stTable, stThL, stThC, stFuert
         codigoM = m[0]
         nombreM = fs.quitarTildes(m[1])
         tasaM = m[2]
-        tasaStr = formatear4Decimales(tasaM)
+        tasaStr = fmt.formatear4Decimales(tasaM)
 
         bg = "background-color: #f9f9f9;" if (i % 2 == 1) else "background-color: #ffffff;"
         stTdL = 'style="padding: 12px 15px; border-bottom: 1px solid #ddd; ' + bg + '"'
@@ -270,7 +251,6 @@ def construirTablaDetalladaMonedas(monedasUnicas, stTable, stThL, stThC, stFuert
         html = html + "<td " + stTdC + ">" + tasaStr + "</td>\n"
         html = html + "<td " + stTdC + ">" + relacion + "</td>\n"
         html = html + "</tr>\n"
-
         i = i + 1
 
     html = html + "</tbody>\n</table>\n"
@@ -313,7 +293,7 @@ def construirTablaClasificacionMonedas(mayores1, iguales1, menores1, cFuertes, c
 
 
 # Definición de función: generarReporteMonedasHtml
-def generarReporteMonedasHtml(listaPaises, rutaSalida="reporte_monedas.html"):
+def generarReporteMonedasHtml(datosMonedasOPaises, rutaSalida="reporte_monedas.html"):
     """Opción 6: Genera un reporte en formato HTML con estadísticas y tablas de monedas."""
     try:
         archivo = open(rutaSalida, "w", encoding="utf-8")
@@ -321,15 +301,17 @@ def generarReporteMonedasHtml(listaPaises, rutaSalida="reporte_monedas.html"):
         print("\n Error: No se pudo crear el archivo HTML '" + rutaSalida + "'.")
         return False
 
-    monedasUnicas = calc.extraerMonedasUnicas(listaPaises)
-    totalMonedas = len(monedasUnicas)
+    if len(datosMonedasOPaises) > 0 and len(datosMonedasOPaises[0]) >= 8:
+        monedasUnicas = calc.extraerMonedasUnicas(datosMonedasOPaises)
+    else:
+        monedasUnicas = datosMonedasOPaises
 
+    totalMonedas = len(monedasUnicas)
     promedioTasa = calc.calcularTasaPromedioMonedas(monedasUnicas)
     monedaFuerte = calc.obtenerMonedaMasFuerteOpcion4(monedasUnicas)
     monedaDebil = calc.obtenerMonedaMasDebilOpcion4(monedasUnicas)
 
     mayores1, iguales1, menores1 = calc.clasificarMonedasPorTasa(monedasUnicas)
-
     codigosFuertes = obtenerCodigosPorClasificacion(monedasUnicas, "fuerte")
     codigosIguales = obtenerCodigosPorClasificacion(monedasUnicas, "igual")
     codigosDebiles = obtenerCodigosPorClasificacion(monedasUnicas, "debil")
@@ -345,23 +327,18 @@ def generarReporteMonedasHtml(listaPaises, rutaSalida="reporte_monedas.html"):
     stTable = 'style="width: 100%; border-collapse: collapse; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 30px;"'
     stThL = 'style="padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; background-color: #3498db; color: white; font-size: 0.85em;"'
     stThC = 'style="padding: 12px 15px; text-align: center; border-bottom: 1px solid #ddd; background-color: #3498db; color: white; font-size: 0.85em;"'
-
     stFuerte = 'style="color: #27ae60; font-weight: bold;"'
     stDebil = 'style="color: #e74c3c; font-weight: bold;"'
     stIgual = 'style="color: #f39c12; font-weight: bold;"'
 
-    html = "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n"
-    html = html + "<meta charset=\"utf-8\">\n"
-    html = html + "<title>Reporte de Análisis de Monedas</title>\n"
-    html = html + "</head>\n<body " + stBody + ">\n"
-
+    html = "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n"
+    html = html + "<title>Reporte de Análisis de Monedas</title>\n</head>\n<body " + stBody + ">\n"
     html = html + "<h1 " + stH1 + ">Reporte de Análisis de Monedas</h1>\n"
     html = html + "<p " + stSub + ">Generado automáticamente el " + fechaCorta + "</p>\n"
 
     html = html + construirCardEstadisticasMonedas(totalMonedas, promedioTasa, monedaFuerte, monedaDebil, stCard, stP)
     html = html + construirTablaDetalladaMonedas(monedasUnicas, stTable, stThL, stThC, stFuerte, stDebil, stIgual)
     html = html + construirTablaClasificacionMonedas(mayores1, iguales1, menores1, codigosFuertes, codigosIguales, codigosDebiles, stTable, stThC, stFuerte, stDebil, stIgual)
-
     html = html + "</body>\n</html>\n"
 
     archivo.write(html)
@@ -369,20 +346,65 @@ def generarReporteMonedasHtml(listaPaises, rutaSalida="reporte_monedas.html"):
     return True
 
 
+# Definición de función: calcularEstadisticasDensidad
+def calcularEstadisticasDensidad(listaDensidades):
+    """Calcula densidad promedio, máxima, mínima y países correspondientes."""
+    total = len(listaDensidades)
+    if total == 0:
+        return 0.0, 0.0, 0.0, "", ""
+
+    sumaDensidad = 0.0
+    maxDensidad = 0.0
+    minDensidad = 999999999.0
+    paisMax = ""
+    paisMin = ""
+
+    i = 0
+    while i < total:
+        d = listaDensidades[i]
+        valDens = d[4]
+        sumaDensidad = sumaDensidad + valDens
+
+        if valDens > maxDensidad:
+            maxDensidad = valDens
+            paisMax = d[0]
+
+        if valDens < minDensidad:
+            minDensidad = valDens
+            paisMin = d[0]
+
+        i = i + 1
+
+    densidadPromedio = sumaDensidad / total
+    return densidadPromedio, maxDensidad, minDensidad, paisMax, paisMin
+
+
+# Definición de función: calcularPorcentajesCategorias
+def calcularPorcentajesCategorias(totalPaises, mega, grande, mediana, pequena):
+    """Calcula los porcentajes de cada categoría respecto al total de países."""
+    if totalPaises == 0:
+        return 0.0, 0.0, 0.0, 0.0
+    pctM = (mega / totalPaises) * 100.0
+    pctG = (grande / totalPaises) * 100.0
+    pctMed = (mediana / totalPaises) * 100.0
+    pctP = (pequena / totalPaises) * 100.0
+    return pctM, pctG, pctMed, pctP
+
+
 # Definición de función: construirCardEstadisticasDensidad
 def construirCardEstadisticasDensidad(promDens, maxDens, minDens, pMax, pMin, mega, grande, mediana, pequena, pctM, pctG, pctMed, pctP, stCard):
     """Construye el HTML para la tarjeta de estadísticas de densidad mundial."""
     html = "<div " + stCard + ">\n"
     html = html + "<h2>Estadísticas de Densidad Mundial</h2>\n"
-    html = html + "<p><strong>Densidad Promedio Global:</strong> " + formatear2Decimales(promDens) + " hab/km²</p>\n"
-    html = html + "<p><strong>Densidad Máxima:</strong> " + pMax + " (" + formatear2Decimales(maxDens) + " hab/km²)</p>\n"
-    html = html + "<p><strong>Densidad Mínima:</strong> " + pMin + " (" + formatear2Decimales(minDens) + " hab/km²)</p>\n"
+    html = html + "<p><strong>Densidad Promedio Global:</strong> " + fmt.formatear2Decimales(promDens) + " hab/km²</p>\n"
+    html = html + "<p><strong>Densidad Máxima:</strong> " + pMax + " (" + fmt.formatear2Decimales(maxDens) + " hab/km²)</p>\n"
+    html = html + "<p><strong>Densidad Mínima:</strong> " + pMin + " (" + fmt.formatear2Decimales(minDens) + " hab/km²)</p>\n"
     html = html + "<hr>\n"
     html = html + "<h3>Distribución por Categorías Poblacionales:</h3>\n"
-    html = html + "<p>• Megaciudades (> 10M): " + str(mega) + " países (" + formatear2Decimales(pctM) + "%)</p>\n"
-    html = html + "<p>• Ciudades Grandes (1M - 10M): " + str(grande) + " países (" + formatear2Decimales(pctG) + "%)</p>\n"
-    html = html + "<p>• Ciudades Medianas (100k - 999k): " + str(mediana) + " países (" + formatear2Decimales(pctMed) + "%)</p>\n"
-    html = html + "<p>• Ciudades Pequeñas (< 100k): " + str(pequena) + " países (" + formatear2Decimales(pctP) + "%)</p>\n"
+    html = html + "<p>• Megaciudades (> 10M): " + str(mega) + " países (" + fmt.formatear2Decimales(pctM) + "%)</p>\n"
+    html = html + "<p>• Ciudades Grandes (1M - 10M): " + str(grande) + " países (" + fmt.formatear2Decimales(pctG) + "%)</p>\n"
+    html = html + "<p>• Ciudades Medianas (100k - 999k): " + str(mediana) + " países (" + fmt.formatear2Decimales(pctMed) + "%)</p>\n"
+    html = html + "<p>• Ciudades Pequeñas (< 100k): " + str(pequena) + " países (" + fmt.formatear2Decimales(pctP) + "%)</p>\n"
     html = html + "</div>\n"
     return html
 
@@ -413,7 +435,7 @@ def construirTablaDensidad(top10, titulo, stTable, stThL, stThC):
         html = html + "<td " + stTdC + ">" + str(d[1]) + "</td>\n"
         html = html + "<td " + stTdC + ">" + str(d[2]) + "</td>\n"
         html = html + "<td " + stTdC + ">" + str(d[3]) + "</td>\n"
-        html = html + "<td " + stTdC + ">" + formatear2Decimales(d[4]) + "</td>\n"
+        html = html + "<td " + stTdC + ">" + fmt.formatear2Decimales(d[4]) + "</td>\n"
         html = html + "</tr>\n"
         i = i + 1
 
@@ -423,65 +445,26 @@ def construirTablaDensidad(top10, titulo, stTable, stThL, stThC):
 
 # Definición de función: generarReporteDensidadHtml
 def generarReporteDensidadHtml(listaPaises, rutaSalida="reporte_densidad.html"):
-    """Opción 7: Genera un reporte HTML sobre el análisis de densidad poblacional mundial."""
+    """Opción 7: Genera reporte HTML de densidad poblacional dividido modularmente."""
     try:
         archivo = open(rutaSalida, "w", encoding="utf-8")
     except OSError:
         print("\n Error: No se pudo crear el archivo HTML '" + rutaSalida + "'.")
         return False
 
-    listaNormalizados = calc.normalizarDatosPaises(listaPaises)
-    totalPaises = len(listaNormalizados)
+    totalPaises = len(listaPaises)
+    listaDensidades = calc.calcularDensidadesPoblacionales(listaPaises)
+    densMayor = calc.ordenarPaisesPorDensidad(listaDensidades, descendente=True)
+    top10Mayor = calc.obtenerPrimerosElementos(densMayor, 10)
+    densMenor = calc.ordenarPaisesPorDensidad(listaDensidades, descendente=False)
+    top10Menor = calc.obtenerPrimerosElementos(densMenor, 10)
 
-    listaDensidades = calc.calcularDensidadesPoblacionales(listaNormalizados)
-    densidadesMayor = calc.ordenarPaisesPorDensidad(listaDensidades, descendente=True)
-    top10Mayor = calc.obtenerPrimerosElementos(densidadesMayor, 10)
-
-    densidadesMenor = calc.ordenarPaisesPorDensidad(listaDensidades, descendente=False)
-    top10Menor = calc.obtenerPrimerosElementos(densidadesMenor, 10)
-
-    mega, grande, mediana, pequena = calc.clasificarPaisesPorPoblacion(listaNormalizados)
-
-    if totalPaises > 0:
-        pctMega = (mega / totalPaises) * 100.0
-        pctGrande = (grande / totalPaises) * 100.0
-        pctMediana = (mediana / totalPaises) * 100.0
-        pctPequena = (pequena / totalPaises) * 100.0
-    else:
-        pctMega = pctGrande = pctMediana = pctPequena = 0.0
-
-    sumaDensidad = 0.0
-    maxDensidad = 0.0
-    minDensidad = 999999999.0
-    paisMaxDens = ""
-    paisMinDens = ""
-
-    i = 0
-    while i < len(listaDensidades):
-        d = listaDensidades[i]
-        valDens = d[4]
-        sumaDensidad = sumaDensidad + valDens
-
-        if valDens > maxDensidad:
-            maxDensidad = valDens
-            paisMaxDens = d[0]
-
-        if valDens < minDensidad:
-            minDensidad = valDens
-            paisMinDens = d[0]
-
-        i = i + 1
-
-    if totalPaises > 0:
-        densidadPromedio = sumaDensidad / totalPaises
-    else:
-        densidadPromedio = 0.0
-
+    mega, grande, mediana, pequena = calc.clasificarPaisesPorPoblacion(listaPaises)
+    pctM, pctG, pctMed, pctP = calcularPorcentajesCategorias(totalPaises, mega, grande, mediana, pequena)
+    promDens, maxDens, minDens, pMax, pMin = calcularEstadisticasDensidad(listaDensidades)
     graficoAscii = generarGraficoAsciiVertical(mega, grande, mediana, pequena)
 
-    fechaHora = str(datetime.datetime.now())
-    fechaCorta = fs.obtenerSubcadena(fechaHora, 0, 19)
-
+    fechaCorta = fs.obtenerSubcadena(str(datetime.datetime.now()), 0, 19)
     stBody = 'style="font-family: Arial, sans-serif; margin: 30px; background-color: #f4f7f6; color: #333;"'
     stH1 = 'style="color: #2c3e50; text-align: center; border-bottom: 3px solid #27ae60; padding-bottom: 10px;"'
     stSub = 'style="text-align: center; color: #7f8c8d; font-size: 0.95em; margin-bottom: 25px;"'
@@ -491,21 +474,14 @@ def generarReporteDensidadHtml(listaPaises, rutaSalida="reporte_densidad.html"):
     stThC = 'style="padding: 12px 15px; text-align: center; border-bottom: 1px solid #ddd; background-color: #27ae60; color: white; font-size: 0.85em;"'
     stPre = 'style="background: #2c3e50; color: #ecf0f1; padding: 20px; border-radius: 8px; font-family: monospace; font-size: 0.95em; overflow-x: auto;"'
 
-    html = "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n"
-    html = html + "<meta charset=\"utf-8\">\n"
-    html = html + "<title>Análisis de Densidad Poblacional Mundial</title>\n"
-    html = html + "</head>\n<body " + stBody + ">\n"
-
+    html = "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n"
+    html = html + "<title>Análisis de Densidad Poblacional Mundial</title>\n</head>\n<body " + stBody + ">\n"
     html = html + "<h1 " + stH1 + ">Análisis de Densidad Poblacional Mundial</h1>\n"
     html = html + "<p " + stSub + ">Generado automáticamente el " + fechaCorta + "</p>\n"
-
-    html = html + construirCardEstadisticasDensidad(densidadPromedio, maxDensidad, minDensidad, paisMaxDens, paisMinDens, mega, grande, mediana, pequena, pctMega, pctGrande, pctMediana, pctPequena, stCard)
+    html = html + construirCardEstadisticasDensidad(promDens, maxDens, minDens, pMax, pMin, mega, grande, mediana, pequena, pctM, pctG, pctMed, pctP, stCard)
     html = html + construirTablaDensidad(top10Mayor, "10 Países con MAYOR Densidad Poblacional", stTable, stThL, stThC)
     html = html + construirTablaDensidad(top10Menor, "10 Países con MENOR Densidad Poblacional", stTable, stThL, stThC)
-
-    html = html + "<h2>Gráfico de Distribución de Categorías Poblacionales</h2>\n"
-    html = html + "<pre " + stPre + ">\n" + graficoAscii + "</pre>\n"
-
+    html = html + "<h2>Gráfico de Distribución de Categorías Poblacionales</h2>\n<pre " + stPre + ">\n" + graficoAscii + "</pre>\n"
     html = html + "</body>\n</html>\n"
 
     archivo.write(html)

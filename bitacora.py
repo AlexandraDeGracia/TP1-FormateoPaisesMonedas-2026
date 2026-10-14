@@ -1,60 +1,51 @@
 #Elaborado por: Alexandra De Gracia
 #Fecha de Creación: 2026-10-05
-#Fecha de última Modificación: 2026-10-05
+#Fecha de última Modificación: 2026-10-14
 """
 Módulo de Gestión de Bitácora del Sistema.
-Permite registrar eventos y errores en formato binario (bitacora.bin),
+Permite registrar eventos y errores en formato binario real con pickle (bitacora.bin),
 realizar búsquedas por fecha o palabra clave, y exportar la bitácora a CSV.
 """
 
 import datetime
+import pickle
 import formateo_strings as fs
 
 
 # Definición de función: registrarEventoBitacora
 def registrarEventoBitacora(descripcion):
-    """Registra un evento con fecha, hora y descripción en bitacora.bin en formato binario."""
+    """Registra un evento con tupla (fechaHora, descripcion) en bitacora.bin usando pickle en modo 'ab'."""
     fechaHora = fs.obtenerSubcadena(str(datetime.datetime.now()), 0, 19)
-    linea = fechaHora + "|" + descripcion + "\n"
+    registro = (fechaHora, descripcion)
     try:
         archivo = open("bitacora.bin", "ab")
-        archivo.write(linea.encode("utf-8"))
+        pickle.dump(registro, archivo)
         archivo.close()
         return True
-    except OSError:
+    except (OSError, pickle.PickleError):
         return False
 
 
 # Definición de función: leerBitacoraBin
 def leerBitacoraBin():
-    """Lee los registros de bitacora.bin en modo binario (rb) y los retorna como lista de tuplas."""
+    """Lee los registros de bitacora.bin con pickle.load hasta EOFError y los retorna como lista de tuplas."""
+    listaRegistros = []
     try:
         archivo = open("bitacora.bin", "rb")
-        contenidoBytes = archivo.read()
-        archivo.close()
     except FileNotFoundError:
-        return []
+        return listaRegistros
 
-    contenidoTexto = contenidoBytes.decode("utf-8", errors="ignore")
-    lineas = fs.separarCadena(contenidoTexto, "\n")
-    listaRegistros = []
-    i = 0
-    cantidad = len(lineas)
-
-    while i < cantidad:
-        linea = fs.limpiarEspaciosExtremos(lineas[i])
-        if len(linea) > 0:
-            partes = fs.separarCadena(linea, "|")
-            if len(partes) >= 2:
-                fechaHora = partes[0]
-                desc = partes[1]
-                k = 2
-                while k < len(partes):
-                    desc = desc + "|" + partes[k]
-                    k = k + 1
-                registroTuple = (fechaHora, desc)
-                listaRegistros.append(registroTuple)
-        i = i + 1
+    try:
+        while True:
+            registro = pickle.load(archivo)
+            if isinstance(registro, tuple) and len(registro) == 2:
+                listaRegistros.append(registro)
+    except EOFError:
+        pass
+    except (pickle.UnpicklingError, OSError, ValueError):
+        pass
+    finally:
+        archivo.close()
 
     return listaRegistros
 

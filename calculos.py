@@ -1,6 +1,6 @@
 #Elaborado por: Alexandra De Gracia
 #Fecha de Creación: 2026-10-05
-#Fecha de última Modificación: 2026-10-05
+#Fecha de última Modificación: 2026-10-14
 """
 Módulo de Cálculos y Ordenamientos Manuales.
 Contiene funciones numéricas, de ordenamiento y agregación desarrolladas
@@ -8,27 +8,6 @@ manualmente utilizando únicamente listas, tuplas y ciclos while.
 """
 
 import formateo_strings as fs
-
-
-# Definición de función: redondearManual
-def redondearManual(numero, decimales):
-    """Redondea un número a una cantidad especificada de decimales mediante operaciones aritméticas simples."""
-    if decimales < 0:
-        return numero
-
-    factor = 1.0
-    i = 0
-    while i < decimales:
-        factor = factor * 10.0
-        i = i + 1
-
-    scaled = numero * factor
-    if scaled >= 0.0:
-        entero = int(scaled + 0.5)
-    else:
-        entero = int(scaled - 0.5)
-
-    return entero / factor
 
 
 # Definición de función: copiarLista
@@ -57,7 +36,7 @@ def obtenerPrimerosElementos(lista, cantidad):
 
 # Definición de función: normalizarDatosPaises
 def normalizarDatosPaises(listaPaises):
-    """Normaliza los nombres, capitales y monedas de una lista de países."""
+    """Normaliza los nombres y capitales de una lista de países (soporta tuplas de 6 u 8 elementos)."""
     listaNormalizada = []
     i = 0
     cantidad = len(listaPaises)
@@ -66,9 +45,13 @@ def normalizarDatosPaises(listaPaises):
         p = listaPaises[i]
         nombreNorm = fs.normalizarNombre(p[0])
         capitalNorm = fs.normalizarNombre(p[1])
-        monedaSinTildes = fs.quitarTildes(p[5])
 
-        paisTuple = (nombreNorm, capitalNorm, p[2], p[3], p[4], monedaSinTildes, p[6], p[7])
+        if len(p) >= 8:
+            monedaSinTildes = fs.quitarTildes(p[5])
+            paisTuple = (nombreNorm, capitalNorm, p[2], p[3], p[4], monedaSinTildes, p[6], p[7])
+        else:
+            paisTuple = (nombreNorm, capitalNorm, p[2], p[3], p[4], p[5])
+
         listaNormalizada.append(paisTuple)
         i = i + 1
 
@@ -352,7 +335,7 @@ def obtenerMonedaMasFuerteOpcion4(listaMonedas):
 
 # Definición de función: obtenerMonedaMasDebilOpcion4
 def obtenerMonedaMasDebilOpcion4(listaMonedas):
-    """Retorna la moneda con MENOR tasa de cambio frente al USD (Criterio Opción 4 PDF)."""
+    """Retorna la moneda con MENOR tasa de cambio nominal frente al USD (Criterio literal Opción 4 PDF)."""
     cantidad = len(listaMonedas)
     if cantidad == 0:
         return None

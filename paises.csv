@@ -20,7 +20,17 @@ Costa Rica;San José;CR;5150000;51100;Colón costarricense;CRC;500.00
 Ecuador;Quito;EC;17800000;256370;Dólar estadounidense;USD;1.00
 China;Pekín;CN;1411778000;9596960;Yuan Chino;CNY;7.10
 India;Nueva Delhi;IN;1408044253;3287263;Rupia India;INR;83.90
-Corea del Sur;Seúl;KR;51740000;100210;Won Surcoreano;KRW;1335.00
+Corea_del_Sur;Seúl;KR;51740000;100210;Won Surcoreano;KRW;1335.00
 Suiza;Berna;CH;8700000;41285;Franco Suizo;CHF;0.85
 Egipto;El Cairo;EG;104000000;1002450;Libra Egipcia;EGP;48.50
 Sudáfrica;Pretoria;ZA;59300000;1221037;Rand Sudafricano;ZAR;17.80
+Islandia;Reikiavik;IS;372520;103000;Corona Islandesa;ISK;137.50
+Luxemburgo;Luxemburgo;LU;645397;2586;Euro;EUR;0.91
+Belice;Belmopán;BZ;405272;22966;Dólar Beliceño;BZD;2.00
+Mónaco;Mónaco;MC;39242;2;Euro;EUR;0.91
+Liechtenstein;Vaduz;LI;39058;160;Franco Suizo;CHF;0.85
+Andorra;Andorra la Vella;AD;79824;468;Euro;EUR;0.91
+Guinea-Bissau;Bisáu;GW;1968001;36125;Franco CFA;XOF;600.00
+Congo (Kinshasa);Kinshasa;CD;95894118;2344858;Franco Congoleño;CDF;2850.00
+Côte d'Ivoire;Yamusukro;CI;29389150;322463;Franco CFA;XOF;600.00
+São Tomé y Príncipe;Santo Tomé;ST;223364;964;Dobra;STN;22.50

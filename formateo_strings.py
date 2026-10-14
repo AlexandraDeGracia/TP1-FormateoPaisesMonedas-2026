@@ -1,6 +1,6 @@
 #Elaborado por: Alexandra De Gracia
 #Fecha de Creación: 2026-10-05
-#Fecha de última Modificación: 2026-10-05
+#Fecha de última Modificación: 2026-10-14
 """
 Módulo de Formateo y Normalización de Cadenas de Texto.
 Proporciona funciones para manipular y normalizar textos carácter por carácter
@@ -223,7 +223,16 @@ def guionesBajosAEspacios(texto):
 
 # Definición de función: capitalizarPalabras
 def capitalizarPalabras(texto):
-    """Capitaliza la primera letra de cada palabra y deja el resto en minúscula."""
+    """Capitaliza la primera letra de cada palabra y deja el resto en minúscula.
+
+    Decisión de diseño para acrónimos (ej. 'Washington D.C.'):
+    Se considera el punto '.' como separador de palabra al igual que el espacio
+    en blanco. En abreviaturas o acrónimos con puntos, cada letra posterior al punto
+    constituye el inicio de una palabra abreviada y debe ir en mayúscula.
+    De este modo se obtiene 'Washington D.C.' en lugar de 'Washington D.c.',
+    cumpliendo estrictamente la regla de 'primera letra de cada palabra en mayúscula,
+    resto minúscula'.
+    """
     textoMin = aMinusculas(texto)
     resultado = ""
     i = 0
@@ -233,6 +242,9 @@ def capitalizarPalabras(texto):
     while i < longitud:
         caracter = textoMin[i]
         if esCaracterBlanco(caracter):
+            resultado = resultado + caracter
+            nuevaPalabra = True
+        elif caracter == ".":
             resultado = resultado + caracter
             nuevaPalabra = True
         else:

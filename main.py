@@ -1,6 +1,6 @@
 #Elaborado por: Alexandra De Gracia
 #Fecha de Creación: 2026-10-05
-#Fecha de última Modificación: 2026-10-05
+#Fecha de última Modificación: 2026-10-14
 """
 Módulo Principal - TP1.
 Sistema de Formateo y Análisis de Datos de Países y Monedas.
@@ -14,6 +14,7 @@ import formateo_strings as fs
 import calculos as calc
 import reportes
 import bitacora
+import formatos as fmt
 
 
 # Definición de función: mostrarMenu
@@ -44,8 +45,18 @@ def solicitarRutaCsv():
     return rutaLimpia
 
 
+# Definición de función: cargarPaisesNormalizados
+def cargarPaisesNormalizados():
+    """Lee paises.toon, normaliza nombres y retorna la lista sin reescribir el archivo TOON."""
+    paises = datos.leerPaisesToon("paises.toon")
+    if paises is None or len(paises) == 0:
+        return None
+    return calc.normalizarDatosPaises(paises)
+
+
+# Criterio cambiario: Opción 1 usa el valor unitario real (menor tasa = mayor valor); las Opciones 4 y 6 usan el criterio literal del enunciado (mayor tasa = más fuerte).
 # Definición de función: imprimirResultadosOpcion1
-def imprimirResultadosOpcion1(totalPaises, top5Poblacion, top5Area, fechaHoy, totalMonedas, top5MayorValor, top5MenorValor):
+def imprimirResultadosOpcion1(totalPaises, top5Poblacion, top5Area, fechaTasa, totalMonedas, top5MayorValor, top5MenorValor):
     """Imprime en consola los resultados procesados de la Opción 1."""
     print("\n==================================================")
     print("          RESULTADOS DE LA OPCIÓN 1")
@@ -69,21 +80,21 @@ def imprimirResultadosOpcion1(totalPaises, top5Poblacion, top5Area, fechaHoy, to
         i = i + 1
 
     print("\n--- MONEDAS ---")
-    print("• Fecha de la tasa de cambio: " + fechaHoy)
+    print("• Fecha de la tasa de cambio: " + str(fechaTasa))
     print("• Cantidad de monedas cargadas: " + str(totalMonedas))
 
-    print("\n• Top 5 monedas con MAYOR valor frente al USD (Tasa más baja):")
+    print("\n• Top 5 monedas con MAYOR valor frente al USD (menor tasa nominal = mayor valor unitario frente al USD):")
     i = 0
     while i < len(top5MayorValor):
         m = top5MayorValor[i]
-        print("  " + str(i + 1) + ". " + str(m[1]) + " (" + str(m[0]) + ") - 1 USD = " + str(m[2]) + " " + str(m[0]))
+        print("  " + str(i + 1) + ". " + str(m[1]) + " (" + str(m[0]) + ") - 1 USD = " + fmt.formatear4Decimales(m[2]) + " " + str(m[0]))
         i = i + 1
 
-    print("\n• Top 5 monedas con MENOR valor frente al USD (Tasa más alta):")
+    print("\n• Top 5 monedas con MENOR valor frente al USD (mayor tasa nominal = menor valor unitario frente al USD):")
     i = 0
     while i < len(top5MenorValor):
         m = top5MenorValor[i]
-        print("  " + str(i + 1) + ". " + str(m[1]) + " (" + str(m[0]) + ") - 1 USD = " + str(m[2]) + " " + str(m[0]))
+        print("  " + str(i + 1) + ". " + str(m[1]) + " (" + str(m[0]) + ") - 1 USD = " + fmt.formatear4Decimales(m[2]) + " " + str(m[0]))
         i = i + 1
 
     print("\n==================================================")
@@ -91,7 +102,7 @@ def imprimirResultadosOpcion1(totalPaises, top5Poblacion, top5Area, fechaHoy, to
 
 # Definición de función: ejecutarOpcion1
 def ejecutarOpcion1():
-    """Opción 1: Carga los datos del archivo CSV, los guarda en .toon y muestra estadísticas."""
+    """Opción 1: Carga los datos del archivo CSV, escribe paises.toon y tasas_cambio.toon y muestra estadísticas."""
     print("\n--- OPCIÓN 1: DESCARGAR DATOS DE PAÍSES (CSV) ---")
     tiempoInicio = time.time()
     rutaCsv = solicitarRutaCsv()
@@ -103,10 +114,19 @@ def ejecutarOpcion1():
         print("No se pudieron cargar los datos. Regresando al menú principal.")
         return
 
-    archivoToon = "paises_datos.toon"
-    exitoToon = datos.guardarDatosToon(listaPaises, archivoToon)
-    if exitoToon:
-        print("Datos crudos guardados exitosamente en '" + archivoToon + "'.")
+    exitoPaises = datos.guardarPaisesToon(listaPaises, "paises.toon")
+    if exitoPaises:
+        print("Datos de países guardados exitosamente en 'paises.toon'.")
+
+    fechaHoy = fs.obtenerSubcadena(str(datetime.date.today()), 0, 10)
+    monedasUnicas = calc.extraerMonedasUnicas(listaPaises)
+    exitoTasas = datos.guardarTasasCambioToon(fechaHoy, monedasUnicas, "tasas_cambio.toon")
+    if exitoTasas:
+        print("Tasas de cambio guardadas exitosamente en 'tasas_cambio.toon'.")
+
+    fechaTasa, monedasCargadas = datos.leerTasasCambioToon("tasas_cambio.toon")
+    if fechaTasa is None:
+        fechaTasa = fechaHoy
 
     totalPaises = len(listaPaises)
     paisesPorPob = calc.ordenarPaisesPorPoblacionDescendente(listaPaises)
@@ -115,24 +135,19 @@ def ejecutarOpcion1():
     paisesPorArea = calc.ordenarPaisesPorAreaAscendente(listaPaises)
     top5Area = calc.obtenerPrimerosElementos(paisesPorArea, 5)
 
-    fechaHoy = str(datetime.date.today())
-
-    monedasUnicas = calc.extraerMonedasUnicas(listaPaises)
     totalMonedas = len(monedasUnicas)
-
     monedasMayorValor = calc.ordenarMonedasPorTasa(monedasUnicas, descendente=False)
     top5MayorValor = calc.obtenerPrimerosElementos(monedasMayorValor, 5)
 
     monedasMenorValor = calc.ordenarMonedasPorTasa(monedasUnicas, descendente=True)
     top5MenorValor = calc.obtenerPrimerosElementos(monedasMenorValor, 5)
 
-    imprimirResultadosOpcion1(totalPaises, top5Poblacion, top5Area, fechaHoy, totalMonedas, top5MayorValor, top5MenorValor)
+    imprimirResultadosOpcion1(totalPaises, top5Poblacion, top5Area, fechaTasa, totalMonedas, top5MayorValor, top5MenorValor)
 
     tiempoFin = time.time()
-    duracion = tiempoFin - tiempoInicio
-    duracionRed = calc.redondearManual(duracion, 4)
+    duracion = fmt.formatear4Decimales(tiempoFin - tiempoInicio)
 
-    bitacora.registrarEventoBitacora("Opción 1: Descargar datos de países. Archivo: " + rutaCsv + ", Datos procesados: " + str(totalPaises) + ", Tiempo de respuesta: " + str(duracionRed) + " s")
+    bitacora.registrarEventoBitacora("Opción 1: Carga/Descarga de países. Origen (Ruta/URL): " + rutaCsv + ", Datos recibidos: " + str(totalPaises) + " registros, Tiempo de respuesta: " + duracion + " s")
 
 
 # Definición de función: solicitarLetraBusqueda
@@ -156,26 +171,16 @@ def solicitarLetraBusqueda():
 
 # Definición de función: ejecutarOpcion2
 def ejecutarOpcion2():
-    """Opción 2: Lee países desde .toon, normaliza nombres, guarda y muestra métricas."""
+    """Opción 2: Lee países desde paises.toon, normaliza nombres, guarda y muestra métricas."""
     print("\n--- OPCIÓN 2: PROCESAR Y NORMALIZAR NOMBRES DE PAÍSES ---")
-    listaPaises = datos.leerDatosToon("paises_datos.toon")
+    listaPaises = datos.leerPaisesToon("paises.toon")
 
     if listaPaises is None or len(listaPaises) == 0:
         return
 
-    listaNormalizados = []
-    i = 0
-    cantidad = len(listaPaises)
-
-    while i < cantidad:
-        p = listaPaises[i]
-        nombreNormalizado = fs.normalizarNombre(p[0])
-        paisNorm = (nombreNormalizado, p[1], p[2], p[3], p[4], p[5], p[6], p[7])
-        listaNormalizados.append(paisNorm)
-        i = i + 1
-
-    datos.guardarDatosToon(listaNormalizados, "paises_datos.toon")
-    print("Nombres normalizados guardados correctamente en 'paises_datos.toon'.")
+    listaNormalizados = calc.normalizarDatosPaises(listaPaises)
+    datos.guardarPaisesToon(listaNormalizados, "paises.toon")
+    print("Nombres normalizados guardados correctamente en 'paises.toon'.")
 
     letraIngresada = solicitarLetraBusqueda()
 
@@ -200,13 +205,13 @@ def ejecutarOpcion2():
 
 # Definición de función: imprimirResultadosOpcion3
 def imprimirResultadosOpcion3(pobTotal, pobPromedio, pobMediana, mega, grande, mediana, pequena, sumaCat, areaTotal, top10Mayor, top10Menor):
-    """Imprime en consola los resultados procesados de la Opción 3."""
+    """Imprime en consola los resultados procesados de la Opción 3 con 2 decimales."""
     print("\n==================================================")
     print("          RESULTADOS DE LA OPCIÓN 3")
     print("==================================================")
 
-    promPobRed = calc.redondearManual(pobPromedio, 2)
-    medianaPobRed = calc.redondearManual(pobMediana, 2)
+    promPobRed = fmt.formatear2Decimales(pobPromedio)
+    medianaPobRed = fmt.formatear2Decimales(pobMediana)
 
     print("\n--- DATOS POBLACIONALES ---")
     print("• Población total mundial: " + str(pobTotal) + " habitantes")
@@ -227,7 +232,7 @@ def imprimirResultadosOpcion3(pobTotal, pobPromedio, pobMediana, mega, grande, m
     i = 0
     while i < len(top10Mayor):
         d = top10Mayor[i]
-        densRed = calc.redondearManual(d[4], 2)
+        densRed = fmt.formatear2Decimales(d[4])
         print("  " + str(i + 1) + ". " + str(d[0]) + " (" + str(d[1]) + ") - Densidad: " + str(densRed) + " hab/km² (Pob: " + str(d[2]) + ", Área: " + str(d[3]) + " km²)")
         i = i + 1
 
@@ -235,7 +240,7 @@ def imprimirResultadosOpcion3(pobTotal, pobPromedio, pobMediana, mega, grande, m
     i = 0
     while i < len(top10Menor):
         d = top10Menor[i]
-        densRed = calc.redondearManual(d[4], 2)
+        densRed = fmt.formatear2Decimales(d[4])
         print("  " + str(i + 1) + ". " + str(d[0]) + " (" + str(d[1]) + ") - Densidad: " + str(densRed) + " hab/km² (Pob: " + str(d[2]) + ", Área: " + str(d[3]) + " km²)")
         i = i + 1
 
@@ -244,24 +249,21 @@ def imprimirResultadosOpcion3(pobTotal, pobPromedio, pobMediana, mega, grande, m
 
 # Definición de función: ejecutarOpcion3
 def ejecutarOpcion3():
-    """Opción 3: Procesar datos poblacionales y geográficos."""
+    """Opción 3: Procesar datos poblacionales y geográficos leyendo paises.toon."""
     print("\n--- OPCIÓN 3: PROCESAR DATOS POBLACIONALES Y GEOGRÁFICOS ---")
-    listaPaises = datos.leerDatosToon("paises_datos.toon")
+    listaPaises = cargarPaisesNormalizados()
 
     if listaPaises is None or len(listaPaises) == 0:
         return
 
-    listaNormalizados = calc.normalizarDatosPaises(listaPaises)
-    datos.guardarDatosToon(listaNormalizados, "paises_datos.toon")
-
-    pobTotal = calc.calcularPoblacionTotal(listaNormalizados)
-    pobPromedio = calc.calcularPoblacionPromedio(listaNormalizados)
-    pobMediana = calc.calcularMedianaPoblacion(listaNormalizados)
-    mega, grande, mediana, pequena = calc.clasificarPaisesPorPoblacion(listaNormalizados)
+    pobTotal = calc.calcularPoblacionTotal(listaPaises)
+    pobPromedio = calc.calcularPoblacionPromedio(listaPaises)
+    pobMediana = calc.calcularMedianaPoblacion(listaPaises)
+    mega, grande, mediana, pequena = calc.clasificarPaisesPorPoblacion(listaPaises)
     sumaCat = mega + grande + mediana + pequena
 
-    areaTotal = calc.calcularAreaTotal(listaNormalizados)
-    listaDensidades = calc.calcularDensidadesPoblacionales(listaNormalizados)
+    areaTotal = calc.calcularAreaTotal(listaPaises)
+    listaDensidades = calc.calcularDensidadesPoblacionales(listaPaises)
 
     densidadesMayor = calc.ordenarPaisesPorDensidad(listaDensidades, descendente=True)
     top10Mayor = calc.obtenerPrimerosElementos(densidadesMayor, 10)
@@ -292,7 +294,7 @@ def solicitarNLetrasMoneda():
 
 # Definición de función: imprimirResultadosOpcion4
 def imprimirResultadosOpcion4(monedasUnicas, nLetras, monedasConN, promedioTasa, monedaFuerte, monedaDebil, mayores1, iguales1, menores1, sumaConteos, monedasAsc, monedasDesc):
-    """Imprime en consola los resultados procesados de la Opción 4."""
+    """Imprime en consola los resultados procesados de la Opción 4 con etiquetas exactas."""
     totalMonedas = len(monedasUnicas)
     print("\n==================================================")
     print("          RESULTADOS DE LA OPCIÓN 4")
@@ -303,20 +305,21 @@ def imprimirResultadosOpcion4(monedasUnicas, nLetras, monedasConN, promedioTasa,
     while i < totalMonedas:
         m = monedasUnicas[i]
         formatoMoneda = fs.formatearMonedaCodigoNombre(m[0], m[1])
-        print("  " + str(i + 1) + ". " + formatoMoneda + " (Tasa: " + str(m[2]) + ")")
+        print("  " + str(i + 1) + ". " + formatoMoneda + " (Tasa: " + fmt.formatear4Decimales(m[2]) + ")")
         i = i + 1
 
     print("\n• Cantidad de monedas con exactamente " + str(nLetras) + " letras en su nombre: " + str(monedasConN) + " monedas")
 
-    promTasaRed = calc.redondearManual(promedioTasa, 4)
+    promTasaStr = fmt.formatear4Decimales(promedioTasa)
 
     print("\n--- ESTADÍSTICAS Y OPERACIONES NUMÉRICAS ---")
-    print("• Tasa de cambio promedio: " + str(promTasaRed))
+    print("• Tasa de cambio promedio: " + promTasaStr)
 
     if monedaFuerte is not None:
-        print("• Moneda más fuerte (Mayor tasa): " + str(monedaFuerte[1]) + " (" + str(monedaFuerte[0]) + ") con tasa " + str(monedaFuerte[2]))
+        print("• Moneda más fuerte (mayor tasa): " + str(monedaFuerte[1]) + " (" + str(monedaFuerte[0]) + ") con tasa " + fmt.formatear4Decimales(monedaFuerte[2]))
     if monedaDebil is not None:
-        print("• Moneda más débil (Menor tasa): " + str(monedaDebil[1]) + " (" + str(monedaDebil[0]) + ") con tasa " + str(monedaDebil[2]))
+        print("• Moneda más débil (menor tasa): " + str(monedaDebil[1]) + " (" + str(monedaDebil[0]) + ") con tasa " + fmt.formatear4Decimales(monedaDebil[2]))
+    print("  [Nota técnica: En teoría financiera, menor tasa por dólar implica mayor poder adquisitivo unitario. Se reporta según la consigna oficial].")
 
     print("\n• Clasificación según la tasa frente a 1 USD:")
     print("  - Monedas con tasa > 1 USD: " + str(mayores1))
@@ -328,14 +331,14 @@ def imprimirResultadosOpcion4(monedasUnicas, nLetras, monedasConN, promedioTasa,
     i = 0
     while i < totalMonedas:
         m = monedasAsc[i]
-        print("  " + str(i + 1) + ". " + str(m[0]) + " - " + str(m[1]) + ": " + str(m[2]))
+        print("  " + str(i + 1) + ". " + str(m[0]) + " - " + str(m[1]) + ": " + fmt.formatear4Decimales(m[2]))
         i = i + 1
 
     print("\n--- MONEDAS ORDENADAS POR TASA (DESCENDENTE - De mayor a menor) ---")
     i = 0
     while i < totalMonedas:
         m = monedasDesc[i]
-        print("  " + str(i + 1) + ". " + str(m[0]) + " - " + str(m[1]) + ": " + str(m[2]))
+        print("  " + str(i + 1) + ". " + str(m[0]) + " - " + str(m[1]) + ": " + fmt.formatear4Decimales(m[2]))
         i = i + 1
 
     print("==================================================")
@@ -343,17 +346,13 @@ def imprimirResultadosOpcion4(monedasUnicas, nLetras, monedasConN, promedioTasa,
 
 # Definición de función: ejecutarOpcion4
 def ejecutarOpcion4():
-    """Opción 4: Procesar datos de monedas."""
+    """Opción 4: Procesar datos de monedas leyendo tasas_cambio.toon."""
     print("\n--- OPCIÓN 4: PROCESAR DATOS DE MONEDAS ---")
-    listaPaises = datos.leerDatosToon("paises_datos.toon")
+    fechaTasa, monedasUnicas = datos.leerTasasCambioToon("tasas_cambio.toon")
 
-    if listaPaises is None or len(listaPaises) == 0:
+    if monedasUnicas is None or len(monedasUnicas) == 0:
         return
 
-    listaNormalizados = calc.normalizarDatosPaises(listaPaises)
-    datos.guardarDatosToon(listaNormalizados, "paises_datos.toon")
-
-    monedasUnicas = calc.extraerMonedasUnicas(listaNormalizados)
     nLetras = solicitarNLetrasMoneda()
     monedasConN = calc.contarMonedasConNLetras(monedasUnicas, nLetras)
 
@@ -372,17 +371,19 @@ def ejecutarOpcion4():
 
 # Definición de función: ejecutarOpcion5
 def ejecutarOpcion5():
-    """Opción 5: Generar reporte de países en TXT."""
+    """Opción 5: Generar reporte de países en TXT leyendo paises.toon y tasas_cambio.toon."""
     print("\n--- OPCIÓN 5: GENERAR REPORTE DE PAÍSES EN TXT ---")
-    listaPaises = datos.leerDatosToon("paises_datos.toon")
+    listaPaises = cargarPaisesNormalizados()
 
     if listaPaises is None or len(listaPaises) == 0:
         return
 
-    listaNormalizados = calc.normalizarDatosPaises(listaPaises)
-    datos.guardarDatosToon(listaNormalizados, "paises_datos.toon")
+    fechaTasa, listaMonedas = datos.leerTasasCambioToon("tasas_cambio.toon")
+    if listaMonedas is None or len(listaMonedas) == 0:
+        return
 
-    exito = reportes.generarReportePaisesTxt(listaNormalizados, "reporte_paises.txt")
+    listaCompleta = datos.combinarPaisesConTasas(listaPaises, listaMonedas)
+    exito = reportes.generarReportePaisesTxt(listaCompleta, "reporte_paises.txt")
     if exito:
         print(" Reporte TXT generado exitosamente en 'reporte_paises.txt'.")
         bitacora.registrarEventoBitacora("Opción 5: Generar reporte de países en TXT. Archivo creado: reporte_paises.txt")
@@ -390,17 +391,14 @@ def ejecutarOpcion5():
 
 # Definición de función: ejecutarOpcion6
 def ejecutarOpcion6():
-    """Opción 6: Generar reporte de monedas en HTML."""
+    """Opción 6: Generar reporte de monedas en HTML leyendo tasas_cambio.toon."""
     print("\n--- OPCIÓN 6: GENERAR REPORTE DE MONEDAS EN HTML ---")
-    listaPaises = datos.leerDatosToon("paises_datos.toon")
+    fechaTasa, listaMonedas = datos.leerTasasCambioToon("tasas_cambio.toon")
 
-    if listaPaises is None or len(listaPaises) == 0:
+    if listaMonedas is None or len(listaMonedas) == 0:
         return
 
-    listaNormalizados = calc.normalizarDatosPaises(listaPaises)
-    datos.guardarDatosToon(listaNormalizados, "paises_datos.toon")
-
-    exito = reportes.generarReporteMonedasHtml(listaNormalizados, "reporte_monedas.html")
+    exito = reportes.generarReporteMonedasHtml(listaMonedas, "reporte_monedas.html")
     if exito:
         print(" Reporte HTML de monedas generado exitosamente en 'reporte_monedas.html'.")
         bitacora.registrarEventoBitacora("Opción 6: Generar reporte de monedas en HTML. Archivo creado: reporte_monedas.html")
@@ -408,17 +406,18 @@ def ejecutarOpcion6():
 
 # Definición de función: ejecutarOpcion7
 def ejecutarOpcion7():
-    """Opción 7: Generar reporte de densidad poblacional en HTML."""
+    """Opción 7: Generar reporte de densidad poblacional en HTML leyendo paises.toon y tasas_cambio.toon."""
     print("\n--- OPCIÓN 7: GENERAR REPORTE DE DENSIDAD POBLACIONAL EN HTML ---")
-    listaPaises = datos.leerDatosToon("paises_datos.toon")
+    listaPaises = cargarPaisesNormalizados()
 
     if listaPaises is None or len(listaPaises) == 0:
         return
 
-    listaNormalizados = calc.normalizarDatosPaises(listaPaises)
-    datos.guardarDatosToon(listaNormalizados, "paises_datos.toon")
+    fechaTasa, listaMonedas = datos.leerTasasCambioToon("tasas_cambio.toon")
+    if listaMonedas is None or len(listaMonedas) == 0:
+        return
 
-    exito = reportes.generarReporteDensidadHtml(listaNormalizados, "reporte_densidad.html")
+    exito = reportes.generarReporteDensidadHtml(listaPaises, "reporte_densidad.html")
     if exito:
         print(" Reporte HTML de densidad generado exitosamente en 'reporte_densidad.html'.")
         bitacora.registrarEventoBitacora("Opción 7: Generar reporte de densidad poblacional en HTML. Archivo creado: reporte_densidad.html")
@@ -426,36 +425,39 @@ def ejecutarOpcion7():
 
 # Definición de función: main
 def main():
-    """Función principal para controlar el menú."""
+    """Función principal para controlar el menú con captura robusta de interrupciones."""
     opcion = ""
+    try:
+        while opcion != "9":
+            mostrarMenu()
+            opcion = input("Seleccione una opción (1-9): ")
+            opcion = fs.limpiarEspaciosExtremos(opcion)
 
-    while opcion != "9":
-        mostrarMenu()
-        opcion = input("Seleccione una opción (1-9): ")
-        opcion = fs.limpiarEspaciosExtremos(opcion)
-
-        if opcion == "1":
-            ejecutarOpcion1()
-        elif opcion == "2":
-            ejecutarOpcion2()
-        elif opcion == "3":
-            ejecutarOpcion3()
-        elif opcion == "4":
-            ejecutarOpcion4()
-        elif opcion == "5":
-            ejecutarOpcion5()
-        elif opcion == "6":
-            ejecutarOpcion6()
-        elif opcion == "7":
-            ejecutarOpcion7()
-        elif opcion == "8":
-            bitacora.ejecutarSubmenuBitacora()
-        elif opcion == "9":
-            print("\n¡Gracias por utilizar el sistema!")
-            bitacora.registrarEventoBitacora("Opción 9: El usuario salió del sistema.")
-        else:
-            print("\nOpción no válida. Por favor, ingrese un número del 1 al 9.")
-            bitacora.registrarEventoBitacora("Error: Opción de menú no válida: '" + opcion + "'")
+            if opcion == "1":
+                ejecutarOpcion1()
+            elif opcion == "2":
+                ejecutarOpcion2()
+            elif opcion == "3":
+                ejecutarOpcion3()
+            elif opcion == "4":
+                ejecutarOpcion4()
+            elif opcion == "5":
+                ejecutarOpcion5()
+            elif opcion == "6":
+                ejecutarOpcion6()
+            elif opcion == "7":
+                ejecutarOpcion7()
+            elif opcion == "8":
+                bitacora.ejecutarSubmenuBitacora()
+            elif opcion == "9":
+                print("\n¡Gracias por utilizar el sistema!")
+                bitacora.registrarEventoBitacora("Opción 9: El usuario salió del sistema.")
+            else:
+                print("\nOpción no válida. Por favor, ingrese un número del 1 al 9.")
+                bitacora.registrarEventoBitacora("Error: Opción de menú no válida: '" + opcion + "'")
+    except (KeyboardInterrupt, EOFError):
+        print("\n\nEl usuario ha cancelado la ejecución o la entrada ha finalizado. Saliendo de manera limpia...")
+        bitacora.registrarEventoBitacora("Interrupción: El usuario interrumpió la ejecución o finalizó el flujo de entrada (KeyboardInterrupt/EOFError).")
 
 
 if __name__ == "__main__":
