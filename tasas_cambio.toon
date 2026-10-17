@@ -1,0 +1,106 @@
+fecha_tasa: "2026-10-16"
+monedas:
+    -
+        codigo: "ARS"
+        nombre: "Peso Argentino"
+        tasa_usd: 975.5
+    -
+        codigo: "BRL"
+        nombre: "Real"
+        tasa_usd: 5.0
+    -
+        codigo: "CLP"
+        nombre: "Peso Chileno"
+        tasa_usd: 920.0
+    -
+        codigo: "COP"
+        nombre: "Peso Colombiano"
+        tasa_usd: 4150.0
+    -
+        codigo: "EUR"
+        nombre: "Euro"
+        tasa_usd: 0.91
+    -
+        codigo: "JPY"
+        nombre: "Yen Japonés"
+        tasa_usd: 148.2
+    -
+        codigo: "MXN"
+        nombre: "Peso mexicano"
+        tasa_usd: 20.5
+    -
+        codigo: "PAB"
+        nombre: "Balboa Panameño"
+        tasa_usd: 1.0
+    -
+        codigo: "PEN"
+        nombre: "Sol Peruano"
+        tasa_usd: 3.76
+    -
+        codigo: "USD"
+        nombre: "Dólar estadounidense"
+        tasa_usd: 1.0
+    -
+        codigo: "UYU"
+        nombre: "Peso Uruguayo"
+        tasa_usd: 41.2
+    -
+        codigo: "GBP"
+        nombre: "Libra Esterlina"
+        tasa_usd: 0.76
+    -
+        codigo: "CAD"
+        nombre: "Dólar canadiense"
+        tasa_usd: 1.35
+    -
+        codigo: "AUD"
+        nombre: "Dólar Australiano"
+        tasa_usd: 1.48
+    -
+        codigo: "CRC"
+        nombre: "Colón costarricense"
+        tasa_usd: 500.0
+    -
+        codigo: "CNY"
+        nombre: "Yuan Chino"
+        tasa_usd: 7.1
+    -
+        codigo: "INR"
+        nombre: "Rupia India"
+        tasa_usd: 83.9
+    -
+        codigo: "KRW"
+        nombre: "Won Surcoreano"
+        tasa_usd: 1335.0
+    -
+        codigo: "CHF"
+        nombre: "Franco Suizo"
+        tasa_usd: 0.85
+    -
+        codigo: "EGP"
+        nombre: "Libra Egipcia"
+        tasa_usd: 48.5
+    -
+        codigo: "ZAR"
+        nombre: "Rand Sudafricano"
+        tasa_usd: 17.8
+    -
+        codigo: "ISK"
+        nombre: "Corona Islandesa"
+        tasa_usd: 137.5
+    -
+        codigo: "BZD"
+        nombre: "Dólar Beliceño"
+        tasa_usd: 2.0
+    -
+        codigo: "XOF"
+        nombre: "Franco CFA"
+        tasa_usd: 600.0
+    -
+        codigo: "CDF"
+        nombre: "Franco Congoleño"
+        tasa_usd: 2850.0
+    -
+        codigo: "STN"
+        nombre: "Dobra"
+        tasa_usd: 22.5

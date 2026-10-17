@@ -1,0 +1,246 @@
+paises:
+    -
+        nombre: "Argentina"
+        capital: "Buenos Aires"
+        codigo: "AR"
+        poblacion: 45808747
+        area: 2780400
+        codigo_moneda: "ARS"
+    -
+        nombre: "Brasil"
+        capital: "Brasilia"
+        codigo: "BR"
+        poblacion: 214326223
+        area: 8515767
+        codigo_moneda: "BRL"
+    -
+        nombre: "Chile"
+        capital: "Santiago"
+        codigo: "CL"
+        poblacion: 19493184
+        area: 756102
+        codigo_moneda: "CLP"
+    -
+        nombre: "Colombia"
+        capital: "Bogota"
+        codigo: "CO"
+        poblacion: 51516562
+        area: 1141748
+        codigo_moneda: "COP"
+    -
+        nombre: "Espana"
+        capital: "Madrid"
+        codigo: "ES"
+        poblacion: 47415750
+        area: 505990
+        codigo_moneda: "EUR"
+    -
+        nombre: "Francia"
+        capital: "Paris"
+        codigo: "FR"
+        poblacion: 67750000
+        area: 551695
+        codigo_moneda: "EUR"
+    -
+        nombre: "Japon"
+        capital: "Tokio"
+        codigo: "JP"
+        poblacion: 125507000
+        area: 377975
+        codigo_moneda: "JPY"
+    -
+        nombre: "Mexico"
+        capital: "Ciudad De Mexico"
+        codigo: "MX"
+        poblacion: 126705138
+        area: 1964375
+        codigo_moneda: "MXN"
+    -
+        nombre: "Panama"
+        capital: "Ciudad De Panama"
+        codigo: "PA"
+        poblacion: 4351267
+        area: 75417
+        codigo_moneda: "PAB"
+    -
+        nombre: "Peru"
+        capital: "Lima"
+        codigo: "PE"
+        poblacion: 33715471
+        area: 1285216
+        codigo_moneda: "PEN"
+    -
+        nombre: "Estados Unidos"
+        capital: "Washington D.C."
+        codigo: "US"
+        poblacion: 331893745
+        area: 9833517
+        codigo_moneda: "USD"
+    -
+        nombre: "Uruguay"
+        capital: "Montevideo"
+        codigo: "UY"
+        poblacion: 3426260
+        area: 176215
+        codigo_moneda: "UYU"
+    -
+        nombre: "Alemania"
+        capital: "Berlin"
+        codigo: "DE"
+        poblacion: 83200000
+        area: 357022
+        codigo_moneda: "EUR"
+    -
+        nombre: "Italia"
+        capital: "Roma"
+        codigo: "IT"
+        poblacion: 58850000
+        area: 301340
+        codigo_moneda: "EUR"
+    -
+        nombre: "Reino Unido"
+        capital: "Londres"
+        codigo: "GB"
+        poblacion: 67330000
+        area: 243610
+        codigo_moneda: "GBP"
+    -
+        nombre: "Canada"
+        capital: "Ottawa"
+        codigo: "CA"
+        poblacion: 38250000
+        area: 9984670
+        codigo_moneda: "CAD"
+    -
+        nombre: "Australia"
+        capital: "Canberra"
+        codigo: "AU"
+        poblacion: 25690000
+        area: 7692024
+        codigo_moneda: "AUD"
+    -
+        nombre: "Costa Rica"
+        capital: "San Jose"
+        codigo: "CR"
+        poblacion: 5150000
+        area: 51100
+        codigo_moneda: "CRC"
+    -
+        nombre: "Ecuador"
+        capital: "Quito"
+        codigo: "EC"
+        poblacion: 17800000
+        area: 256370
+        codigo_moneda: "USD"
+    -
+        nombre: "China"
+        capital: "Pekin"
+        codigo: "CN"
+        poblacion: 1411778000
+        area: 9596960
+        codigo_moneda: "CNY"
+    -
+        nombre: "India"
+        capital: "Nueva Delhi"
+        codigo: "IN"
+        poblacion: 1408044253
+        area: 3287263
+        codigo_moneda: "INR"
+    -
+        nombre: "Corea Del Sur"
+        capital: "Seul"
+        codigo: "KR"
+        poblacion: 51740000
+        area: 100210
+        codigo_moneda: "KRW"
+    -
+        nombre: "Suiza"
+        capital: "Berna"
+        codigo: "CH"
+        poblacion: 8700000
+        area: 41285
+        codigo_moneda: "CHF"
+    -
+        nombre: "Egipto"
+        capital: "El Cairo"
+        codigo: "EG"
+        poblacion: 104000000
+        area: 1002450
+        codigo_moneda: "EGP"
+    -
+        nombre: "Sudafrica"
+        capital: "Pretoria"
+        codigo: "ZA"
+        poblacion: 59300000
+        area: 1221037
+        codigo_moneda: "ZAR"
+    -
+        nombre: "Islandia"
+        capital: "Reikiavik"
+        codigo: "IS"
+        poblacion: 372520
+        area: 103000
+        codigo_moneda: "ISK"
+    -
+        nombre: "Luxemburgo"
+        capital: "Luxemburgo"
+        codigo: "LU"
+        poblacion: 645397
+        area: 2586
+        codigo_moneda: "EUR"
+    -
+        nombre: "Belice"
+        capital: "Belmopan"
+        codigo: "BZ"
+        poblacion: 405272
+        area: 22966
+        codigo_moneda: "BZD"
+    -
+        nombre: "Monaco"
+        capital: "Monaco"
+        codigo: "MC"
+        poblacion: 39242
+        area: 2
+        codigo_moneda: "EUR"
+    -
+        nombre: "Liechtenstein"
+        capital: "Vaduz"
+        codigo: "LI"
+        poblacion: 39058
+        area: 160
+        codigo_moneda: "CHF"
+    -
+        nombre: "Andorra"
+        capital: "Andorra La Vella"
+        codigo: "AD"
+        poblacion: 79824
+        area: 468
+        codigo_moneda: "EUR"
+    -
+        nombre: "Guineabissau"
+        capital: "Bisau"
+        codigo: "GW"
+        poblacion: 1968001
+        area: 36125
+        codigo_moneda: "XOF"
+    -
+        nombre: "Congo"
+        capital: "Kinshasa"
+        codigo: "CD"
+        poblacion: 95894118
+        area: 2344858
+        codigo_moneda: "CDF"
+    -
+        nombre: "Cote Divoire"
+        capital: "Yamusukro"
+        codigo: "CI"
+        poblacion: 29389150
+        area: 322463
+        codigo_moneda: "XOF"
+    -
+        nombre: "Sao Tome Y Principe"
+        capital: "Santo Tome"
+        codigo: "ST"
+        poblacion: 223364
+        area: 964
+        codigo_moneda: "STN"
